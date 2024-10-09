@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1020976636702",
+    "project_id": "stress-d83ca",
+    "storage_bucket": "stress-d83ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020976636702:android:3b2159190c21c663789f0f",
+        "android_client_info": {
+          "package_name": "com.anxietystressselfmanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_eAIg6v1QrYElU8027qHjx7R5Cyte_0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
