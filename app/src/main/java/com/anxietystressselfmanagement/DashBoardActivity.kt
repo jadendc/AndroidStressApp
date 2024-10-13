@@ -42,8 +42,6 @@ class DashBoardActivity : AppCompatActivity() {
                     if (document != null) {
                         val name = document.getString("first name")
                         welcomeTextView.text = "Welcome, $name!"
-                    } else {
-                        welcomeTextView.text = "Welcome, User!"
                     }
                 }.addOnFailureListener {
                     welcomeTextView.text = "Error retrieving user data."
@@ -52,6 +50,8 @@ class DashBoardActivity : AppCompatActivity() {
         } else {
             welcomeTextView.text = "Welcome, Guest!"
         }
+
+
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -75,6 +75,12 @@ class DashBoardActivity : AppCompatActivity() {
         // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.nav_dashboard -> {
+                    val intent = Intent(this, DashBoardActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
                 R.id.nav_account -> {
                     // Handle account action
                 }

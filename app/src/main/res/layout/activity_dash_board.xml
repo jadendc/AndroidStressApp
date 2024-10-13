@@ -15,13 +15,15 @@
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="4dp"
             android:background="?attr/colorPrimary"
-            app:titleTextColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
+            app:drawerArrowStyle="@style/DrawerArrowStyle"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-            app:drawerArrowStyle="@style/DrawerArrowStyle"/>
+            app:titleTextColor="@android:color/white" />
 
         <TextView
             android:id="@+id/welcomeTextView"
