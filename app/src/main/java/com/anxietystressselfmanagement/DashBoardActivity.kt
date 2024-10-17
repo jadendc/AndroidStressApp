@@ -71,7 +71,7 @@ class DashBoardActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, android.R.color.white))
+        toggle.drawerArrowDrawable.color = getColor(R.color.white)
         // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
