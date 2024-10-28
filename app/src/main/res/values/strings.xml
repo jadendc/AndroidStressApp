@@ -13,4 +13,11 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="reset">Reset</string>
+    <string name="sadface">😞</string>
+    <string name="veryHappy">😁</string>
+    <string name="meh">😐</string>
+    <string name="sad">🙁</string>
+    <string name="happy">🙂</string>
+    <string name="please_enter_mood">Please enter mood</string>
 </resources>
