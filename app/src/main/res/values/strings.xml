@@ -20,4 +20,5 @@
     <string name="sad">🙁</string>
     <string name="happy">🙂</string>
     <string name="please_enter_mood">Please enter mood</string>
+    <string name="settings">Settings</string>
 </resources>
