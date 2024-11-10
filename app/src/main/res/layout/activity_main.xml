@@ -15,7 +15,7 @@
         android:layout_height="48dp"
         android:layout_marginBottom="156dp"
         android:backgroundTint="#161C1F"
-        android:text="SignUp"
+        android:text="@string/sign_up"
         android:textColor="#FFFFFF"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -108,13 +108,13 @@
         android:text="Forgot Password?"
         android:textAlignment="center"
         android:textColor="#FDFDFD"
-        android:textSize="20sp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.316"
+        app:layout_constraintVertical_bias="0.389"
 
-    />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

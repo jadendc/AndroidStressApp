@@ -3,7 +3,9 @@ package com.anxietystressselfmanagement
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,6 +19,11 @@ class DashBoardActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var welcomeTextView: TextView
+    private lateinit var verySad: Button
+    private lateinit var sad: Button
+    private lateinit var meh:Button
+    private lateinit var happy: Button
+    private lateinit var veryHappy: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
@@ -27,6 +34,12 @@ class DashBoardActivity : AppCompatActivity() {
         welcomeTextView = findViewById(R.id.welcomeTextView)
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        verySad = findViewById(R.id.verySadButton)
+        sad = findViewById(R.id.sadButton)
+        meh = findViewById(R.id.mehButton)
+        happy = findViewById(R.id.happyButton)
+        veryHappy = findViewById(R.id.veryHappyButton)
+
 
         val currentUser: FirebaseUser? = auth.currentUser
 
@@ -52,6 +65,13 @@ class DashBoardActivity : AppCompatActivity() {
         }
 
 
+        verySad.setOnClickListener {
+            Toast.makeText(this,"Why so very sad?", Toast.LENGTH_SHORT).show()
+        }
+
+        sad.setOnClickListener{
+            Toast.makeText(this,"Why so sad?", Toast.LENGTH_SHORT).show()
+        }
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -81,12 +101,16 @@ class DashBoardActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-                R.id.nav_account -> {
-                    // Handle account action
-                }
 
                 R.id.nav_settings -> {
                     val intent = Intent(this, SettingActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+
+                R.id.nav_about -> {
+                    val intent = Intent(this, AboutActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()

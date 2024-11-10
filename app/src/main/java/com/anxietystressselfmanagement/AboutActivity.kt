@@ -13,9 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 
-class SettingActivity : AppCompatActivity() {
+class AboutActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var auth: FirebaseAuth
@@ -23,10 +22,9 @@ class SettingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.activity_about)
 
         auth = FirebaseAuth.getInstance()
-        val logOutButton: Button = findViewById(R.id.logOutButton)
         val currentUser: FirebaseUser? = auth.currentUser
 
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -46,13 +44,6 @@ class SettingActivity : AppCompatActivity() {
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-        logOutButton.setOnClickListener(){
-            auth.signOut()
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
-
 
         toggle.drawerArrowDrawable.color = getColor(R.color.white)
         // Handle navigation item clicks
@@ -97,4 +88,3 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 }
-
