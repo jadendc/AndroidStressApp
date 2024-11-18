@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -26,6 +25,45 @@
             app:navigationIconTint="@color/white"
             app:titleTextColor="@android:color/white" />
 
+        <TextView
+            android:id="@+id/aboutTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About Us"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.065"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.088" />
+
+        <EditText
+            android:id="@+id/aboutUsDesc"
+            android:layout_width="339dp"
+            android:layout_height="468dp"
+            android:allowClickWhenDisabled="false"
+            android:background="#5D727C"
+            android:clickable="false"
+            android:ems="10"
+            android:fadingEdge="horizontal|vertical"
+            android:lineSpacingExtra="8sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="HowRU is a mental wellness app designed to help users manage anxiety and stress. It features a daily mood diary to track emotional patterns and guided breathing exercises to quickly reduce anxiety, offering practical tools for building mindfulness and improving mental well-being."
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.498" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -33,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu" >
+        app:menu="@menu/nav_menu">
 
     </com.google.android.material.navigation.NavigationView>
 

@@ -1,158 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#5C6E7A"
+    tools:context=".DashBoardActivity">
+
+    <!-- Main content layout within DrawerLayout -->
+
+    <!-- Navigation drawer -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey">
 
-        <TextView
-            android:id="@+id/welcomeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-condensed-light"
-            android:text="Welcome,"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.054"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.136" />
-
+        <!-- Toolbar for the navigation drawer -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="4dp"
-            app:drawerArrowStyle="@color/white"
+            android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIconTint="@color/white"
+            app:navigationIconTint="@android:color/white"
             app:titleTextColor="@android:color/white" />
 
-        <Button
-            android:id="@+id/verySadButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/sadface"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.164"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
+        <!-- Welcome message for the user -->
 
-        <Button
-            android:id="@+id/veryHappyButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/veryHappy"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.835"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
+        <!-- Streak display -->
 
-        <Button
-            android:id="@+id/mehButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/meh"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
-
-        <Button
-            android:id="@+id/sadButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/sad"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.332"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
-
-        <Button
-            android:id="@+id/happyButton"
-            android:layout_width="59dp"
-            android:layout_height="59dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
-            android:text="@string/happy"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.667"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
+        <!-- Mood buttons -->
 
         <TextView
-            android:id="@+id/moodText"
+            android:id="@+id/welcomeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif"
+            android:text="Welcome, User!"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <TextView
+            android:id="@+id/streakTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="@string/please_enter_mood"
-            android:textAlignment="viewStart"
-            android:textColor="#FFFFFF"
+            android:text="Streak: 0 days"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/moodTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
+
+        <Button
+            android:id="@+id/verySadButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="196dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="😢"
             android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@id/sadButton"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/sadButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="196dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="😔"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@id/mehButton"
+            app:layout_constraintStart_toEndOf="@id/verySadButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/mehButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="196dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="😐"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@id/happyButton"
+            app:layout_constraintStart_toEndOf="@id/sadButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/happyButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="196dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="😊"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toStartOf="@id/veryHappyButton"
+            app:layout_constraintStart_toEndOf="@id/mehButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/veryHappyButton"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="196dp"
+            android:background="?attr/selectableItemBackground"
+            android:text="😁"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/happyButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/moodTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="How are you feeling?"
+            android:textAlignment="center"
+            android:textColor="#FDFDFD"
+            android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.629"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.319" />
+            app:layout_constraintVertical_bias="0.23" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="413dp"
-            android:layout_height="59dp"
-            android:background="#87A6B4"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <FrameLayout
+            android:layout_width="423dp"
+            android:layout_height="83dp"
+            android:background="#677888"
+            app:layout_constraintBottom_toBottomOf="@+id/mehButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.244" />
+            app:layout_constraintTop_toTopOf="@+id/mehButton"
+            app:layout_constraintVertical_bias="0.269">
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -161,8 +158,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:menu="@menu/nav_menu" >
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
