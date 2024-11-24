@@ -46,8 +46,11 @@
             android:allowClickWhenDisabled="false"
             android:background="#5D727C"
             android:clickable="false"
+            android:contextClickable="false"
+            android:editable="false"
             android:ems="10"
             android:fadingEdge="horizontal|vertical"
+            android:inputType="none"
             android:lineSpacingExtra="8sp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
@@ -62,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498" />
+            app:layout_constraintVertical_bias="0.615" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

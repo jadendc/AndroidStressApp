@@ -15,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
         <activity
-            android:name=".AboutActivity"
+            android:name=".ProfileActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".SettingActivity"
             android:exported="false"

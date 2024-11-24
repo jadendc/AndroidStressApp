@@ -3,8 +3,6 @@ package com.anxietystressselfmanagement
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,6 +19,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
@@ -28,6 +27,7 @@ class SettingActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val logOutButton: Button = findViewById(R.id.logOutButton)
         val currentUser: FirebaseUser? = auth.currentUser
+        val btnProfile: Button = findViewById(R.id.profileButton)
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -50,6 +50,11 @@ class SettingActivity : AppCompatActivity() {
         logOutButton.setOnClickListener(){
             auth.signOut()
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnProfile.setOnClickListener{
+            val intent = Intent(this,ProfileActivity::class.java)
             startActivity(intent)
         }
 

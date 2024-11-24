@@ -29,12 +29,6 @@
             app:navigationIconTint="@android:color/white"
             app:titleTextColor="@android:color/white" />
 
-        <!-- Welcome message for the user -->
-
-        <!-- Streak display -->
-
-        <!-- Mood buttons -->
-
         <TextView
             android:id="@+id/welcomeTextView"
             android:layout_width="wrap_content"
@@ -133,12 +127,12 @@
             android:textColor="#FDFDFD"
             android:textSize="25sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/mehButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.629"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.23" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <FrameLayout
             android:layout_width="423dp"
