@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="521dp"
+    android:height="974dp"
+    android:viewportWidth="530"
+    android:viewportHeight="980">
+  <path
+      android:name="lungPath"
+      android:strokeWidth="6"
+      android:pathData="M347.74,181.74C182.94,-3.46 74.74,-11.09 41.24,8.24C41.24,8.24 8.74,27.24 7.24,57.24C5.74,87.24 23.24,222.74 7.24,286.74C-8.76,350.74 7.24,405.24 41.24,494.74C75.24,584.24 15.24,719.74 77.74,769.24C140.24,818.74 172.24,803.74 238.74,852.74C305.24,901.74 363.74,978.24 422.74,972.74C481.74,967.24 517.24,816.24 517.24,803.24C517.24,790.24 553.74,413.24 347.74,181.74Z"
+      android:fillColor="#00000000"
+      android:strokeColor="#000000"/>
+
+
+</vector>
+

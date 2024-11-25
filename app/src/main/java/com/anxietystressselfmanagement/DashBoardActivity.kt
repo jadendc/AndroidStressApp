@@ -71,6 +71,13 @@ class DashBoardActivity : AppCompatActivity() {
             welcomeTextView.text = "Welcome, Guest!"
         }
 
+        val test: Button = findViewById(R.id.button3)
+
+        test.setOnClickListener {
+            intent = Intent(this, PsychSighActivity::class.java)
+            startActivity(intent)
+        }
+
         // Emotion buttons click listeners
         verySad.setOnClickListener { Toast.makeText(this, "Why so very sad?", Toast.LENGTH_SHORT).show() }
         sad.setOnClickListener { Toast.makeText(this, "Why so sad?", Toast.LENGTH_SHORT).show() }
