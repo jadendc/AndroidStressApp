@@ -89,6 +89,22 @@ class DashBoardActivity : AppCompatActivity() {
                     // Handle settings action
                 }
 
+                R.id.nav_music -> {
+                    //Handle music action
+                    val intent = Intent(this, MusicChoiceActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+
+                R.id.nav_exercises -> {
+                    //Handle exercises action
+                    val intent = Intent(this, ExercisesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+
                 R.id.nav_logout -> {
                         auth.signOut()
 

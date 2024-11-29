@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:theme="@style/Theme.App.NoActionBar">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,11 +13,23 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
+
+        <!-- Main Activity with Intent Filter -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.App.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Other Activities -->
         <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"
-            />
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".DashBoardActivity"
             android:exported="false"
@@ -28,19 +39,53 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.App.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".MeditationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
+        <activity
+            android:name=".MusicChoiceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".WavesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".RainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".BirdsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".FireActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".ForestActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".FocusActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".DestressActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".SleepActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".ExercisesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+        <!-- Meta-data inside the application -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>
