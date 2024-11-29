@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "stress-d83ca",
+  "private_key_id": "cb5d88a3d63e0ecf18daf76fe8a96865be28fc36",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCVfrmHSRGz6L4b\nMU5RAGnR4lj8ayRGaylWq/WCJCd6CVr87E5OeB03mCO71AeU/MIDuyvi1PtD+nsH\nBO7/FclNDUYCSuFu20ZTpOl3yW3CfU+vS1Wr7hQDOzJ/GGNGtIwgIVnpBD5e8I4K\no7HZ9xveyJjSv16WBqK0Od6SB1w2dIbjYLSUvYX0KcOhZXD74j3+rHAsektXzOUq\nB+A+mGnSu68xWCyzLemvVXQzYpvbJmT00bSBLyBB0dMmfRMXKhdIYylzLFclUMIO\nLY+B+BeLACz0mSCC9xFxY84Nx8uwOvMlk3T4Gyf3s2CxEMlAhPdOL7bnEP2zgZUh\nIpzLL/JXAgMBAAECggEAKSnHMSqb/sNX0Un+zAwGlz2xjfN8fg1UySI5TDfjTNWV\noa35k968AMpaEIZ9/fao/3kCyQcnFp06UgD4Q/G+R4Kfo9L1ht5G25I9nPewSszR\na62dLeW0yfz7Vwaik130dYZpaOF7wQ2QtvpC5wcFPA9VETaTd1DlbSXAFMqFCBMb\nL502DS9RI15Tb4talsX3VXJEH/DW1017QFrcMtpmtxhrfY45uIs3nG3lzVL0M3Iy\nDYGMDRATHrNNQJccUpIolobiC0ieNoR65iXMbjbrM3wapCi3uHyO+wjWjR4C3QEG\nxY/A8ya4R6/imSZkMeHii7Q1T5euJ+f2sxR5uc8seQKBgQDG3LMhM+sDQ5VhfxMk\nSeal6l+mGX32z0vkurBfnH3BDA2NKCTSOc++pCQSDALWjcUSVO2TdL2O0u6iyZaC\nCLl0N/z6vfhpT9H9c4CeAOUEPOZz6LQ3B4C4lnRX9QECqPPQESRpQmobLNiUrhXD\nNErd07qXOwPPiXKYOj450rHWLwKBgQDActRH5OC/wJi2hDI46utBxx4dfn9dmndj\nwYdm5znMIOkgL1oMxYVnyaM5xrnTTGyO8S9GAKVYgag5Vlk3BvT6sps+20xLTlT2\nQwIU65Z98gFgk5pZqHUdBAzPymrQuz2UH2Kh7GJ8o5WglGBxsnRbWflnfHwXxuiK\nlmyy8whEWQKBgQCvaaQ0yIgoM+hDvQTUgL+MYOYILPpYyFgopajIXdDrhUc62UtJ\niSdAAaezp5alTR6l4fZCmLpQjq1jOLCjeTClXHGxd/r0Yi1YBRdRyHY7O8EIQx8c\nX2ji6gwsPfirMP8H7OcSVjwkRnWxCLI3oxva+lXf6nWdDp/fuZiEBt9JjwKBgG+i\nLIGHwtd4YR1+kaNyogUF+/If7sHdWGQFXwXSGzTN4m1JCnNeIIST8psRK7nmGxLP\n1RxGQ6OTkoGwFRBWeMTz1hogG6GTTrWLKSn5ftKQDzx2YpKfpU+vib7/K/bopk/F\n5PEIrhiey6zaZReO7PAQwRvGmjUwrLO3jlY/pAwBAoGAf4n4h3//wr5RhtbD8o0U\nMWMSMdm9YZgt3iViyTYmfWmg81zp9TzP+sW7AqLvQNvtZybVHM/JE19yKUJz7rdc\nYeSEa/ce6loNH8BRuZjVXOQJ1+dP7x85vayrepFkJonTM164ILnpF7303pMRftUB\nml/568So/HNoROZjNp8Lyms=\n-----END PRIVATE KEY-----\n",
+  "client_email": "vertexai@stress-d83ca.iam.gserviceaccount.com",
+  "client_id": "112200396221137694695",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/vertexai%40stress-d83ca.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

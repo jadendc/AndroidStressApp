@@ -18,5 +18,9 @@
         <item name="drawerArrowStyle">@color/white</item>
     </style>
 
+    <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:popupBackground">#465862</item>
+    </style>
+
 
 </resources>

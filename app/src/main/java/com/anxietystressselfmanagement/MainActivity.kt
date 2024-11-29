@@ -1,11 +1,12 @@
 package com.anxietystressselfmanagement
 
-import android.app.Activity
+import com.bumptech.glide.Glide
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +21,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this) // Initialize Firebase
         setContentView(R.layout.activity_main)
+
+        val backgroundGif = findViewById<ImageView>(R.id.backgroundGif)
+
+        Glide.with(this)
+            .asGif()
+            .load(R.raw.signinbackground)
+            .into(backgroundGif)
 
         // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance()

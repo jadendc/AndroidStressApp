@@ -34,6 +34,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+        }
+    }
+
 }
 
 dependencies {
@@ -51,4 +61,14 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation (libs.material.v130alpha03)
+    implementation (libs.glide)
+    annotationProcessor(libs.compiler)
+    implementation(libs.okhttp)
+    implementation(libs.moshi)
+    implementation(libs.firebase.vertexai)
+    implementation (libs.google.auth.library.oauth2.http)
+    implementation (libs.play.services.auth)
+    implementation (libs.firebase.auth.v2310)
+    implementation (libs.play.services.base.v1820)
+
 }

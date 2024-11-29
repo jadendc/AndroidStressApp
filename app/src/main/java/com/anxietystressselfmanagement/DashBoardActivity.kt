@@ -74,7 +74,7 @@ class DashBoardActivity : AppCompatActivity() {
         val test: Button = findViewById(R.id.button3)
 
         test.setOnClickListener {
-            intent = Intent(this, PsychSighActivity::class.java)
+            intent = Intent(this, SelfReflectActivity::class.java)
             startActivity(intent)
         }
 
