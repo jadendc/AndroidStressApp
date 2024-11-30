@@ -72,11 +72,19 @@ class DashBoardActivity : AppCompatActivity() {
         }
 
         val test: Button = findViewById(R.id.button3)
+        val test1: Button = findViewById(R.id.button4)
 
         test.setOnClickListener {
-            intent = Intent(this, SelfReflectActivity::class.java)
+            intent = Intent(this, JournalActivity::class.java)
             startActivity(intent)
         }
+
+
+        test1.setOnClickListener {
+            intent = Intent(this, PsychSighActivity::class.java)
+            startActivity(intent)
+        }
+
 
         // Emotion buttons click listeners
         verySad.setOnClickListener { Toast.makeText(this, "Why so very sad?", Toast.LENGTH_SHORT).show() }
@@ -86,7 +94,7 @@ class DashBoardActivity : AppCompatActivity() {
         veryHappy.setOnClickListener { Toast.makeText(this, "You're very happy!", Toast.LENGTH_SHORT).show() }
 
         // Setup navigation drawer
-        drawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -98,6 +106,10 @@ class DashBoardActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> startActivity(Intent(this, DashBoardActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+
+                R.id.nav_daily -> startActivity(Intent(this, DailyLogActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
                 R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java).apply {

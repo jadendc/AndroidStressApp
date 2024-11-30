@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+
+    <!-- Main Content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/grey"
+            android:title="Daily Log"
+            android:titleTextColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Content Layout -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/logo"
+                android:contentDescription="App Logo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <!-- What activity did you do? -->
+            <TextView
+                android:id="@+id/activityLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What activity did you do?"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/activityInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:hint="Ex. Meditation, Reading, Gym, etc."
+                android:padding="12dp"
+                android:textColor="@color/white"
+                android:textColorHint="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@id/activityLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- What trigger did you experience? -->
+            <TextView
+                android:id="@+id/triggerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What trigger did you experience?"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/activityInput"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/triggerSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                android:backgroundTint="#677C88"
+                app:layout_constraintTop_toBottomOf="@id/triggerLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- What sign did you experience? -->
+            <TextView
+                android:id="@+id/signLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What sign did you experience?"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/triggerSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/signSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                app:layout_constraintTop_toBottomOf="@id/signLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- What strategies can you use? -->
+            <TextView
+                android:id="@+id/strategiesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="What strategies can you use?"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/signSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/strategiesSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/grey"
+                app:layout_constraintTop_toBottomOf="@id/strategiesLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp" />
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#45555B"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/strategiesSpinner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        app:menu="@menu/nav_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

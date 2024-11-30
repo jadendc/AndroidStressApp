@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/saveButton"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#677C88">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,8 +15,8 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:title="Journal"
             android:layout_width="0dp"
-            app:title="About Us"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="4dp"
             app:drawerArrowStyle="@color/white"
@@ -27,32 +28,34 @@
             app:titleTextColor="@android:color/white" />
 
         <EditText
-            android:id="@+id/aboutUsDesc"
-            android:layout_width="339dp"
-            android:layout_height="468dp"
-            android:allowClickWhenDisabled="false"
-            android:background="#5D727C"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:editable="false"
+            android:id="@+id/editTextTextMultiLine"
+            android:layout_width="353dp"
+            android:layout_height="519dp"
+            android:background="#81FFFFFF"
+            android:backgroundTint="#6EFFFFFF"
             android:ems="10"
-            android:fadingEdge="horizontal|vertical"
-            android:inputType="none"
-            android:lineSpacingExtra="8sp"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="10dp"
-            android:text="HowRU is a mental wellness app designed to help users manage anxiety and stress. It features a daily mood diary to track emotional patterns and guided breathing exercises to quickly reduce anxiety, offering practical tools for building mindfulness and improving mental well-being."
-            android:textAlignment="center"
-            android:textAllCaps="false"
+            android:gravity="start|top"
+            android:hint="Type how you are feeling here!"
+            android:inputType="textMultiLine"
             android:textColor="#FFFFFF"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:cornerRadius="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/saveContinueButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <Button
+            android:id="@+id/saveContinueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#2C2727"
+            android:text="Save and Continue"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -61,6 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:scrollbarStyle="insideInset"
         app:menu="@menu/nav_menu">
 
     </com.google.android.material.navigation.NavigationView>

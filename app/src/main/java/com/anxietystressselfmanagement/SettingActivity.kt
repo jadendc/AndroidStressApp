@@ -5,13 +5,10 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
 
 class SettingActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -29,7 +26,7 @@ class SettingActivity : AppCompatActivity() {
         val currentUser: FirebaseUser? = auth.currentUser
         val btnProfile: Button = findViewById(R.id.profileButton)
 
-        drawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
         // Set up the toolbar
@@ -47,7 +44,7 @@ class SettingActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        logOutButton.setOnClickListener(){
+        logOutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -63,7 +60,7 @@ class SettingActivity : AppCompatActivity() {
         // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> {
+                R.id.nav_daily -> {
                     val intent = Intent(this, DashBoardActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)

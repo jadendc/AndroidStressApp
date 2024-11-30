@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -47,7 +46,7 @@ abstract class BaseActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true // Highlight the selected item
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
+                R.id.nav_daily -> navigateTo(DashBoardActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> {

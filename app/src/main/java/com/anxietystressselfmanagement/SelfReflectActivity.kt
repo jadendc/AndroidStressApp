@@ -1,26 +1,26 @@
 package com.anxietystressselfmanagement
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.drawerlayout.widget.DrawerLayout
-import com.anxietystressselfmanagement.R
 import com.google.android.material.navigation.NavigationView
 
 class SelfReflectActivity : BaseActivity() {
 
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_self_reflect)
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("SelfReflectPrefs", MODE_PRIVATE)
 
         val whatSpinner: Spinner = findViewById(R.id.whatSpinner)
         val whoSpinner: Spinner = findViewById(R.id.whoSpinner)
@@ -28,7 +28,7 @@ class SelfReflectActivity : BaseActivity() {
         val whereSpinner: Spinner = findViewById(R.id.whereSpinner)
         val whySpinner: Spinner = findViewById(R.id.whySpinner)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
 
@@ -40,87 +40,29 @@ class SelfReflectActivity : BaseActivity() {
 
         setupNavigationDrawer(drawerLayout, navigationView, toolbar)
 
-        val adapterWhat = ArrayAdapter(this, R.layout.spinner_dropdown_item, whatOptions)
-        adapterWhat.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        whatSpinner.adapter = adapterWhat
+        setupSpinner(whatSpinner, "whatSelection", whatOptions)
+        setupSpinner(whoSpinner, "whoSelection", whoOptions)
+        setupSpinner(whenSpinner, "whenSelection", whenOptions)
+        setupSpinner(whereSpinner, "whereSelection", whereOptions)
+        setupSpinner(whySpinner, "whySelection", whyOptions)
+    }
 
-        val adapterWho = ArrayAdapter(this, R.layout.spinner_dropdown_item, whoOptions)
-        adapterWho.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        whoSpinner.adapter = adapterWho
+    private fun setupSpinner(spinner: Spinner, key: String, options: List<String>) {
+        val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, options)
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        spinner.adapter = adapter
 
-        val adapterWhen = ArrayAdapter(this, R.layout.spinner_dropdown_item, whenOptions)
-        adapterWhen.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        whenSpinner.adapter = adapterWhen
+        // Restore the previously selected item
+        val savedPosition = sharedPreferences.getInt(key, 0)
+        spinner.setSelection(savedPosition)
 
-        val adapterWhere = ArrayAdapter(this, R.layout.spinner_dropdown_item, whereOptions)
-        adapterWhere.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        whereSpinner.adapter = adapterWhere
-
-        val adapterWhy = ArrayAdapter(this, R.layout.spinner_dropdown_item, whyOptions)
-        adapterWhy.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        whySpinner.adapter = adapterWhy
-
-
-
-        whySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {}
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
+        // Save the selected item when changed
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                sharedPreferences.edit().putInt(key, position).apply()
             }
 
-        }
-        whereSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
-        whenSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
-        whySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
-        }
-        whoSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 }
