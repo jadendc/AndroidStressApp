@@ -47,7 +47,7 @@ class SettingActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        logOutButton.setOnClickListener(){
+        logOutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

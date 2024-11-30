@@ -2,5 +2,5 @@
     android:drawable="@drawable/l_lung">
     <target
         android:name="lungPath"
-        android:animation="@animator/expand_animation" />
+        android:animation="@animator/lung_defill_animator" />
 </animated-vector>
