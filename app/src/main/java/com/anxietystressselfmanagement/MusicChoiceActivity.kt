@@ -95,6 +95,8 @@ class MusicChoiceActivity : AppCompatActivity() {
             startActivity(intent)
             finish() // Finish current activity to avoid stacking
         }
+
+
     }
 }
 
