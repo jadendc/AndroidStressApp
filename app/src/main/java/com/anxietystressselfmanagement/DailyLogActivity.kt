@@ -2,13 +2,20 @@ package com.anxietystressselfmanagement
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class DailyLogActivity : AppCompatActivity() {
 
@@ -19,15 +26,22 @@ class DailyLogActivity : AppCompatActivity() {
     private lateinit var activityInput: EditText
     private lateinit var triggerSpinner: Spinner
     private lateinit var signSpinner: Spinner
-    private lateinit var stressLevelSpinner: Spinner
     private lateinit var strategiesSpinner: Spinner
+    private lateinit var bodySpinner: Spinner
+    private lateinit var mindSpinner: Spinner
+    private lateinit var emotionSpinner: Spinner
+    private lateinit var behaviorSpinner: Spinner
+
     private lateinit var submitButton: Button
+    private lateinit var fetchButton: Button
+    private lateinit var auth: FirebaseAuth
 
     private val firestore = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_log)
+        auth = FirebaseAuth.getInstance()
 
         // Initialize views
         drawerLayout = findViewById(R.id.drawer_layout)
@@ -35,10 +49,13 @@ class DailyLogActivity : AppCompatActivity() {
         activityInput = findViewById(R.id.activityInput)
         triggerSpinner = findViewById(R.id.triggerSpinner)
         signSpinner = findViewById(R.id.signSpinner)
+        bodySpinner = findViewById(R.id.bodySpinner)
         strategiesSpinner = findViewById(R.id.strategiesSpinner)
+        mindSpinner = findViewById(R.id.mindSpinner)
+        emotionSpinner = findViewById(R.id.emotionSpinner)
+        behaviorSpinner = findViewById(R.id.behaviorSpinner)
         submitButton = findViewById(R.id.submitButton)
-
-
+        //fetchButton = findViewById(R.id.fetchButton)
 
         // Toolbar and navigation drawer setup
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -74,16 +91,28 @@ class DailyLogActivity : AppCompatActivity() {
         submitButton.setOnClickListener {
             saveDailyLog()
         }
+
+        // Handle fetch button click
+        /*fetchButton.setOnClickListener {
+            navigateTo(LogListActivity::class.java) // Navigate to a screen showing saved logs
+        }*/
     }
 
     private fun populateSpinners() {
         val triggers = listOf("Work", "Family", "Health", "Other")
         val signs = listOf("Headache", "Fatigue", "Tension", "Other")
         val strategies = listOf("Meditation", "Exercise", "Talking to Someone", "Other")
-
+        val body = listOf("Headaches", "Skin Irritation", "High Blood Pressure", "Fatigue", "Palpitations", "Difficulty Breathing", "Custom")
+        val mind = listOf("Worrying", "Muddled Thinking", "Impaired Judgement", "Indecision", "Difficulty Concentrating", "Custom")
+        val emotion = listOf("Fear", "Irritability", "Depression", "Apathy", "Alienation", "Loss of Confidence", "Custom")
+        val behavior = listOf("Addiction", "Less Appetite", "Less Sex Drive", "Insomnia", "Restlessness", "Accident Prone", "Custom")
         setSpinnerAdapter(triggerSpinner, triggers)
         setSpinnerAdapter(signSpinner, signs)
         setSpinnerAdapter(strategiesSpinner, strategies)
+        setSpinnerAdapter(bodySpinner, body)
+        setSpinnerAdapter(mindSpinner, mind)
+        setSpinnerAdapter(emotionSpinner, emotion)
+        setSpinnerAdapter(behaviorSpinner, behavior)
     }
 
     private fun setSpinnerAdapter(spinner: Spinner, items: List<String>) {
@@ -93,27 +122,55 @@ class DailyLogActivity : AppCompatActivity() {
     }
 
     private fun saveDailyLog() {
+        // Collect data from inputs
+
         val activity = activityInput.text.toString().trim()
         val trigger = triggerSpinner.selectedItem.toString()
         val sign = signSpinner.selectedItem.toString()
-        val stressLevel = stressLevelSpinner.selectedItem.toString()
         val strategy = strategiesSpinner.selectedItem.toString()
+        val body = bodySpinner.selectedItem.toString()
+        val mind = mindSpinner.selectedItem.toString()
+        val emotion = emotionSpinner.selectedItem.toString()
+        val behavior = behaviorSpinner.selectedItem.toString()
 
+        // Validate required fields
         if (activity.isEmpty()) {
             Toast.makeText(this, "Please fill in the activity field", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val log = hashMapOf(
+        // Get the current user ID
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = currentUser.uid
+
+        // Generate a unique document ID based on the current date
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = dateFormatter.format(Date())
+
+        // Create a log object
+        val logData = mapOf(
             "activity" to activity,
             "trigger" to trigger,
             "sign" to sign,
             "strategy" to strategy,
-            "timestamp" to System.currentTimeMillis()
+            "body" to body,
+            "mind" to mind,
+            "emotion" to emotion,
+            "behavior" to behavior,
+            "date" to currentDate
         )
 
-        firestore.collection("dailyLogs")
-            .add(log)
+        // Save the log under the user's document in Firestore
+        firestore.collection("users")
+            .document(userId) // Unique user ID
+            .collection("dailyLogs") // Sub-collection for logs
+            .document(currentDate) // Unique document for the date
+            .set(logData)
             .addOnSuccessListener {
                 Toast.makeText(this, "Daily log saved successfully!", Toast.LENGTH_SHORT).show()
                 clearForm()
@@ -128,8 +185,11 @@ class DailyLogActivity : AppCompatActivity() {
         triggerSpinner.setSelection(0)
         signSpinner.setSelection(0)
         strategiesSpinner.setSelection(0)
+        bodySpinner.setSelection(0)
+        mindSpinner.setSelection(0)
+        emotionSpinner.setSelection(0)
+        behaviorSpinner.setSelection(0)
     }
-
 
     private fun navigateTo(activityClass: Class<*>) {
         startActivity(Intent(this, activityClass))
@@ -140,4 +200,5 @@ class DailyLogActivity : AppCompatActivity() {
         navigateTo(MainActivity::class.java)
         finish()
     }
+
 }

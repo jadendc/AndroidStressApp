@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,7 +64,8 @@ class JournalActivity : AppCompatActivity() {
         // Navigation view item selection
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_daily -> navigateTo(DashBoardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
+                R.id.nav_daily -> navigateTo(DailyLogActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()
@@ -74,28 +76,43 @@ class JournalActivity : AppCompatActivity() {
     }
 
     private fun saveJournalEntry(text: String) {
-        // Get current date and time
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Get the current user ID
+        val userId = currentUser.uid
+
+        // Get the current date
         val currentDate = Date()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formattedDate = dateFormat.format(currentDate)
 
+        // Create a journal entry
         val entry = hashMapOf(
             "text" to text,
-            "timestamp" to System.currentTimeMillis(),
-            "date" to formattedDate, // Save the formatted date
-            "userId" to auth.currentUser?.uid // Save user-specific entries
+            "date" to formattedDate
         )
 
-        firestore.collection("journalEntries")
-            .add(entry)
+        val updateData = mapOf("text" to text)
+
+        // Save the journal entry under the specific user's collection
+        firestore.collection("users")
+            .document(userId) // Save under the specific user's document
+            .collection("dailyLogs") // Sub-collection for daily logs
+            .document(formattedDate) // Use the current date as the document ID
+            .set(updateData, SetOptions.merge()) // Add a new document for each entry
             .addOnSuccessListener {
-                Toast.makeText(this, "Journal entry saved", Toast.LENGTH_SHORT).show()
-                journalInput.text.clear()
+                Toast.makeText(this, "Journal entry saved successfully!", Toast.LENGTH_SHORT).show()
+                journalInput.text.clear() // Clear the input field after saving
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to save journal entry: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun navigateTo(activityClass: Class<*>) {
         startActivity(Intent(this, activityClass).apply {

@@ -32,7 +32,6 @@
             android:layout_width="353dp"
             android:layout_height="519dp"
             android:background="#81FFFFFF"
-            android:backgroundTint="#6EFFFFFF"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Type how you are feeling here!"
@@ -42,7 +41,8 @@
             app:layout_constraintBottom_toTopOf="@+id/saveContinueButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.45" />
 
         <Button
             android:id="@+id/saveContinueButton"
@@ -56,6 +56,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="113dp"
+            android:layout_height="92dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.084"
+            app:srcCompat="@drawable/logo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

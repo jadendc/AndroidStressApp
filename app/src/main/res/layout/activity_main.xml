@@ -9,10 +9,6 @@
     android:theme="@style/Theme.AppCompat.NoActionBar"
     tools:context=".MainActivity">
 
-    <!-- Background GIF ImageView -->
-
-    <!-- ImageView for Logo -->
-
     <!-- Welcome Text -->
 
     <ImageView
@@ -22,14 +18,12 @@
         android:background="#CE8F69"
         android:elevation="0dp"
         android:scaleType="centerCrop"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="gone" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <!-- Email Input -->
 

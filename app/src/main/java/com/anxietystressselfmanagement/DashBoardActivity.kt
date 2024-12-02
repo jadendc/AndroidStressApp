@@ -12,10 +12,22 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Calendar
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.*
+
+
 
 class DashBoardActivity : AppCompatActivity() {
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var welcomeTextView: TextView
@@ -67,8 +79,6 @@ class DashBoardActivity : AppCompatActivity() {
             // Initialize StreakManager and display current streak
             streakManager = StreakManager(db, currentUser.uid)
             updateStreakDisplay()
-        } else {
-            welcomeTextView.text = "Welcome, Guest!"
         }
 
         val test: Button = findViewById(R.id.button3)
@@ -85,36 +95,63 @@ class DashBoardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
+        val intentDaily = Intent(this, DailyLogActivity::class.java)
         // Emotion buttons click listeners
-        verySad.setOnClickListener { Toast.makeText(this, "Why so very sad?", Toast.LENGTH_SHORT).show() }
-        sad.setOnClickListener { Toast.makeText(this, "Why so sad?", Toast.LENGTH_SHORT).show() }
-        meh.setOnClickListener { Toast.makeText(this, "Feeling meh?", Toast.LENGTH_SHORT).show() }
-        happy.setOnClickListener { Toast.makeText(this, "Glad you're happy!", Toast.LENGTH_SHORT).show() }
-        veryHappy.setOnClickListener { Toast.makeText(this, "You're very happy!", Toast.LENGTH_SHORT).show() }
+        verySad.setOnClickListener {
+            addFeelingToLog("😢")
+            startActivity(intentDaily)
+        }
+        sad.setOnClickListener {
+            addFeelingToLog("😔")
+            startActivity(intentDaily)
+        }
+        meh.setOnClickListener {
+            addFeelingToLog("😐")
+            startActivity(intentDaily)
+        }
+        happy.setOnClickListener {
+            addFeelingToLog("😊")
+            startActivity(intentDaily)
+        }
+        veryHappy.setOnClickListener {
+            startActivity(intentDaily)
+            addFeelingToLog("😁")
+        }
 
         // Setup navigation drawer
         drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        toggle = ActionBarDrawerToggle(
+            this,
+            drawerLayout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         toggle.drawerArrowDrawable.color = getColor(R.color.white)
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> startActivity(Intent(this, DashBoardActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
+                R.id.nav_dashboard -> startActivity(
+                    Intent(
+                        this,
+                        DashBoardActivity::class.java
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
 
                 R.id.nav_daily -> startActivity(Intent(this, DailyLogActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
+
                 R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
+
                 R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
@@ -137,6 +174,7 @@ class DashBoardActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
+
 
                 R.id.nav_logout -> {
                     auth.signOut()
@@ -162,52 +200,98 @@ class DashBoardActivity : AppCompatActivity() {
             streakTextView.text = "Streak: $currentStreak Days!"
         }
     }
-}
 
-class StreakManager(private val db: FirebaseFirestore, private val userId: String) {
+    private fun addFeelingToLog(feeling: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val currentUser = auth.currentUser
+            if (currentUser == null) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@DashBoardActivity, "User not logged in!", Toast.LENGTH_SHORT).show()
+                }
+                return@launch
+            }
 
-    private val streakDocumentRef = db.collection("streaks").document(userId)
+            val userId = currentUser.uid
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val currentDate = dateFormatter.format(Date())
+            val updateData = mapOf("feeling" to feeling)
 
-    // Function to update the login streak
-    fun updateLoginStreak(callback: (Int) -> Unit) {
-        streakDocumentRef.get().addOnSuccessListener { document ->
-            val today = Calendar.getInstance()
-            val lastLoginDate = document.getTimestamp("lastLoginDate")?.toDate()
-            val currentStreak = document.getLong("streakCount")?.toInt() ?: 0
+            try {
+                firestore.collection("users")
+                    .document(userId)
+                    .collection("dailyLogs")
+                    .document(currentDate)
+                    .set(updateData, SetOptions.merge())
+                    .await()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@DashBoardActivity, "Feeling updated successfully!", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@DashBoardActivity, "Failed to update feeling: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
-            val isSameDay = lastLoginDate?.let {
-                val lastLoginCalendar = Calendar.getInstance().apply { time = it }
-                today.get(Calendar.YEAR) == lastLoginCalendar.get(Calendar.YEAR) &&
-                        today.get(Calendar.DAY_OF_YEAR) == lastLoginCalendar.get(Calendar.DAY_OF_YEAR)
-            } ?: false
 
-            var newStreakCount = currentStreak
 
-            if (isSameDay) {
-                Log.d("StreakManager", "Login on the same day, streak unchanged.")
-            } else {
-                val isConsecutiveDay = lastLoginDate?.let {
+    class StreakManager(private val db: FirebaseFirestore, private val userId: String) {
+
+        private val streakDocumentRef = db.collection("users")
+            .document(userId) // Associate streaks with the specific user
+            .collection("streaks") // Use a sub-collection for streaks
+            .document("currentStreak") // Single document to track current streak
+
+        fun updateLoginStreak(callback: (Int) -> Unit) {
+            streakDocumentRef.get().addOnSuccessListener { document ->
+                val today = Calendar.getInstance()
+                val lastLoginDate = document.getTimestamp("lastLoginDate")?.toDate()
+                val currentStreak = document.getLong("streakCount")?.toInt() ?: 0
+
+                val isSameDay = lastLoginDate?.let {
                     val lastLoginCalendar = Calendar.getInstance().apply { time = it }
-                    today.get(Calendar.DAY_OF_YEAR) - lastLoginCalendar.get(Calendar.DAY_OF_YEAR) == 1 ||
-                            (today.get(Calendar.DAY_OF_YEAR) == 1 && lastLoginCalendar.get(Calendar.DAY_OF_YEAR) == lastLoginCalendar.getActualMaximum(Calendar.DAY_OF_YEAR))
+                    today.get(Calendar.YEAR) == lastLoginCalendar.get(Calendar.YEAR) &&
+                            today.get(Calendar.DAY_OF_YEAR) == lastLoginCalendar.get(Calendar.DAY_OF_YEAR)
                 } ?: false
 
-                newStreakCount = if (isConsecutiveDay) currentStreak + 1 else 1
-                Log.d("StreakManager", "Streak updated to: $newStreakCount")
-            }
+                var newStreakCount = currentStreak
 
-            streakDocumentRef.set(mapOf(
-                "streakCount" to newStreakCount,
-                "lastLoginDate" to today.time
-            )).addOnSuccessListener {
-                callback(newStreakCount)
-                Log.d("StreakManager", "Streak successfully updated in Firestore.")
+                if (isSameDay) {
+                    Log.d("StreakManager", "Login on the same day, streak unchanged.")
+                } else {
+                    val isConsecutiveDay = lastLoginDate?.let {
+                        val lastLoginCalendar = Calendar.getInstance().apply { time = it }
+                        today.get(Calendar.DAY_OF_YEAR) - lastLoginCalendar.get(Calendar.DAY_OF_YEAR) == 1 ||
+                                (today.get(Calendar.DAY_OF_YEAR) == 1 && lastLoginCalendar.get(
+                                    Calendar.DAY_OF_YEAR
+                                ) == lastLoginCalendar.getActualMaximum(
+                                    Calendar.DAY_OF_YEAR
+                                ))
+                    } ?: false
+
+                    newStreakCount = if (isConsecutiveDay) currentStreak + 1 else 1
+                    Log.d("StreakManager", "Streak updated to: $newStreakCount")
+                }
+
+                streakDocumentRef.set(
+                    mapOf(
+                        "streakCount" to newStreakCount,
+                        "lastLoginDate" to today.time
+                    )
+                ).addOnSuccessListener {
+                    callback(newStreakCount)
+                    Log.d(
+                        "StreakManager",
+                        "Streak successfully updated in Firestore"
+                    )
+                }.addOnFailureListener {
+                    Log.e("StreakManager", "Failed to update streak in Firestore", it)
+                }
             }.addOnFailureListener {
-                Log.e("StreakManager", "Failed to update streak in Firestore", it)
+                Log.e("StreakManager", "Error fetching streak document", it)
+                callback(0) // Return 0 streak if there's an error
             }
-        }.addOnFailureListener {
-            Log.e("StreakManager", "Error fetching streak document", it)
-            callback(0) // Return 0 streak if there's an error
         }
     }
 }

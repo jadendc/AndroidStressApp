@@ -26,47 +26,45 @@
             app:title="Psychological Sigh"
             app:titleTextColor="@android:color/white" />
 
-        <!-- Title Text -->
+        <ImageView
+            android:id="@+id/RightLungImageView"
+            android:layout_width="188dp"
+            android:layout_height="333dp"
+            android:layout_marginTop="64dp"
+            android:contentDescription="Right lung animation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/LeftlungImageView"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:srcCompat="@drawable/animated_r_lung" />
 
-        <!-- Left Lung Image -->
         <ImageView
             android:id="@+id/LeftlungImageView"
-            android:layout_width="150dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="69dp"
+            android:layout_width="188sp"
+            android:layout_height="333sp"
+            android:layout_marginTop="64dp"
+
             android:contentDescription="Left lung animation"
             app:layout_constraintEnd_toStartOf="@+id/RightLungImageView"
             app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
             app:srcCompat="@drawable/animated_l_lung" />
 
-        <!-- Right Lung Image -->
-        <ImageView
-            android:id="@+id/RightLungImageView"
-            android:layout_width="150dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="69dp"
-            android:contentDescription="Right lung animation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/LeftlungImageView"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:srcCompat="@drawable/animated_r_lung" />
-
-        <!-- Start Exercise Button -->
         <Button
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/black"
+            android:layout_width="129dp"
+            android:layout_height="49dp"
+            android:layout_marginTop="56dp"
+            android:background="#6F6464"
+            app:cornerRadius="10dp"
+            android:backgroundTint="#404E56"
             android:text="Start Exercise"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/LeftlungImageView" />
 
-        <!-- Instruction Text -->
         <TextView
             android:id="@+id/instructionTextView"
             android:layout_width="wrap_content"
@@ -74,10 +72,27 @@
             android:layout_marginTop="16dp"
             android:text="Follow the breathing exercise instructions."
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.457"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button2" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="373dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:text="Psychological Sigh is a breathing technique that can help you feel relaxed and reduce stress"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold|italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
