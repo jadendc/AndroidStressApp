@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#69808D</color>
     <color name="nav_text_color">#000000</color>
+    <color name="background_color_music">#E7E7E7</color>
+
+
 </resources>

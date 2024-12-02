@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="nav_exercises" type="id" />
+    <item name="hollowSquare" type="id" />
+    <item name="movingCircle" type="id" />
+    <item name="textBreatheTop" type="id" />
+    <item name="textHoldRight" type="id" />
+    <item name="textBreatheBottom" type="id" />
+    <item name="textHoldLeft" type="id" />
+</resources>
