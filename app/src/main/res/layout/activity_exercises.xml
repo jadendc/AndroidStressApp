@@ -25,6 +25,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="352dp"
         android:contentDescription="@string/sound_button"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backbutton" />
@@ -35,50 +36,52 @@
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="358dp"
         android:layout_marginEnd="46dp"
         android:layout_marginBottom="325dp"
-        android:background="@drawable/exercise_button"
+        android:backgroundTint="#566975"
         android:text="@string/destress_your_day"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonEaseSleep"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonEaseSleep"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="463dp"
         android:layout_marginEnd="46dp"
         android:layout_marginBottom="220dp"
-        android:background="@drawable/exercise_button"
+        android:backgroundTint="#556874"
         android:text="@string/ease_your_sleep"
         android:textColor="@android:color/white"
+
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText"
+        app:layout_constraintVertical_bias="0.159" />
 
     <Button
         android:id="@+id/buttonStrengthenFocus"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="563dp"
         android:layout_marginBottom="120dp"
-        android:background="@drawable/exercise_button"
+        android:backgroundTint="#566975"
         android:text="@string/strengthen_your_focus"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toBottomOf="@+id/buttonDestress"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/titleText"
@@ -89,7 +92,7 @@
         android:layout_marginEnd="103dp"
         android:layout_marginBottom="476dp"
         android:text="@string/rest_your_mind"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="@string/exercises"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

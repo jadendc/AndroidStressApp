@@ -25,10 +25,10 @@
             </intent-filter>
         </activity>
 
-        <!-- Other Activities -->
         <activity
             android:name=".LogListActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".DailyLogActivity"
             android:exported="false"

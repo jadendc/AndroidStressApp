@@ -57,4 +57,10 @@
     <string name="small_circle" />
     <string name="hold">HOLD</string>
     <string name="breathe">BREATHE</string>
+    <string name="app_logo">App Logo</string>
+    <string name="what_activity_did_you_do">What activity did you do?</string>
+    <string name="feeling">Feeling</string>
+    <string name="what_trigger_did_you_experience">What trigger did you experience?</string>
+    <string name="what_sign_did_you_experience">What sign did you experience?</string>
+    <string name="what_strategies_can_you_use">What strategies can you use?</string>
 </resources>

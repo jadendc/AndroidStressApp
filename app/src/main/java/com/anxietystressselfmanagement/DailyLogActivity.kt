@@ -22,7 +22,6 @@ class DailyLogActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
     private lateinit var toggle: ActionBarDrawerToggle
-
     private lateinit var activityInput: EditText
     private lateinit var triggerSpinner: Spinner
     private lateinit var signSpinner: Spinner
@@ -31,6 +30,12 @@ class DailyLogActivity : AppCompatActivity() {
     private lateinit var mindSpinner: Spinner
     private lateinit var emotionSpinner: Spinner
     private lateinit var behaviorSpinner: Spinner
+    private lateinit var bodyTextView: TextView
+    private lateinit var behaviorTextView: TextView
+    private lateinit var mindTextView:TextView
+    private lateinit var emotionTextView: TextView
+
+
 
     private lateinit var submitButton: Button
     private lateinit var fetchButton: Button
@@ -55,7 +60,12 @@ class DailyLogActivity : AppCompatActivity() {
         emotionSpinner = findViewById(R.id.emotionSpinner)
         behaviorSpinner = findViewById(R.id.behaviorSpinner)
         submitButton = findViewById(R.id.submitButton)
-        //fetchButton = findViewById(R.id.fetchButton)
+
+         bodyTextView = findViewById(R.id.bodyInput)
+         behaviorTextView = findViewById(R.id.behaviorInput)
+         mindTextView = findViewById(R.id.mindInput)
+         emotionTextView = findViewById(R.id.emotionInput)
+
 
         // Toolbar and navigation drawer setup
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -90,6 +100,8 @@ class DailyLogActivity : AppCompatActivity() {
         // Handle submit button click
         submitButton.setOnClickListener {
             saveDailyLog()
+            intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
         }
 
         // Handle fetch button click
@@ -123,7 +135,6 @@ class DailyLogActivity : AppCompatActivity() {
 
     private fun saveDailyLog() {
         // Collect data from inputs
-
         val activity = activityInput.text.toString().trim()
         val trigger = triggerSpinner.selectedItem.toString()
         val sign = signSpinner.selectedItem.toString()
@@ -132,6 +143,10 @@ class DailyLogActivity : AppCompatActivity() {
         val mind = mindSpinner.selectedItem.toString()
         val emotion = emotionSpinner.selectedItem.toString()
         val behavior = behaviorSpinner.selectedItem.toString()
+        val bodyText = bodyTextView.text.toString().trim()
+        val behaviorText = behaviorTextView.text.toString().trim()
+        val mindText = mindTextView.text.toString().trim()
+        val emotionText = emotionTextView.text.toString().trim()
 
         // Validate required fields
         if (activity.isEmpty()) {
@@ -162,7 +177,11 @@ class DailyLogActivity : AppCompatActivity() {
             "mind" to mind,
             "emotion" to emotion,
             "behavior" to behavior,
-            "date" to currentDate
+            "date" to currentDate,
+            "bodyText" to bodyText,
+            "mindText" to mindText,
+            "emotionText" to emotionText,
+            "behaviorText" to behaviorText
         )
 
         // Save the log under the user's document in Firestore
@@ -170,7 +189,7 @@ class DailyLogActivity : AppCompatActivity() {
             .document(userId) // Unique user ID
             .collection("dailyLogs") // Sub-collection for logs
             .document(currentDate) // Unique document for the date
-            .set(logData)
+            .set(logData, SetOptions.merge()) // Use merge to avoid overwriting existing fields
             .addOnSuccessListener {
                 Toast.makeText(this, "Daily log saved successfully!", Toast.LENGTH_SHORT).show()
                 clearForm()
@@ -179,6 +198,7 @@ class DailyLogActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to save log: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun clearForm() {
         activityInput.text.clear()

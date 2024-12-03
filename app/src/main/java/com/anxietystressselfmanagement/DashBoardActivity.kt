@@ -139,7 +139,7 @@ class DashBoardActivity : AppCompatActivity() {
                 R.id.nav_dashboard -> startActivity(
                     Intent(
                         this,
-                        DashBoardActivity::class.java
+                        LogListActivity::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })

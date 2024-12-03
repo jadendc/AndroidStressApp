@@ -59,6 +59,7 @@
             android:layout_width="178dp"
             android:layout_height="123dp"
             android:layout_marginTop="52dp"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
