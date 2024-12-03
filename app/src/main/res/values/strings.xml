@@ -54,4 +54,5 @@
     <string name="small_circle" />
     <string name="hold">HOLD</string>
     <string name="breathe">BREATHE</string>
+    <string name="exhale">EXHALE</string>
 </resources>
