@@ -20,25 +20,31 @@
         app:srcCompat="@drawable/logo" />
 
     <!-- Sound Button -->
+
+
     <ImageView
         android:id="@+id/soundButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="30dp"
         android:contentDescription="@string/sound_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/sound" />
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
         android:layout_height="43dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:contentDescription="@string/back_button"
+        android:layout_marginEnd="60dp"
+        android:contentDescription="@string/sound_button"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backbutton" />
@@ -84,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:text="@string/hold"
+        android:text="@string/exhale"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/hollowSquare"
@@ -108,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/hold"
+        android:text="@string/exhale"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@id/hollowSquare"

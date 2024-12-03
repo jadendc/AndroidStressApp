@@ -57,6 +57,7 @@
     <string name="small_circle" />
     <string name="hold">HOLD</string>
     <string name="breathe">BREATHE</string>
+    <string name="exhale">EXHALE</string>
     <string name="app_logo">App Logo</string>
     <string name="what_activity_did_you_do">What activity did you do?</string>
     <string name="feeling">Feeling</string>
