@@ -64,6 +64,7 @@ class JournalActivity : AppCompatActivity() {
             val journalText = journalInput.text.toString().trim()
             if (journalText.isNotEmpty()) {
                 saveJournalEntry(journalText)
+                startActivity(Intent(this,DashBoardActivity::class.java))
             } else {
                 Toast.makeText(this, "Please type something to save", Toast.LENGTH_SHORT).show()
             }
