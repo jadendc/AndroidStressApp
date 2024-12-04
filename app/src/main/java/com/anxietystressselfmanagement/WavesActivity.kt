@@ -1,124 +1,115 @@
 package com.anxietystressselfmanagement
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.widget.ImageView
-import android.widget.TextView
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 
 class WavesActivity : AppCompatActivity() {
     private var isMuted = false // Track mute state
     private var mediaPlayer: MediaPlayer? = null
-    private var animationCount = 0 // Track animation cycles completed
-    private var playCount = 0
-
+    private var playCount = 0 // Track playback cycles
+    private var handler: Handler? = null // Handler for managing GIF playback
+    private var isActivityDestroyed = false // Track whether the Activity is destroyed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_waves) // XML layout for WavesActivity
+        setContentView(R.layout.activity_waves)
 
-        // Get number of cycles from Intent
+        val exerciseType = intent.getStringExtra("exerciseType")
+        if (exerciseType == null) {
+            Log.e("WavesActivity", "Exercise type is missing. Intent extras: ${intent.extras}")
+            Toast.makeText(this, "An error occurred. Please restart the app.", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+        Log.d("WavesActivity", "Received exerciseType: $exerciseType")
+
         val cycles = intent.getIntExtra("selectedCycles", 1)
 
         // Initialize MediaPlayer for Waves sound
-        mediaPlayer = MediaPlayer.create(this, R.raw.wavessound) // Replace with the correct sound file
+        mediaPlayer = MediaPlayer.create(this, R.raw.wavessound)
         playSoundRepeatedly(cycles)
 
-        // Back button
+        // Back button functionality
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
+            resetGifPlayback() // Clear GIF and handler tasks
             val intent = Intent(this, MusicChoiceActivity::class.java)
+            intent.putExtra("previousActivity", exerciseType) // Pass exercise type back
             startActivity(intent)
             finish()
         }
 
-        // Sound button
+        // Sound button functionality
         val soundButton: ImageView = findViewById(R.id.soundButton)
         soundButton.setOnClickListener {
             toggleSound(soundButton)
         }
 
-        // Start the hollow square animation
-        setupBreathCycleAnimation(cycles)
+        // Display the Waves GIF as background
+        val backgroundGifView: ImageView = findViewById(R.id.backgroundGif)
+        Glide.with(this)
+            .asGif()
+            .load(R.raw.wavesgif) // Replace with Waves GIF resource
+            .into(backgroundGifView)
+
+        // Display and control the exercise GIF
+        val exerciseGifView: ImageView = findViewById(R.id.exerciseGif)
+
+        // Resize the exercise GIF
+        val layoutParams = exerciseGifView.layoutParams
+        layoutParams.width = (layoutParams.width * 1) // Adjust width
+        layoutParams.height = (layoutParams.height * 1) // Adjust height
+        exerciseGifView.layoutParams = layoutParams
+
+        val gifDuration = getGifDuration(exerciseType) // Fetch duration for the selected GIF
+        playGifForCycles(exerciseGifView, exerciseType, cycles, gifDuration)
     }
 
-    private fun setupBreathCycleAnimation(cycles: Int) {
-        // References to views
-        val movingCircle: ImageView = findViewById(R.id.movingCircle)
-        val hollowSquare: View = findViewById(R.id.hollowSquare)
-        val textBreatheTop: TextView = findViewById(R.id.textBreatheTop)
-        val textHoldRight: TextView = findViewById(R.id.textHoldRight)
-        val textBreatheBottom: TextView = findViewById(R.id.textBreatheBottom)
-        val textHoldLeft: TextView = findViewById(R.id.textHoldLeft)
+    private fun playGifForCycles(imageView: ImageView, exerciseType: String, cycles: Int, gifDuration: Long) {
+        val gifResource = getGifResource(exerciseType)
 
-        // Square dimensions
-        hollowSquare.post {
-            val squareStartX = hollowSquare.x
-            val squareStartY = hollowSquare.y
-            val squareSize = hollowSquare.width.toFloat() // Assuming square shape
+        // Load the GIF using Glide
+        Glide.with(this)
+            .asGif()
+            .load(gifResource)
+            .into(imageView)
 
-            // Animate circle along the square
-            val animator = ValueAnimator.ofFloat(0f, 4f) // 4 edges of the square
-            animator.duration = 16000 // 8 seconds for one full cycle
-            animator.repeatCount = ValueAnimator.INFINITE
+        val totalDuration = gifDuration * cycles
 
-            animator.addUpdateListener { animation ->
-                val value = animation.animatedValue as Float
-                val x: Float
-                val y: Float
-
-                when {
-                    value < 1f -> { // Top edge (0 to 1)
-                        x = squareStartX + value * squareSize
-                        y = squareStartY
-                        highlightText(textBreatheTop, listOf(textHoldRight, textBreatheBottom, textHoldLeft))
-                    }
-                    value < 2f -> { // Right edge (1 to 2)
-                        x = squareStartX + squareSize
-                        y = squareStartY + (value - 1f) * squareSize
-                        highlightText(textHoldRight, listOf(textBreatheTop, textBreatheBottom, textHoldLeft))
-                    }
-                    value < 3f -> { // Bottom edge (2 to 3)
-                        x = squareStartX + squareSize - (value - 2f) * squareSize
-                        y = squareStartY + squareSize
-                        highlightText(textBreatheBottom, listOf(textBreatheTop, textHoldRight, textHoldLeft))
-                    }
-                    else -> { // Left edge (3 to 4)
-                        x = squareStartX
-                        y = squareStartY + squareSize - (value - 3f) * squareSize
-                        highlightText(textHoldLeft, listOf(textBreatheTop, textHoldRight, textBreatheBottom))
-                    }
-                }
-
-                movingCircle.x = x - (movingCircle.width / 2)
-                movingCircle.y = y - (movingCircle.height / 2)
+        // Use a handler to stop GIF playback after the total duration
+        handler = Handler(Looper.getMainLooper())
+        handler?.postDelayed({
+            if (!isActivityDestroyed) { // Ensure the activity is not destroyed before clearing
+                Glide.with(this).clear(imageView) // Clears the GIF after the duration
             }
+        }, totalDuration)
+    }
 
-            // Add listener to handle animation cycles
-            animator.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {}
-                override fun onAnimationEnd(animation: Animator) {}
-                override fun onAnimationCancel(animation: Animator) {}
-                override fun onAnimationRepeat(animation: Animator) {
-                    animationCount++
-                    if (animationCount >= cycles) {
-                        animator.cancel() // Stop the animation after the desired number of cycles
-                    }
-                }
-            })
-
-            animator.start()
+    private fun getGifResource(exerciseType: String): Int {
+        return when (exerciseType) {
+            "DestressActivity" -> R.raw.destress_day_gif
+            "SleepActivity" -> R.raw.night_time_gif
+            "FocusActivity" -> R.raw.focus_time_gif
+            else -> throw IllegalArgumentException(exerciseType)
         }
     }
 
-    private fun highlightText(toHighlight: TextView, toDim: List<TextView>) {
-        toHighlight.setTextColor(getColor(R.color.white)) // Highlighted text color
-        toDim.forEach { it.setTextColor(getColor(R.color.grey)) } // Dimmed text color
+    private fun getGifDuration(exerciseType: String): Long {
+        return when (exerciseType) {
+            "DestressActivity" -> 16500L // Duration for Destress GIF (16.5 seconds)
+            "SleepActivity" -> 22500L // Duration for Sleep GIF (22.5 seconds)
+            "FocusActivity" -> 14500L // Duration for Focus GIF (14.5 seconds)
+            else -> 16000L // Default duration (16 seconds)
+        }
     }
 
     private fun playSoundRepeatedly(cycles: Int) {
@@ -143,9 +134,26 @@ class WavesActivity : AppCompatActivity() {
         isMuted = !isMuted
     }
 
+    private fun resetGifPlayback() {
+        // Stop the handler from performing any further tasks
+        handler?.removeCallbacksAndMessages(null)
+        handler = null
+
+        // Clear both GIFs
+        val backgroundGifView: ImageView = findViewById(R.id.backgroundGif)
+        val exerciseGifView: ImageView = findViewById(R.id.exerciseGif)
+
+        if (!isActivityDestroyed) { // Ensure the activity is not destroyed
+            Glide.with(this).clear(backgroundGifView)
+            Glide.with(this).clear(exerciseGifView)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        isActivityDestroyed = true // Mark the activity as destroyed
         mediaPlayer?.release()
         mediaPlayer = null
+        resetGifPlayback() // Reset GIF playback when activity is destroyed
     }
 }

@@ -11,33 +11,31 @@ class ExercisesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
 
-        // Back button functionality
-        val backButton: ImageView = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java) // Replace with the appropriate activity
-            startActivity(intent)
-            finish()
-        }
+        val btnDestress: Button = findViewById(R.id.buttonDestress)
+        val btnSleep: Button = findViewById(R.id.buttonEaseSleep)
+        val btnFocus: Button = findViewById(R.id.buttonStrengthenFocus)
 
-        // Button to navigate to "Destress Your Day" activity
-        val buttonDestress: Button = findViewById(R.id.buttonDestress)
-        buttonDestress.setOnClickListener {
+        btnDestress.setOnClickListener {
             val intent = Intent(this, DestressActivity::class.java)
             startActivity(intent)
         }
 
-        // Button to navigate to "Ease Your Sleep" activity
-        val buttonEaseSleep: Button = findViewById(R.id.buttonEaseSleep)
-        buttonEaseSleep.setOnClickListener {
+        btnSleep.setOnClickListener {
             val intent = Intent(this, SleepActivity::class.java)
             startActivity(intent)
         }
 
-        // Button to navigate to "Strengthen Your Focus" activity
-        val buttonStrengthenFocus: Button = findViewById(R.id.buttonStrengthenFocus)
-        buttonStrengthenFocus.setOnClickListener {
+        btnFocus.setOnClickListener {
             val intent = Intent(this, FocusActivity::class.java)
             startActivity(intent)
+        }
+
+        // Back button functionality
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java) // Navigate back to Exercises page
+            startActivity(intent)
+            finish() // Finish current activity to prevent stacking
         }
     }
 }

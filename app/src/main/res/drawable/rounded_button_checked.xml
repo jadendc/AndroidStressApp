@@ -8,7 +8,7 @@
 
     <stroke
         android:width="6dp"
-        android:color="#008577" /> <!-- Border color when toggled -->
+        android:color="#03DAC5" /> <!-- Border color when toggled -->
 
     <padding
         android:left="8dp"

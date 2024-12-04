@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/backgroundfocus">
+    android:translationZ="1dp">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -11,11 +12,20 @@
         android:layout_height="165dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/how_ru_life_logo"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
+    <ImageView
+        android:id="@+id/backgroundGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/gifbackground"
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
         android:id="@+id/backButton"
@@ -32,53 +42,61 @@
 
     <TextView
         android:id="@+id/exerciseTitle"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="193dp"
-        android:layout_marginBottom="506dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="@string/focus_exercise"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/exerciseSubtitle"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="237dp"
-        android:layout_marginBottom="467dp"
         android:gravity="center"
         android:text="@string/to_help_you_focus"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/exerciseTitle" />
 
     <TextView
         android:id="@+id/instructionsText"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="277dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="108dp"
         android:gravity="center"
-        android:lineSpacingExtra="8dp"
+        android:lineSpacingExtra="6dp"
         android:text="@string/close_one_nostril_using_your_fingers_and_inhale_deeply_through_the_other_nostril_counting_to_4_seconds_n_nnow_close_both_nostrils_using_your_fingers_and_hold_your_breath_for_4_seconds_n_nrelease_the_previously_closed_nostril_and_exhale_slowly_and_completely_through_that_nostril_for_4_seconds_n_nrepeat_these_steps_for_as_many_cycles_as_desired"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseSubtitle" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/teal_200"
+        android:text="@string/next"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

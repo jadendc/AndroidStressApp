@@ -2,10 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/rain">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -13,10 +11,37 @@
         android:layout_height="165dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/how_ru_life_logo"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/backgroundGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/gifbackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/exerciseGif"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/exerciseGif"
+        android:elevation="4dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView3"
+        app:layout_constraintVertical_bias="0.076" />
 
     <ImageView
         android:id="@+id/soundButton"
@@ -44,76 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backbutton" />
-    <View
-        android:id="@+id/hollowSquare"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="96dp"
-        android:background="@drawable/hollow_square_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView3" />
 
-    <ImageView
-        android:id="@+id/movingCircle"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_margin="0dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="276dp"
-        android:background="@drawable/small_circle_background"
-        app:layout_constraintStart_toStartOf="@id/hollowSquare"
-        app:layout_constraintTop_toTopOf="@id/hollowSquare"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/textBreatheTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/breathe"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/hollowSquare" />
-
-    <TextView
-        android:id="@+id/textHoldRight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:text="@string/exhale"
-
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/hollowSquare"
-        app:layout_constraintEnd_toEndOf="@id/hollowSquare"
-        app:layout_constraintTop_toTopOf="@id/hollowSquare" />
-
-    <TextView
-        android:id="@+id/textBreatheBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/breathe"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/hollowSquare"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textHoldLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:text="@string/exhale"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/hollowSquare"
-        app:layout_constraintStart_toStartOf="@id/hollowSquare"
-        app:layout_constraintTop_toTopOf="@id/hollowSquare" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
