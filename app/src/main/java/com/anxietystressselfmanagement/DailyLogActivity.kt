@@ -38,7 +38,6 @@ class DailyLogActivity : AppCompatActivity() {
 
 
     private lateinit var submitButton: Button
-    private lateinit var fetchButton: Button
     private lateinit var auth: FirebaseAuth
 
     private val firestore = FirebaseFirestore.getInstance()
@@ -85,13 +84,19 @@ class DailyLogActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
-                R.id.nav_daily -> navigateTo(DailyLogActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()
             }
             drawerLayout.closeDrawers()
             true
+        }
+
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         // Populate spinners with sample data

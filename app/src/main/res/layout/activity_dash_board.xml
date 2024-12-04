@@ -18,9 +18,23 @@
         android:background="@color/grey">
 
         <!-- Toolbar for the navigation drawer -->
+
+        <Button
+            android:id="@+id/monthlyButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="52dp"
+            android:backgroundTint="#546773"
+            android:text="Monthly Calender"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.058"
+            app:layout_constraintStart_toEndOf="@+id/journalButton"
+            app:layout_constraintTop_toTopOf="@+id/journalButton" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:title="Dashboard"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -28,6 +42,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@android:color/white"
+            app:title="Dashboard"
             app:titleTextColor="@android:color/white" />
 
         <TextView
@@ -147,7 +162,7 @@
         </FrameLayout>
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/journalButton"
             android:layout_width="171dp"
             android:layout_height="55dp"
             android:backgroundTint="#556874"
@@ -155,24 +170,47 @@
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
+            app:layout_constraintHorizontal_bias="0.137"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sadButton"
             app:layout_constraintVertical_bias="0.459" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/psychButton"
             android:layout_width="171dp"
             android:layout_height="55dp"
-            android:layout_marginTop="8dp"
             android:backgroundTint="#556874"
             android:text="Psychological Sigh"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
+            app:layout_constraintHorizontal_bias="0.137"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3" />
+            app:layout_constraintTop_toBottomOf="@+id/journalButton" />
 
+        <Button
+            android:id="@+id/exerciseButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="52dp"
+            android:backgroundTint="#546773"
+            android:text="Exercises"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/psychButton"
+            app:layout_constraintTop_toBottomOf="@+id/journalButton" />
+
+        <Button
+            android:id="@+id/induceButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#546773"
+            android:text="Hormone Induce"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/exerciseButton"
+            app:layout_constraintHorizontal_bias="0.479"
+            app:layout_constraintStart_toStartOf="@+id/psychButton"
+            app:layout_constraintTop_toBottomOf="@+id/psychButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

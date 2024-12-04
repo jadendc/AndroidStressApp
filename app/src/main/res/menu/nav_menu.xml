@@ -7,17 +7,8 @@
         android:id="@+id/nav_dashboard"
         android:title="Dashboard" />
     <item
-        android:id="@+id/nav_daily"
-        android:title="Daily Log"/>
-    <item
         android:id="@+id/nav_settings"
         android:title="Settings" />
-    <item
-        android:id="@+id/nav_music"
-        android:title="Music" />
-    <item
-        android:id="@id/nav_exercises"
-        android:title="Exercises" />
     <item
         android:id="@+id/nav_about"
         android:title="About" />

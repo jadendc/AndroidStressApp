@@ -36,51 +36,15 @@ class PsychSighActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_psych_sigh)
 
-        // Initialize Views
-        startButton = findViewById(R.id.button2)
-        lungLeftImageView = findViewById(R.id.LeftlungImageView)
-        lungRightImageView = findViewById(R.id.RightLungImageView)
-        instructionTextView = findViewById(R.id.instructionTextView)
-
-        startButton.setOnClickListener {
-            startPhysiologicalSigh()
-        }
-        auth = FirebaseAuth.getInstance()
-        val currentUser: FirebaseUser? = auth.currentUser
-
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-
-        // Set up the toolbar
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        // Set up ActionBarDrawerToggle
-        toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        toggle.drawerArrowDrawable.color = getColor(R.color.white)
-
-        // Handle navigation item clicks
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateToActivity(DashBoardActivity::class.java)
-                R.id.nav_daily -> navigateToActivity(DailyLogActivity::class.java)
-                R.id.nav_settings -> navigateToActivity(SettingActivity::class.java)
-                R.id.nav_about -> navigateToActivity(AboutActivity::class.java)
-                R.id.nav_logout -> logOut()
-            }
-            drawerLayout.closeDrawers()
-            true
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
+
+
 
     private fun navigateToActivity(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)

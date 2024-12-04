@@ -1,6 +1,7 @@
 package com.anxietystressselfmanagement
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,10 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FieldValue
+
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +25,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
-
+import java.util.concurrent.TimeUnit
 
 
 class DashBoardActivity : AppCompatActivity() {
@@ -40,7 +43,7 @@ class DashBoardActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var streakManager: StreakManager
-
+    private lateinit var monthlyButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board)
@@ -81,19 +84,43 @@ class DashBoardActivity : AppCompatActivity() {
             updateStreakDisplay()
         }
 
-        val test: Button = findViewById(R.id.button3)
-        val test1: Button = findViewById(R.id.button4)
+        val journalButton: Button = findViewById(R.id.journalButton)
+        val psychButton: Button = findViewById(R.id.psychButton)
+        val exerciseButton: Button = findViewById(R.id.exerciseButton)
+        val monthlyButton: Button = findViewById(R.id.monthlyButton)
+        val induceButton: Button = findViewById(R.id.induceButton)
 
-        test.setOnClickListener {
+        journalButton.setOnClickListener {
             intent = Intent(this, JournalActivity::class.java)
             startActivity(intent)
         }
 
 
-        test1.setOnClickListener {
+        psychButton.setOnClickListener {
             intent = Intent(this, PsychSighActivity::class.java)
             startActivity(intent)
         }
+
+        monthlyButton.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
+        }
+
+        psychButton.setOnClickListener {
+            val intent = Intent(this, PsychSighActivity::class.java)
+            startActivity(intent) }
+
+        exerciseButton.setOnClickListener {
+            val intent = Intent(this, ExercisesActivity::class.java)
+            startActivity(intent)
+        }
+
+        induceButton.setOnClickListener {
+            val intent = Intent(this, StressInduceActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
         val intentDaily = Intent(this, DailyLogActivity::class.java)
         // Emotion buttons click listeners
@@ -118,6 +145,8 @@ class DashBoardActivity : AppCompatActivity() {
             addFeelingToLog("😁")
         }
 
+
+
         // Setup navigation drawer
         drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -136,18 +165,9 @@ class DashBoardActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> startActivity(
-                    Intent(
-                        this,
-                        LogListActivity::class.java
-                    ).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
-
-                R.id.nav_daily -> startActivity(Intent(this, DailyLogActivity::class.java).apply {
+                R.id.nav_dashboard -> startActivity(Intent(this,DashBoardActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
-
                 R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
@@ -157,14 +177,6 @@ class DashBoardActivity : AppCompatActivity() {
                 })
                 R.id.nav_settings -> {
                     // Handle settings action
-                }
-
-                R.id.nav_music -> {
-                    //Handle music action
-                    val intent = Intent(this, MusicChoiceActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
                 }
 
                 R.id.nav_exercises -> {

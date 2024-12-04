@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,12 +8,11 @@ plugins {
 
 android {
     namespace = "com.anxietystressselfmanagement"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.anxietystressselfmanagement"
         minSdk = 34
-        targetSdk = 34
         versionCode = 2
         versionName = "1.0"
 
@@ -70,5 +71,5 @@ dependencies {
     implementation (libs.play.services.auth)
     implementation (libs.firebase.auth.v2310)
     implementation (libs.play.services.base.v1820)
-
+    implementation (libs.androidx.work.runtime)
 }

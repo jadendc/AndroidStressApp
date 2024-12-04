@@ -3,6 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -13,22 +14,30 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat">
-
-        <!-- Main Activity with Intent Filter -->
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
+        <activity
+            android:name=".StressInduceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.App.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LogListActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".DailyLogActivity"
             android:exported="false"
@@ -76,47 +85,46 @@
         <activity
             android:name=".MusicChoiceActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".WavesActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".RainActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".BirdsActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".FireActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".ForestActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".FocusActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".DestressActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".SleepActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
+            android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".ExercisesActivity"
             android:exported="false"
-            android:theme="@style/Theme.App.NoActionBar"/>
-
-        <!-- Meta-data inside the application -->
+            android:theme="@style/Theme.App.NoActionBar" /> <!-- Meta-data inside the application -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
 </manifest>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +51,14 @@ class JournalActivity : AppCompatActivity() {
         toggle.syncState()
         toggle.drawerArrowDrawable.color = getColor(R.color.white)
 
+
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         // Save button click listener
         saveContinueButton.setOnClickListener {
             val journalText = journalInput.text.toString().trim()
@@ -65,7 +74,6 @@ class JournalActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
-                R.id.nav_daily -> navigateTo(DailyLogActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()

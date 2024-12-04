@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         android:background="@color/grey">
 
+
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             app:title="Journal"
@@ -20,6 +22,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="4dp"
             app:drawerArrowStyle="@color/white"
+            android:layout_marginBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,13 +45,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.333" />
 
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="80dp"
+            android:clickable="true"
+            android:contentDescription="@string/sound_button"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/backbutton" />
         <Button
             android:id="@+id/saveContinueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#2C2727"
+           android:backgroundTint="#556874"
             android:text="Save and Continue"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,14 +78,15 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
         <ImageView
+            android:layout_marginTop="55dp"
             android:id="@+id/imageView3"
             android:layout_width="113dp"
             android:layout_height="92dp"
             app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/logo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

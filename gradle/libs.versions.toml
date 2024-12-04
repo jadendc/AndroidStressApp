@@ -2,6 +2,8 @@
 firebaseAuth = "23.2.1"
 firebaseAuthVersion = "23.1.0"
 googleAuthLibraryOauth2Http = "1.11.0"
+gradle = "8.2.2"
+gradleVersion = "8.2.0"
 playServicesAuthVersion = "21.2.0"
 playServicesBase = "21.5.0"
 playServicesBaseVersion = "18.2.0"
@@ -27,8 +29,10 @@ moshi = "1.12.0"
 okhttp = "4.11.0"
 playServicesAuth = "21.2.0"
 firebaseVertexai = "16.0.2"
+workRuntime = "2.10.0"
 
 [libraries]
+androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 firebase-auth-v2310 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-vertexai = { module = "com.google.firebase:firebase-vertexai", version.ref = "vertexai"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +47,8 @@ google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-librar
 google-firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 google-firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
 google-firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+gradle-v820 = { module = "com.android.tools.build:gradle", version.ref = "gradleVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
