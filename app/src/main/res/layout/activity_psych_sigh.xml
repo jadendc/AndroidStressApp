@@ -96,12 +96,14 @@
             android:id="@+id/backButton"
             android:layout_width="40dp"
             android:layout_height="43dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="356dp"
             android:clickable="true"
             android:contentDescription="@string/sound_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/backbutton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

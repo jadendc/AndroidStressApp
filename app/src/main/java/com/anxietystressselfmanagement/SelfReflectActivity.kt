@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,6 +14,7 @@ import com.google.android.material.navigation.NavigationView
 class SelfReflectActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,8 @@ class SelfReflectActivity : BaseActivity() {
         val whyOptions = listOf("Why do you pursue your current goals? Are they aligned with your values?", "Why do you believe certain things about yourself or others?", "Why do you feel stuck in any area of your life, and what might help you move forward?", "Why are certain people or things important to you?", "Why do you react the way you do in difficult situations, and how can you improve?")
 
         setupNavigationDrawer(drawerLayout, navigationView, toolbar)
+
+        backButton = findViewById(R.id.backButton)
 
         setupSpinner(whatSpinner, "whatSelection", whatOptions)
         setupSpinner(whoSpinner, "whoSelection", whoOptions)

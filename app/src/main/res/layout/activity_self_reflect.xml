@@ -8,6 +8,7 @@
     android:layout_height="match_parent">
 
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,6 +27,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@android:color/white"
             app:titleTextColor="@android:color/white" />
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="16dp"
+            android:clickable="true"
+            android:contentDescription="@string/sound_button"
+            android:elevation="1dp"
+            app:layout_constraintBottom_toBottomOf="@+id/app_logo"
+            app:layout_constraintEnd_toStartOf="@+id/imageView4"
+            app:layout_constraintHorizontal_bias="0.247"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/backbutton" />
 
         <Spinner
             android:id="@+id/whatSpinner"
@@ -108,10 +125,9 @@
             android:layout_height="147dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.078"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/logo" />
 
         <TextView
