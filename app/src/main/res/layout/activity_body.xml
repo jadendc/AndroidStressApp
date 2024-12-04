@@ -1,0 +1,64 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        tools:ignore="ExtraText">
+
+
+        <ImageButton
+            android:id="@+id/back_arrow"
+            android:layout_width="84dp"
+            android:layout_height="68dp"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:background="@null"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/backbutton" />
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo"
+            android:contentDescription="App Logo"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/title_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Body"
+            android:textSize="48sp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:paddingBottom="16dp" />
+
+        <!-- Body Bullet Points -->
+        <TextView
+            android:id="@+id/body_bullet_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This may look like:\n• Difficulty breathing\n• Fatigue\n• Headaches\n• High Blood Pressure\n• Palpitations\n• Skin irritations"
+            android:textSize="28sp"
+            android:lineSpacingExtra="6dp"
+            android:padding="16dp"
+            android:background="@drawable/rounded_background"
+            android:textColor="#000000"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="start" />
+
+    </LinearLayout>
+</ScrollView>
