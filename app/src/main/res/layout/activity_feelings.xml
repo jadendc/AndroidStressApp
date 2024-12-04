@@ -1,0 +1,65 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#687F8C"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:ignore="ExtraText">
+
+        <ImageButton
+            android:id="@+id/back_arrow"
+            android:layout_width="84dp"
+            android:layout_height="68dp"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:background="@null"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/backbutton" />
+
+        <!-- App Logo -->
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="App Logo"
+            android:src="@drawable/logo" />
+
+        <!-- Section Title -->
+        <TextView
+            android:id="@+id/title_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:text="Feelings"
+            android:textColor="#FFFFFF"
+            android:textSize="48sp" />
+
+        <!-- Body Bullet Points -->
+        <TextView
+            android:id="@+id/body_bullet_points"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="#67788B"
+            android:gravity="start"
+            android:lineSpacingExtra="6dp"
+            android:padding="16dp"
+            android:text="This may look like:\n• Alienation\n• Apathy\n• Depression\n• Fear\n• Irritability\n• Loss of confidence"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp" />
+
+    </LinearLayout>
+</ScrollView>
