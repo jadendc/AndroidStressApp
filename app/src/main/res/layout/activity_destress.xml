@@ -77,10 +77,12 @@
         android:id="@+id/backButton"
         android:layout_width="40dp"
         android:layout_height="43dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="352dp"
+        android:layout_marginEnd="60dp"
         android:contentDescription="@string/sound_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backbutton" />
 
