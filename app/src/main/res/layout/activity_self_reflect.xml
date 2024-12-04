@@ -32,70 +32,75 @@
             style="@style/SpinnerStyle"
             android:layout_width="305dp"
             android:layout_height="63dp"
-            android:background="#465862"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.478" />
+            app:layout_constraintVertical_bias="0.478"
+        android:drawableEnd="@drawable/ic_arrow_down"
+            android:background="@drawable/spinner_background"/>
 
         <Spinner
             android:id="@+id/whoSpinner"
             style="@style/SpinnerStyle"
             android:layout_width="305dp"
             android:layout_height="63dp"
-            android:background="#465862"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.338" />
+            app:layout_constraintVertical_bias="0.338"
+            android:background="@drawable/spinner_background"
+            android:drawableEnd="@drawable/ic_arrow_down"/>
 
         <Spinner
             android:id="@+id/whenSpinner"
             style="@style/SpinnerStyle"
             android:layout_width="305dp"
             android:layout_height="63dp"
-            android:background="#465862"
+            android:background="@drawable/spinner_background"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.77" />
+            app:layout_constraintVertical_bias="0.77"
+            android:drawableEnd="@drawable/ic_arrow_down"/>
 
         <Spinner
             android:id="@+id/whereSpinner"
             style="@style/SpinnerStyle"
             android:layout_width="305dp"
             android:layout_height="63dp"
-            android:background="#465862"
             android:spinnerMode="dropdown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.63" />
+            app:layout_constraintVertical_bias="0.63"
+            android:background="@drawable/spinner_background"
+            android:drawableEnd="@drawable/ic_arrow_down"/>
 
         <Spinner
             android:id="@+id/whySpinner"
             style="@style/SpinnerStyle"
             android:layout_width="305dp"
             android:layout_height="63dp"
-            android:background="#465862"
             android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.905" />
+            app:layout_constraintVertical_bias="0.905"
+            android:drawableEnd="@drawable/ic_arrow_down"/>
 
         <ImageView
             android:id="@+id/imageView4"

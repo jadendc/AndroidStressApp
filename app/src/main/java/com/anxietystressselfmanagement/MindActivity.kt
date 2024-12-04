@@ -25,7 +25,7 @@ class MindActivity : AppCompatActivity() {
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, AwarenessActivity::class.java)
             startActivity(intent)
             finish()
         }

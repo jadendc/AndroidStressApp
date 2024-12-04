@@ -89,8 +89,20 @@ class MeditationActivity : AppCompatActivity() {
         handler?.postDelayed({
             if (!isActivityDestroyed) { // Ensure the activity is not destroyed before clearing
                 Glide.with(this).clear(imageView) // Clears the GIF after the duration
+                Toast.makeText(this, "All Done!", Toast.LENGTH_SHORT).show()
+                mediaPlayer?.let {
+                    if (it.isPlaying) {
+                        it.stop()
+                        it.release() // Release resources
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            startActivity(Intent(this, DashBoardActivity::class.java))
+                        }, totalDuration+3000)
+                    }
+                    mediaPlayer = null // Reset the reference
+                }
             }
         }, totalDuration)
+
     }
 
     private fun getGifResource(exerciseType: String): Int {

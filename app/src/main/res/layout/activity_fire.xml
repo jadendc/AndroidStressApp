@@ -66,6 +66,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="60dp"
+        app:tint="@android:color/white"
         android:contentDescription="@string/sound_button"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"

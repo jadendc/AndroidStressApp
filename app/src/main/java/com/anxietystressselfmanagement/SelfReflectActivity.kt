@@ -49,7 +49,7 @@ class SelfReflectActivity : BaseActivity() {
 
     private fun setupSpinner(spinner: Spinner, key: String, options: List<String>) {
         val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, options)
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // Custom dropdown
         spinner.adapter = adapter
 
         // Restore the previously selected item

@@ -33,7 +33,7 @@ class AwarenessActivity : AppCompatActivity() {
         }
 
         mindButton.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,MindActivity::class.java))
             finish()
         }
 
@@ -44,7 +44,7 @@ class AwarenessActivity : AppCompatActivity() {
 
             val backButton: ImageView = findViewById(R.id.backButton)
             backButton.setOnClickListener {
-                val intent = Intent(this, AwarenessActivity::class.java)
+                val intent = Intent(this, DashBoardActivity::class.java)
                 startActivity(intent)
                 finish()
             }

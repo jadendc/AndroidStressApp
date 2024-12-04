@@ -58,7 +58,7 @@
 
     <Button
         android:id="@+id/feelingButton"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
 
@@ -71,7 +71,7 @@
 
     <Button
         android:id="@+id/behaviorButton"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
         android:backgroundTint="#546773"
@@ -83,7 +83,7 @@
 
     <Button
         android:id="@+id/mindButton"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:backgroundTint="#546773"
@@ -95,7 +95,7 @@
 
     <Button
         android:id="@+id/bodyButton"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:backgroundTint="#546773"
