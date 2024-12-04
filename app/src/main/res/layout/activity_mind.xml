@@ -24,7 +24,7 @@
     <!-- Body Bullet Points -->
 
     <TextView
-        android:id="@+id/title_body"
+        android:id="@+id/title_mind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -67,7 +67,7 @@
         android:textColor="@color/white"
         android:textSize="28sp"
         android:text="This may look like:\n• Difficulty concentrating\n• Impaired judgement\n• Indecision\n• Muddled thinking\n• Negativity\n• Worrying"
-        app:layout_constraintTop_toBottomOf="@id/title_body"
+        app:layout_constraintTop_toBottomOf="@id/title_mind"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

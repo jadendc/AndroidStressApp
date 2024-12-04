@@ -37,7 +37,7 @@
 
     <!-- Section Title -->
     <TextView
-        android:id="@+id/title_body"
+        android:id="@+id/title_feeling"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
@@ -64,7 +64,7 @@
         android:text="This may look like:\n• Alienation\n• Apathy\n• Depression\n• Fear\n• Irritability\n• Loss of confidence"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@id/title_body"
+        app:layout_constraintTop_toBottomOf="@id/title_feeling"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

@@ -13,15 +13,6 @@ class BodyActivity : AppCompatActivity() {
 
         val bodyBulletPoints = findViewById<TextView>(R.id.body_bullet_points)
 
-        // Optional: Set the content dynamically
-        bodyBulletPoints.text = """
-            • Difficulty Breathing
-            • Fatigue
-            • Headaches
-            • High Blood Pressure
-            • Palpitations
-            • Skin Irritation
-        """.trimIndent()
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
