@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/destress">
+    android:layout_height="match_parent" >
 
     <ImageView
         android:id="@+id/imageView3"
@@ -13,72 +11,95 @@
         android:layout_height="166dp"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/how_ru_life_logo"
+        android:elevation="4dp"
+        android:translationZ="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
 
+    <ImageView
+        android:id="@+id/backgroundGif"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/gifbackground"
+        android:scaleType="centerCrop"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
     <TextView
         android:id="@+id/exerciseSubtitle"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
-        android:layout_marginBottom="434dp"
+        android:layout_marginTop="6dp"
         android:gravity="center"
         android:text="@string/to_help_you_relax"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/exerciseTitle" />
 
     <TextView
         android:id="@+id/exerciseInstructions"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="318dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="105dp"
         android:gravity="center"
         android:lineSpacingExtra="6dp"
         android:text="@string/inhale_deeply_through_your_nose_for_4_seconds_n_nhold_your_breath_for_4_seconds_n_nexhale_slowly_and_steadily_through_your_mouth_for_4_seconds_n_nhold_for_4_seconds_before_beginning_the_next_cycle_n_nrepeat_for_as_many_cycles_as_desired"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/exerciseSubtitle" />
 
     <TextView
         android:id="@+id/exerciseTitle"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
-        android:layout_marginBottom="467dp"
+        android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="@string/_4_4_4_4_day_exercise"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
         android:layout_height="43dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="352dp"
+        android:layout_marginEnd="60dp"
         android:contentDescription="@string/sound_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/backbutton" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginEnd="161dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="@color/teal_200"
+        android:text="@string/next"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
