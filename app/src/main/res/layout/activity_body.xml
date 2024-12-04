@@ -1,65 +1,70 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#687F8C"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".BodyActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+        android:clickable="true"
+        android:contentDescription="@string/sound_button"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/app_logo"
+        app:layout_constraintEnd_toStartOf="@+id/app_logo"
+        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/app_logo"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/backbutton" />
+
+    <!-- App Logo -->
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="App Logo"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Title Body -->
+    <TextView
+        android:id="@+id/title_body"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:paddingBottom="16dp"
+        android:text="Body"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        app:layout_constraintTop_toBottomOf="@id/app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Body Bullet Points -->
+    <TextView
+        android:id="@+id/body_bullet_points"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="#67788B"
+        android:gravity="start"
+        android:lineSpacingExtra="6dp"
         android:padding="16dp"
-        tools:ignore="ExtraText">
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:text="This may look like:\n• Difficulty breathing\n• Fatigue\n• Headaches\n• High Blood Pressure\n• Palpitations\n• Skin irritations"
+        app:layout_constraintTop_toBottomOf="@id/title_body"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-
-        <ImageButton
-            android:id="@+id/back_arrow"
-            android:layout_width="84dp"
-            android:layout_height="68dp"
-            android:layout_gravity="left"
-            android:layout_margin="8dp"
-            android:background="@null"
-            android:contentDescription="Back"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/backbutton" />
-
-        <ImageView
-            android:id="@+id/app_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="App Logo"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/title_body"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:paddingBottom="16dp"
-            android:text="Body"
-            android:textColor="#FFFFFF"
-            android:textSize="48sp" />
-
-        <!-- Body Bullet Points -->
-
-        <TextView
-            android:id="@+id/body_bullet_points"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:background="#67788B"
-            android:gravity="start"
-            android:lineSpacingExtra="6dp"
-            android:padding="16dp"
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            android:text="This may look like:\n• Difficulty breathing\n• Fatigue\n• Headaches\n• High Blood Pressure\n• Palpitations\n• Skin irritations"
-/>
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

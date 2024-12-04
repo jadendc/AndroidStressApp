@@ -208,9 +208,33 @@
             android:text="Hormone Induce"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/exerciseButton"
-            app:layout_constraintHorizontal_bias="0.479"
-            app:layout_constraintStart_toStartOf="@+id/psychButton"
+            app:layout_constraintHorizontal_bias="0.161"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/psychButton" />
+
+        <Button
+            android:id="@+id/selfButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#546773"
+            android:text="Self-Reflect"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/exerciseButton"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/induceButton"
+            app:layout_constraintTop_toBottomOf="@+id/exerciseButton" />
+
+        <Button
+            android:id="@+id/awarenessButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#546773"
+            android:text="Food for Thought"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@+id/selfButton"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="@+id/induceButton"
+            app:layout_constraintTop_toBottomOf="@+id/selfButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

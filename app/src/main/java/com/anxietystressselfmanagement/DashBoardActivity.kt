@@ -89,6 +89,8 @@ class DashBoardActivity : AppCompatActivity() {
         val exerciseButton: Button = findViewById(R.id.exerciseButton)
         val monthlyButton: Button = findViewById(R.id.monthlyButton)
         val induceButton: Button = findViewById(R.id.induceButton)
+        val selfButton:Button = findViewById(R.id.selfButton)
+        val awareButton: Button = findViewById(R.id.awarenessButton)
 
         journalButton.setOnClickListener {
             intent = Intent(this, JournalActivity::class.java)
@@ -120,6 +122,15 @@ class DashBoardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        selfButton.setOnClickListener {
+            val intent = Intent(this, SelfReflectActivity::class.java)
+            startActivity(intent)
+        }
+
+        awareButton.setOnClickListener {
+            val intent = Intent(this, AwarenessActivity::class.java)
+            startActivity(intent)
+        }
 
 
         val intentDaily = Intent(this, DailyLogActivity::class.java)

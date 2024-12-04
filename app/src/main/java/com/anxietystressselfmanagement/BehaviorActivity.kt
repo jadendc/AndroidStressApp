@@ -1,6 +1,8 @@
 package com.anxietystressselfmanagement
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 
@@ -20,5 +22,12 @@ class BehaviorActivity : AppCompatActivity() {
             • More Addiction
             • Restlessness
         """.trimIndent()
+
+        val backButton: ImageView = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            val intent = Intent(this, DashBoardActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }
