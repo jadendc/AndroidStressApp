@@ -10,20 +10,12 @@ import android.os.Looper
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class PsychSighActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var auth: FirebaseAuth
-
     private lateinit var startButton: Button
+    private lateinit var backButton: ImageView
     private lateinit var lungLeftImageView: ImageView
     private lateinit var lungRightImageView: ImageView
     private lateinit var instructionTextView: TextView
@@ -36,33 +28,35 @@ class PsychSighActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_psych_sigh)
 
-        val backButton: ImageView = findViewById(R.id.backButton)
+        // Initialize Views
+        startButton = findViewById(R.id.button2)
+        backButton = findViewById(R.id.backButton)
+        lungLeftImageView = findViewById(R.id.LeftlungImageView)
+        lungRightImageView = findViewById(R.id.RightLungImageView)
+        instructionTextView = findViewById(R.id.instructionTextView)
+
+        // Back button navigation
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
-            startActivity(intent)
-            finish()
+            navigateToDashboard()
+        }
+
+        // Start button functionality
+        startButton.setOnClickListener {
+            startPhysiologicalSigh()
         }
     }
 
-
-
-    private fun navigateToActivity(activityClass: Class<*>) {
-        val intent = Intent(this, activityClass)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    private fun navigateToDashboard() {
+        val intent = Intent(this, DashBoardActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun logOut() {
-        auth.signOut()
-        navigateToActivity(MainActivity::class.java)
     }
 
     private fun startPhysiologicalSigh() {
         breathCount = 0
         instructionTextView.text = "Prepare to start physiological sigh..."
 
-        // Reset lungs to initial state
+        // Reset lungs to the initial state
         resetLungFill(lungLeftImageView)
         resetLungFill(lungRightImageView)
         deflateLungs(lungLeftImageView, lungRightImageView, startScale = 1.0f, endScale = 0.65f, duration = 1000)
@@ -72,20 +66,51 @@ class PsychSighActivity : AppCompatActivity() {
         }, 1500)
     }
 
+    private fun performSighCycle() {
+        if (breathCount >= totalBreaths) {
+            instructionTextView.text = "Exercise complete! Well done!"
+            handler.postDelayed({
+                navigateToDashboard()
+            }, 1000)
+            return
+        }
+
+        // First inhale: Partial fill
+        instructionTextView.text = "Inhale deeply (1st, partial)..."
+        animateLungFill(lungLeftImageView, R.drawable.l_lung_expand_animation)
+        animateLungFill(lungRightImageView, R.drawable.r_lung_expand_animation)
+        expandLungs(lungLeftImageView, lungRightImageView, startScale = 0.65f, endScale = 0.8f, duration = 2000)
+
+        handler.postDelayed({
+            instructionTextView.text = "Inhale again (2nd, full)..."
+            animateLungFill(lungLeftImageView, R.drawable.l_lung_expand_animation)
+            animateLungFill(lungRightImageView, R.drawable.r_lung_expand_animation)
+            expandLungs(lungLeftImageView, lungRightImageView, startScale = 0.8f, endScale = 1.0f, duration = 1000)
+        }, 2500)
+
+        handler.postDelayed({
+            instructionTextView.text = "Exhale slowly..."
+            animateLungFill(lungLeftImageView, R.drawable.l_lung_defill_animation)
+            animateLungFill(lungRightImageView, R.drawable.r_lung_defill_animation)
+            deflateLungs(lungLeftImageView, lungRightImageView, startScale = 1.0f, endScale = 0.65f, duration = 4000)
+        }, 6000)
+
+        handler.postDelayed({
+            breathCount++
+            instructionTextView.text = "Breath ${breathCount + 1}/$totalBreaths"
+            performSighCycle()
+        }, 10000)
+    }
+
     private fun animateLungFill(lungImageView: ImageView, drawableResId: Int) {
         lungImageView.setImageDrawable(getDrawable(drawableResId))
         val animatedDrawable = lungImageView.drawable as? AnimatedVectorDrawable
-        if (animatedDrawable?.isRunning == true) {
-            animatedDrawable.stop()
-        }
+        animatedDrawable?.stop()
         animatedDrawable?.start()
     }
 
     private fun resetLungFill(lungImageView: ImageView) {
         val animatedDrawable = lungImageView.drawable as? AnimatedVectorDrawable
-        if (animatedDrawable?.isRunning == true) {
-            animatedDrawable.stop()
-        }
         animatedDrawable?.reset()
     }
 
@@ -96,20 +121,26 @@ class PsychSighActivity : AppCompatActivity() {
         endScale: Float,
         duration: Long
     ) {
+        // Set pivot points for both lungs
         setLungPivot(leftLung)
         setLungPivot(rightLung)
 
+        // Create scale animations for the left lung
         val scaleUpLeftX = ObjectAnimator.ofFloat(leftLung, "scaleX", startScale, endScale)
         val scaleUpLeftY = ObjectAnimator.ofFloat(leftLung, "scaleY", startScale, endScale)
 
+        // Create scale animations for the right lung
         val scaleUpRightX = ObjectAnimator.ofFloat(rightLung, "scaleX", startScale, endScale)
         val scaleUpRightY = ObjectAnimator.ofFloat(rightLung, "scaleY", startScale, endScale)
 
-        val animatorSet = AnimatorSet()
-        animatorSet.playTogether(scaleUpLeftX, scaleUpLeftY, scaleUpRightX, scaleUpRightY)
-        animatorSet.duration = duration
-        animatorSet.start()
+        // Create and configure the AnimatorSet
+        AnimatorSet().apply {
+            playTogether(scaleUpLeftX, scaleUpLeftY, scaleUpRightX, scaleUpRightY)
+            this.duration = duration // Assign duration here
+            start()
+        }
     }
+
 
     private fun deflateLungs(
         leftLung: ImageView,
@@ -118,6 +149,9 @@ class PsychSighActivity : AppCompatActivity() {
         endScale: Float,
         duration: Long
     ) {
+        // Declare a mutable variable if modification is needed
+        var mutableDuration = duration
+
         setLungPivot(leftLung)
         setLungPivot(rightLung)
 
@@ -129,7 +163,10 @@ class PsychSighActivity : AppCompatActivity() {
 
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(scaleDownLeftX, scaleDownLeftY, scaleDownRightX, scaleDownRightY)
-        animatorSet.duration = duration
+
+        // Use the mutable variable instead of directly modifying the parameter
+        mutableDuration += 500 // Example adjustment
+        animatorSet.duration = mutableDuration
         animatorSet.start()
     }
 
@@ -137,55 +174,4 @@ class PsychSighActivity : AppCompatActivity() {
         lungImageView.pivotX = lungImageView.width / 2f
         lungImageView.pivotY = lungImageView.height / 2f
     }
-
-    private fun performSighCycle() {
-        if (breathCount >= totalBreaths) {
-            instructionTextView.text = "Exercise complete! Well done!"
-            handler.postDelayed({
-                intent = Intent(this,DashBoardActivity::class.java)
-                startActivity(intent)
-            },1000)
-            return
-        }
-
-        // First inhale: Partial fill and expand
-        instructionTextView.text = "Inhale deeply (1st, partial)..."
-        animateLungFill(lungLeftImageView, R.drawable.l_lung_expand_animation)
-        animateLungFill(lungRightImageView, R.drawable.r_lung_expand_animation)
-        expandLungs(lungLeftImageView, lungRightImageView, startScale = 0.65f, endScale = 0.8f, duration = 2000)
-
-        handler.postDelayed({
-            // Ensure first inhale completes
-            if (!isAnimationRunning(lungLeftImageView) && !isAnimationRunning(lungRightImageView)) {
-                // Second inhale: Full fill and expand
-                instructionTextView.text = "Inhale again (2nd, full)..."
-                animateLungFill(lungLeftImageView, R.drawable.l_lung_expand_animation)
-                animateLungFill(lungRightImageView, R.drawable.r_lung_expand_animation)
-                expandLungs(lungLeftImageView, lungRightImageView, startScale = 0.8f, endScale = 1.0f, duration = 1000)
-            }
-        }, 2500) // Ensure enough time for the first animation
-
-        handler.postDelayed({
-            // Ensure second inhale completes
-            if (!isAnimationRunning(lungLeftImageView) && !isAnimationRunning(lungRightImageView)) {
-                // Exhale: Reverse fill and deflate
-                instructionTextView.text = "Exhale slowly..."
-                animateLungFill(lungLeftImageView, R.drawable.l_lung_defill_animation)
-                animateLungFill(lungRightImageView, R.drawable.r_lung_defill_animation)
-                deflateLungs(lungLeftImageView, lungRightImageView, startScale = 1.0f, endScale = 0.65f, duration = 4000)
-            }
-        }, 6000) // Ensure enough time for the second animation
-
-        handler.postDelayed({
-            breathCount++
-            instructionTextView.text = "Breath ${breathCount + 1}/$totalBreaths"
-            performSighCycle()
-        }, 10000) // Allow full cycle to complete
-    }
-
-    private fun isAnimationRunning(lungImageView: ImageView): Boolean {
-        val animatedDrawable = lungImageView.drawable as? AnimatedVectorDrawable
-        return animatedDrawable?.isRunning == true
-    }
-
 }
