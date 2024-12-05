@@ -14,23 +14,43 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-
+        <activity
+            android:name=".MembershipDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MembershipActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SOTDWork"
+            android:exported="false" />
+        <activity
+            android:name=".SOTDSocial"
+            android:exported="false" />
+        <activity
+            android:name=".SOTDSchool"
+            android:exported="false" />
+        <activity
+            android:name=".SOTDHome"
+            android:exported="false" />
+        <activity
+            android:name=".SOTD"
+            android:exported="false" />
         <activity
             android:name=".BehaviorActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".FeelingsActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".BodyActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".MindActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".AwarenessActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".CalendarActivity"
             android:exported="false"
