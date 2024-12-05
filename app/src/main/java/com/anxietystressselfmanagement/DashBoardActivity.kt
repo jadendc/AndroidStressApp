@@ -12,6 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -44,6 +50,9 @@ class DashBoardActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var streakManager: StreakManager
     private lateinit var monthlyButton: Button
+    private lateinit var sotdButton: Button
+    private lateinit var lineChart: LineChart
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board)
@@ -60,6 +69,7 @@ class DashBoardActivity : AppCompatActivity() {
         meh = findViewById(R.id.mehButton)
         happy = findViewById(R.id.happyButton)
         veryHappy = findViewById(R.id.veryHappyButton)
+        sotdButton = findViewById(R.id.SOTDButton)
 
         // Display user welcome message
         val currentUser: FirebaseUser? = auth.currentUser
@@ -89,8 +99,17 @@ class DashBoardActivity : AppCompatActivity() {
         val exerciseButton: Button = findViewById(R.id.exerciseButton)
         val monthlyButton: Button = findViewById(R.id.monthlyButton)
         val induceButton: Button = findViewById(R.id.induceButton)
-        val selfButton:Button = findViewById(R.id.selfButton)
+        val selfButton: Button = findViewById(R.id.selfButton)
         val awareButton: Button = findViewById(R.id.awarenessButton)
+
+
+
+        lineChart = findViewById(R.id.lineChart)
+
+        // Fetch data and update chart
+        fetchEmojiData { emojiCounts ->
+            updateLineChart(emojiCounts)
+        }
 
         journalButton.setOnClickListener {
             intent = Intent(this, JournalActivity::class.java)
@@ -110,7 +129,8 @@ class DashBoardActivity : AppCompatActivity() {
 
         psychButton.setOnClickListener {
             val intent = Intent(this, PsychSighActivity::class.java)
-            startActivity(intent) }
+            startActivity(intent)
+        }
 
         exerciseButton.setOnClickListener {
             val intent = Intent(this, ExercisesActivity::class.java)
@@ -129,6 +149,11 @@ class DashBoardActivity : AppCompatActivity() {
 
         awareButton.setOnClickListener {
             val intent = Intent(this, AwarenessActivity::class.java)
+            startActivity(intent)
+        }
+
+        sotdButton.setOnClickListener {
+            val intent = Intent(this, SOTD::class.java)
             startActivity(intent)
         }
 
@@ -157,7 +182,6 @@ class DashBoardActivity : AppCompatActivity() {
         }
 
 
-
         // Setup navigation drawer
         drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -176,9 +200,14 @@ class DashBoardActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> startActivity(Intent(this,DashBoardActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
+                R.id.nav_dashboard -> startActivity(
+                    Intent(
+                        this,
+                        DashBoardActivity::class.java
+                    ).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
+
                 R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
@@ -186,9 +215,11 @@ class DashBoardActivity : AppCompatActivity() {
                 R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })
-                R.id.nav_settings -> {
-                    // Handle settings action
-                }
+
+                R.id.nav_membership ->
+                    startActivity(Intent(this, MembershipActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    })
 
                 R.id.nav_exercises -> {
                     //Handle exercises action
@@ -229,7 +260,11 @@ class DashBoardActivity : AppCompatActivity() {
             val currentUser = auth.currentUser
             if (currentUser == null) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@DashBoardActivity, "User not logged in!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DashBoardActivity,
+                        "User not logged in!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 return@launch
             }
@@ -247,16 +282,23 @@ class DashBoardActivity : AppCompatActivity() {
                     .set(updateData, SetOptions.merge())
                     .await()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@DashBoardActivity, "Feeling updated successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DashBoardActivity,
+                        "Feeling updated successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@DashBoardActivity, "Failed to update feeling: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DashBoardActivity,
+                        "Failed to update feeling: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
-
 
 
     class StreakManager(private val db: FirebaseFirestore, private val userId: String) {
@@ -316,5 +358,101 @@ class DashBoardActivity : AppCompatActivity() {
                 callback(0) // Return 0 streak if there's an error
             }
         }
+    }
+
+    private fun fetchEmojiData(callback: (List<Pair<String, String>>) -> Unit) {
+        val currentUser = auth.currentUser
+        if (currentUser == null) return
+
+        val userId = currentUser.uid
+        firestore.collection("users")
+            .document(userId)
+            .collection("dailyLogs")
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val emojiDatePairs = mutableListOf<Pair<String, String>>()
+
+                for (document in querySnapshot.documents) {
+                    val emoji = document.getString("feeling") ?: continue
+                    val date = document.id // Assuming document ID is the date
+                    emojiDatePairs.add(Pair(date, emoji))
+                }
+
+                callback(emojiDatePairs)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to fetch emoji data", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun updateLineChart(emojiDatePairs: List<Pair<String, String>>) {
+        val entries = ArrayList<Entry>()
+        val dateLabels = ArrayList<String>()
+        val emojiLabels = arrayListOf("😢", "😔", "😐", "😊", "😁") // Define your emojis in order
+
+        for ((index, pair) in emojiDatePairs.withIndex()) {
+            val (date, emoji) = pair
+
+            // Map emoji to a Y-axis value based on its index in the emoji list
+            val yValue = emojiLabels.indexOf(emoji).toFloat()
+            if (yValue != -1f) {
+                entries.add(Entry(index.toFloat(), yValue))
+                dateLabels.add(date) // Add date for the X-axis
+            }
+        }
+
+        lineChart.setExtraOffsets(0f, 0f, 20f, 0f)
+
+        // Create dataset and chart data
+        val dataSet = LineDataSet(entries, "Mood Tracker")
+        dataSet.color = getColor(R.color.white)
+        dataSet.valueTextColor = getColor(R.color.white)
+        dataSet.setCircleColor(getColor(R.color.black))
+        dataSet.setDrawCircles(true)
+        dataSet.setDrawValues(false) // Hide value text
+
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+
+
+
+        // Customize X-axis with date labels
+        val xAxis = lineChart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.isGranularityEnabled = true
+        xAxis.valueFormatter = IndexAxisValueFormatter(dateLabels)
+        xAxis.textColor = getColor(R.color.white)
+        xAxis.textSize = 10f // Adjust size for better fit
+
+// Add extra padding to prevent cutoff
+        lineChart.setExtraOffsets(5f, 0f, 30f, 25f)
+
+        val yAxisLeft = lineChart.axisLeft
+        yAxisLeft.gridColor = getColor(R.color.black)
+
+        val yAxisRight = lineChart.axisRight
+        yAxisRight.gridColor = getColor(R.color.black)
+
+        val legend = lineChart.legend
+        legend.isEnabled = false
+
+
+// Allow zoom and pan
+        lineChart.setScaleEnabled(true)
+        lineChart.setPinchZoom(true)
+
+// Redraw the chart
+        lineChart.invalidate()
+
+        // Customize Y-axis with emoji labels
+        val yAxis = lineChart.axisLeft
+        yAxis.valueFormatter = IndexAxisValueFormatter(emojiLabels)
+        yAxis.granularity = 1f
+        yAxis.isGranularityEnabled = true
+
+        lineChart.axisRight.isEnabled = false // Disable the right axis
+        lineChart.description.isEnabled = false // Hide description
+        lineChart.invalidate() // Refresh the chart
     }
 }

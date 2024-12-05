@@ -7,6 +7,9 @@
         android:id="@+id/nav_dashboard"
         android:title="Dashboard" />
     <item
+        android:id="@+id/nav_membership"
+        android:title="Membership"/>
+    <item
         android:id="@+id/nav_settings"
         android:title="Settings" />
     <item
@@ -15,5 +18,6 @@
     <item
         android:id="@+id/nav_logout"
         android:title="Logout" />
+
 
 </menu>

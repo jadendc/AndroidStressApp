@@ -77,6 +77,7 @@ class JournalActivity : AppCompatActivity() {
                 R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
+                R.id.nav_membership -> navigateTo(MembershipActivity::class.java)
                 R.id.nav_logout -> logOut()
             }
             drawerLayout.closeDrawers()

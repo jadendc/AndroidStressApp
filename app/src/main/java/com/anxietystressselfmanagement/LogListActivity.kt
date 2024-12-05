@@ -90,6 +90,7 @@ class LogListActivity : BaseActivity() {
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()
+                R.id.nav_membership -> navigateTo(MembershipActivity::class.java)
             }
 
             drawerLayout.closeDrawers()

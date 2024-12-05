@@ -48,6 +48,7 @@ android {
 }
 
 dependencies {
+    implementation (libs.mpandroidchart)
     implementation (platform(libs.firebase.bom.v3210)) // Check for the latest version
     implementation (libs.google.firebase.auth.ktx)
     implementation (libs.google.firebase.firestore.ktx)

@@ -74,6 +74,12 @@ class AboutActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
+                R.id.nav_membership -> {
+                    val intent = Intent(this,MembershipActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
             }
 
 
