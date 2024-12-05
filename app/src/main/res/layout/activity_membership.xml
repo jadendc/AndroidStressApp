@@ -104,7 +104,7 @@
 
     <Button
         android:id="@+id/continueToDetails"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="143dp"
         android:layout_marginTop="62dp"

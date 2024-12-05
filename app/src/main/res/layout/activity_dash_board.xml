@@ -21,14 +21,14 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
-            android:layout_width="391dp"
-            android:layout_height="263dp"
+            android:layout_width="382dp"
+            android:layout_height="249dp"
             android:background="@color/grey"
             android:elevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/mehButton"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
