@@ -28,22 +28,14 @@ class SOTDSchool : AppCompatActivity() {
 
         }
         val customInput = findViewById<EditText>(R.id.customInput)
-        val customToggle = findViewById<ToggleButton>(R.id.button11)
+        val customToggle = findViewById<Button>(R.id.button11)
 
 
-        // Set up ToggleButton behavior
-        customToggle.setOnCheckedChangeListener { _, isChecked ->
+        customToggle.setOnClickListener{
             val inputText = customInput.text.toString()
             if (inputText.isEmpty()) {
-                Toast.makeText(this, "Please enter text before toggling", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Please enter text before saving", Toast.LENGTH_SHORT)
                     .show()
-                customToggle.isChecked = false // Reset toggle if no input
-            } else {
-                if (isChecked) {
-
-                } else {
-
-                }
             }
         }
 
@@ -124,7 +116,7 @@ class SOTDSchool : AppCompatActivity() {
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()
 
-            if (customToggle.isChecked) toggleStates.add("Organization")
+
             if (customToggle2.isChecked) toggleStates.add("Homework")
             if (customToggle3.isChecked) toggleStates.add("Exams")
             if (customToggle4.isChecked) toggleStates.add("Organization")

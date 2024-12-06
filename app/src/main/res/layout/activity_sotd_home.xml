@@ -217,14 +217,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ToggleButton
+    <Button
         android:id="@+id/button11"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginTop="24dp"
+        android:padding="15dp"
         android:background="#556874"
-        android:text="Button"
         app:cornerRadius="10dp"
+        android:text="Save Custom"
         app:layout_constraintEnd_toEndOf="@+id/button13"
         app:layout_constraintStart_toStartOf="@+id/button13"
         app:layout_constraintTop_toBottomOf="@+id/button13" />
