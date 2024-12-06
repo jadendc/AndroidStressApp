@@ -6,19 +6,7 @@
     android:layout_height="match_parent"
     android:background="#69808D">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        app:title="Calender"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="4dp"
-        app:drawerArrowStyle="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIconTint="@color/white"
-        app:titleTextColor="@android:color/white" />
+
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,16 +19,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            app:title="Calender"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="4dp"
+            app:drawerArrowStyle="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIconTint="@color/white"
+            app:titleTextColor="@android:color/white" />
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="12dp"
             android:background="#69808D"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/logo" />
 
         <ImageView
