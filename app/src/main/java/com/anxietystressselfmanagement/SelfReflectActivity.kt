@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
@@ -49,6 +50,11 @@ class SelfReflectActivity : BaseActivity() {
         setupSpinner(whenSpinner, "whenSelection", whenOptions)
         setupSpinner(whereSpinner, "whereSelection", whereOptions)
         setupSpinner(whySpinner, "whySelection", whyOptions)
+
+        backButton.setOnClickListener{
+            startActivity(Intent(this,DashBoardActivity::class.java))
+            finish()
+        }
     }
 
     private fun setupSpinner(spinner: Spinner, key: String, options: List<String>) {

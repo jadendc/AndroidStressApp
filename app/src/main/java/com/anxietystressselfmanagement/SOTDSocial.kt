@@ -123,13 +123,13 @@ class SOTDSocial : AppCompatActivity(){
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()
 
-            if (customToggle.isChecked) toggleStates.add("Button 1")
+            if (customToggle.isChecked) toggleStates.add("Organization")
             if (customToggle2.isChecked) toggleStates.add("Button 2")
             if (customToggle3.isChecked) toggleStates.add("Button 3")
             if (customToggle4.isChecked) toggleStates.add("Button 1")
             if (customToggle5.isChecked) toggleStates.add("Button 2")
             if (customToggle6.isChecked) toggleStates.add("Button 3")
-            if (customToggle7.isChecked) toggleStates.add("Button 3")
+            if (customToggle7.isChecked) toggleStates.add("Financial")
 
             // Display the states
             if (toggleStates.isEmpty()) {
