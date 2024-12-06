@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     android:background="#69808D">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        app:title="Calender"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="4dp"
+        app:drawerArrowStyle="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIconTint="@color/white"
+        app:titleTextColor="@android:color/white" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,27 +32,27 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/backButton"
-            android:layout_width="40dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="352dp"
-            android:clickable="true"
-            android:contentDescription="@string/sound_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/backbutton" />
-
-        <ImageView
             android:id="@+id/imageView3"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="96dp"
             android:background="#69808D"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo" />
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="40dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="72dp"
+            android:clickable="true"
+            android:contentDescription="@string/sound_button"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:srcCompat="@drawable/backbutton" />
 
         <CalendarView
             android:id="@+id/calendarView"
@@ -65,8 +79,10 @@
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+            app:layout_constraintTop_toBottomOf="@+id/calendarView"
+            app:layout_constraintVertical_bias="0.187" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
