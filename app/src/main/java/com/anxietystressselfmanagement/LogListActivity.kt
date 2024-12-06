@@ -46,7 +46,7 @@ class LogListActivity : BaseActivity() {
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, CalendarActivity::class.java)
             startActivity(intent)
             finish()
         }
