@@ -1,10 +1,12 @@
 package com.anxietystressselfmanagement
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.drawerlayout.widget.DrawerLayout
@@ -13,6 +15,7 @@ import com.google.android.material.navigation.NavigationView
 class SelfReflectActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var backButton: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +43,18 @@ class SelfReflectActivity : BaseActivity() {
 
         setupNavigationDrawer(drawerLayout, navigationView, toolbar)
 
+        backButton = findViewById(R.id.backButton)
+
         setupSpinner(whatSpinner, "whatSelection", whatOptions)
         setupSpinner(whoSpinner, "whoSelection", whoOptions)
         setupSpinner(whenSpinner, "whenSelection", whenOptions)
         setupSpinner(whereSpinner, "whereSelection", whereOptions)
         setupSpinner(whySpinner, "whySelection", whyOptions)
+
+        backButton.setOnClickListener{
+            startActivity(Intent(this,DashBoardActivity::class.java))
+            finish()
+        }
     }
 
     private fun setupSpinner(spinner: Spinner, key: String, options: List<String>) {

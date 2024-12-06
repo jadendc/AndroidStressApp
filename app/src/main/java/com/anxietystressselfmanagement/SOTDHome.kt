@@ -124,19 +124,19 @@ class SOTDHome : AppCompatActivity() {
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()
 
-            if (customToggle.isChecked) toggleStates.add("Button 1")
-            if (customToggle2.isChecked) toggleStates.add("Button 2")
-            if (customToggle3.isChecked) toggleStates.add("Button 3")
-            if (customToggle4.isChecked) toggleStates.add("Button 1")
-            if (customToggle5.isChecked) toggleStates.add("Button 2")
-            if (customToggle6.isChecked) toggleStates.add("Button 3")
-            if (customToggle7.isChecked) toggleStates.add("Button 3")
+            if (customToggle.isChecked) toggleStates.add("Domestic Duties")
+            if (customToggle2.isChecked) toggleStates.add("Partner")
+            if (customToggle3.isChecked) toggleStates.add("Family")
+            if (customToggle4.isChecked) toggleStates.add("In Laws")
+            if (customToggle5.isChecked) toggleStates.add("Financial")
+            if (customToggle6.isChecked) toggleStates.add("")
+            if (customToggle7.isChecked) toggleStates.add("Sickness")
 
             // Display the states
             if (toggleStates.isEmpty()) {
                 Toast.makeText(this, "No buttons are ON", Toast.LENGTH_SHORT).show()
             } else {
-                startActivity(Intent(this,DashBoardActivity::class.java))
+                startActivity(Intent(this,SOTD::class.java))
                 Toast.makeText(this, "${toggleStates.joinToString(", ")} are ON", Toast.LENGTH_SHORT).show()
             }
         }

@@ -14,20 +14,18 @@
         android:background="@color/grey">
 
 
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            app:title="Journal"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="4dp"
             app:drawerArrowStyle="@color/white"
-            android:layout_marginBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@color/white"
+            app:title="Journal"
             app:titleTextColor="@android:color/white" />
 
         <EditText
@@ -45,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3"
             app:layout_constraintVertical_bias="0.333" />
 
 
@@ -78,15 +76,13 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
 
         <ImageView
-            android:layout_marginTop="55dp"
             android:id="@+id/imageView3"
             android:layout_width="113dp"
             android:layout_height="92dp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:srcCompat="@drawable/logo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

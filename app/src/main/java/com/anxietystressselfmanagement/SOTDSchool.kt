@@ -124,19 +124,20 @@ class SOTDSchool : AppCompatActivity() {
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()
 
-            if (customToggle.isChecked) toggleStates.add("Button 1")
-            if (customToggle2.isChecked) toggleStates.add("Button 2")
-            if (customToggle3.isChecked) toggleStates.add("Button 3")
-            if (customToggle4.isChecked) toggleStates.add("Button 1")
-            if (customToggle5.isChecked) toggleStates.add("Button 2")
-            if (customToggle6.isChecked) toggleStates.add("Button 3")
-            if (customToggle7.isChecked) toggleStates.add("Button 3")
+            if (customToggle.isChecked) toggleStates.add("Organization")
+            if (customToggle2.isChecked) toggleStates.add("Homework")
+            if (customToggle3.isChecked) toggleStates.add("Exams")
+            if (customToggle4.isChecked) toggleStates.add("Organization")
+            if (customToggle5.isChecked) toggleStates.add("Bullying")
+            if (customToggle6.isChecked) toggleStates.add("Grades")
+            if (customToggle7.isChecked) toggleStates.add("Financial")
 
             // Display the states
             if (toggleStates.isEmpty()) {
                 Toast.makeText(this, "No buttons are ON", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, "${toggleStates.joinToString(", ")} are ON", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this,SOTD::class.java))
             }
         }
 
