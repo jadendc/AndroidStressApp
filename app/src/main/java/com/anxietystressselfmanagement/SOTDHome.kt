@@ -129,7 +129,7 @@ class SOTDHome : AppCompatActivity() {
             if (customToggle3.isChecked) toggleStates.add("Family")
             if (customToggle4.isChecked) toggleStates.add("In Laws")
             if (customToggle5.isChecked) toggleStates.add("Financial")
-            if (customToggle6.isChecked) toggleStates.add("")
+            if (customToggle6.isChecked) toggleStates.add("Domestic Dispute")
             if (customToggle7.isChecked) toggleStates.add("Sickness")
 
             // Display the states

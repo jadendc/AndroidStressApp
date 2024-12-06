@@ -123,18 +123,19 @@ class SOTDSocial : AppCompatActivity(){
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()
 
-            if (customToggle.isChecked) toggleStates.add("Organization")
-            if (customToggle2.isChecked) toggleStates.add("Button 2")
-            if (customToggle3.isChecked) toggleStates.add("Button 3")
-            if (customToggle4.isChecked) toggleStates.add("Button 1")
-            if (customToggle5.isChecked) toggleStates.add("Button 2")
-            if (customToggle6.isChecked) toggleStates.add("Button 3")
-            if (customToggle7.isChecked) toggleStates.add("Financial")
+            if (customToggle.isChecked) toggleStates.add("Isolation")
+            if (customToggle2.isChecked) toggleStates.add("Social Media")
+            if (customToggle3.isChecked) toggleStates.add("Traffic")
+            if (customToggle4.isChecked) toggleStates.add("Isolation")
+            if (customToggle5.isChecked) toggleStates.add("Friend Dispute")
+            if (customToggle6.isChecked) toggleStates.add("Pandemic")
+            if (customToggle7.isChecked) toggleStates.add("Sports Performance")
 
             // Display the states
             if (toggleStates.isEmpty()) {
                 Toast.makeText(this, "No buttons are ON", Toast.LENGTH_SHORT).show()
             } else {
+                startActivity(Intent(this,SOTD::class.java))
                 Toast.makeText(this, "${toggleStates.joinToString(", ")} are ON", Toast.LENGTH_SHORT).show()
             }
         }
