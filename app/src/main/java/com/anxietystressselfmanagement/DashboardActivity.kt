@@ -91,14 +91,11 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         val journalButton: Button = findViewById(R.id.journalButton)
-        val psychButton: Button = findViewById(R.id.psychButton)
         val exerciseButton: Button = findViewById(R.id.exerciseButton)
         val monthlyButton: Button = findViewById(R.id.monthlyButton)
         val induceButton: Button = findViewById(R.id.induceButton)
         val selfButton: Button = findViewById(R.id.selfButton)
         val awareButton: Button = findViewById(R.id.awarenessButton)
-
-
 
         lineChart = findViewById(R.id.lineChart)
 
@@ -112,19 +109,8 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        psychButton.setOnClickListener {
-            intent = Intent(this, PsychSighActivity::class.java)
-            startActivity(intent)
-        }
-
         monthlyButton.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
-            startActivity(intent)
-        }
-
-        psychButton.setOnClickListener {
-            val intent = Intent(this, PsychSighActivity::class.java)
             startActivity(intent)
         }
 
