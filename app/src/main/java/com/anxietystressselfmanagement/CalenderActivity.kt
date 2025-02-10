@@ -40,7 +40,7 @@ class CalendarActivity : AppCompatActivity() {
 
         // Set click listener for the back button
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
             finish()
         }

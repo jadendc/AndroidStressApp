@@ -4,7 +4,6 @@ import android.content.Intent
 import android.widget.ImageView
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 
 class SOTD : AppCompatActivity() {
@@ -20,7 +19,7 @@ class SOTD : AppCompatActivity() {
 
         // Set a click listener to navigate back to MainActivity
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
             finish() // Optional: Closes SOTD activity
 

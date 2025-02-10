@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.anxietystressselfmanagement.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -85,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
                                 Toast.makeText(this, "User data saved", Toast.LENGTH_SHORT).show()
 
                                 // Transition to Dashboard only after successful signup and saving user data
-                                val intent = Intent(this, DashBoardActivity::class.java)
+                                val intent = Intent(this, DashboardActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 startActivity(intent)
                                 finish()

@@ -54,7 +54,7 @@ class JournalActivity : AppCompatActivity() {
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -64,7 +64,7 @@ class JournalActivity : AppCompatActivity() {
             val journalText = journalInput.text.toString().trim()
             if (journalText.isNotEmpty()) {
                 saveJournalEntry(journalText)
-                startActivity(Intent(this,DashBoardActivity::class.java))
+                startActivity(Intent(this,DashboardActivity::class.java))
             } else {
                 Toast.makeText(this, "Please type something to save", Toast.LENGTH_SHORT).show()
             }
@@ -74,7 +74,7 @@ class JournalActivity : AppCompatActivity() {
         // Navigation view item selection
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_membership -> navigateTo(MembershipActivity::class.java)

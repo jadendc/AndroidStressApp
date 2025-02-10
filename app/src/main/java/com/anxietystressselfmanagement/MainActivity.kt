@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
                     // Transition to DashboardActivity if user is authenticated
                     firebaseAuth.currentUser?.let {
-                        val intent = Intent(this, DashBoardActivity::class.java)
+                        val intent = Intent(this, DashboardActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish() // Finish MainActivity

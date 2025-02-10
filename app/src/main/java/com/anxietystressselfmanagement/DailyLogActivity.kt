@@ -2,7 +2,6 @@ package com.anxietystressselfmanagement
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import java.text.SimpleDateFormat
@@ -83,7 +81,7 @@ class DailyLogActivity : AppCompatActivity() {
         // Handle navigation menu item selection
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashBoardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()
@@ -95,7 +93,7 @@ class DailyLogActivity : AppCompatActivity() {
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -106,7 +104,7 @@ class DailyLogActivity : AppCompatActivity() {
         // Handle submit button click
         submitButton.setOnClickListener {
             saveDailyLog()
-            intent = Intent(this, DashBoardActivity::class.java)
+            intent = Intent(this, DashboardActivity::class.java)
             startActivity(intent)
         }
 

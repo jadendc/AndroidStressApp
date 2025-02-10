@@ -6,8 +6,6 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class AwarenessActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +42,7 @@ class AwarenessActivity : AppCompatActivity() {
 
             val backButton: ImageView = findViewById(R.id.backButton)
             backButton.setOnClickListener {
-                val intent = Intent(this, DashBoardActivity::class.java)
+                val intent = Intent(this, DashboardActivity::class.java)
                 startActivity(intent)
                 finish()
             }

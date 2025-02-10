@@ -52,7 +52,7 @@ class SelfReflectActivity : BaseActivity() {
         setupSpinner(whySpinner, "whySelection", whyOptions)
 
         backButton.setOnClickListener{
-            startActivity(Intent(this,DashBoardActivity::class.java))
+            startActivity(Intent(this,DashboardActivity::class.java))
             finish()
         }
     }

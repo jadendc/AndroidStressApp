@@ -11,11 +11,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WavesActivity : AppCompatActivity() {
     private var isMuted = false // Track mute state
@@ -101,7 +96,7 @@ class WavesActivity : AppCompatActivity() {
                         it.stop()
                         it.release() // Release resources
                         Handler(Looper.getMainLooper()).postDelayed({
-                            startActivity(Intent(this, DashBoardActivity::class.java))
+                            startActivity(Intent(this, DashboardActivity::class.java))
                         }, totalDuration+3000)
                     }
                     mediaPlayer = null // Reset the reference

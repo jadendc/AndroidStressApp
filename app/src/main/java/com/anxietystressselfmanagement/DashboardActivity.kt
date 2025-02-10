@@ -1,7 +1,6 @@
 package com.anxietystressselfmanagement
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -10,8 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -31,10 +28,9 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
-class DashBoardActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity() {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var drawerLayout: DrawerLayout
@@ -203,7 +199,7 @@ class DashBoardActivity : AppCompatActivity() {
                 R.id.nav_dashboard -> startActivity(
                     Intent(
                         this,
-                        DashBoardActivity::class.java
+                        DashboardActivity::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })
@@ -261,7 +257,7 @@ class DashBoardActivity : AppCompatActivity() {
             if (currentUser == null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashBoardActivity,
+                        this@DashboardActivity,
                         "User not logged in!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -283,7 +279,7 @@ class DashBoardActivity : AppCompatActivity() {
                     .await()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashBoardActivity,
+                        this@DashboardActivity,
                         "Feeling updated successfully!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -291,7 +287,7 @@ class DashBoardActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashBoardActivity,
+                        this@DashboardActivity,
                         "Failed to update feeling: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
