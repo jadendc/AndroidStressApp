@@ -20,14 +20,14 @@ class MembershipDetailsActivity : AppCompatActivity() {
 
         // Set a click listener to navigate back to MainActivity
         backButton.setOnClickListener{
-            val intent = Intent(this, DashBoardActivity::class.java)
+            val intent = Intent(this, MembershipActivity::class.java)
             startActivity(intent)
             finish() // Optional: Closes SOTD activity
 
         }
         button2.setOnClickListener {
 
-            val intent1 = Intent(this, DashBoardActivity::class.java)
+            val intent1 = Intent(this, MembershipActivity::class.java)
             startActivity(intent1)
             }
         }
