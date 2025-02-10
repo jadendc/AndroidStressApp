@@ -37,7 +37,7 @@ class PsychSighActivity : AppCompatActivity() {
 
         // Back button navigation
         backButton.setOnClickListener {
-            navigateToDashboard()
+            navigateToExercises()
         }
 
         // Start button functionality
@@ -46,8 +46,8 @@ class PsychSighActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToDashboard() {
-        val intent = Intent(this, DashBoardActivity::class.java)
+    private fun navigateToExercises() {
+        val intent = Intent(this, ExercisesActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -70,7 +70,7 @@ class PsychSighActivity : AppCompatActivity() {
         if (breathCount >= totalBreaths) {
             instructionTextView.text = "Exercise complete! Well done!"
             handler.postDelayed({
-                navigateToDashboard()
+                navigateToExercises()
             }, 1000)
             return
         }

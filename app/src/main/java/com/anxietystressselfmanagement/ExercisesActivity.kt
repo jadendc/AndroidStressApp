@@ -14,6 +14,7 @@ class ExercisesActivity : AppCompatActivity() {
         val btnDestress: Button = findViewById(R.id.buttonDestress)
         val btnSleep: Button = findViewById(R.id.buttonEaseSleep)
         val btnFocus: Button = findViewById(R.id.buttonStrengthenFocus)
+        val btnPyschSigh: Button = findViewById(R.id.buttonPsychologicalSigh)
 
         btnDestress.setOnClickListener {
             val intent = Intent(this, DestressActivity::class.java)
@@ -27,6 +28,11 @@ class ExercisesActivity : AppCompatActivity() {
 
         btnFocus.setOnClickListener {
             val intent = Intent(this, FocusActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnPyschSigh.setOnClickListener {
+            val intent = Intent(this, PsychSighActivity::class.java)
             startActivity(intent)
         }
 
