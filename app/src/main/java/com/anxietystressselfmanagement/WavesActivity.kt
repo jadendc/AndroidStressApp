@@ -96,7 +96,7 @@ class WavesActivity : AppCompatActivity() {
                         it.stop()
                         it.release() // Release resources
                         Handler(Looper.getMainLooper()).postDelayed({
-                            startActivity(Intent(this, DashboardActivity::class.java))
+                            startActivity(Intent(this, HomeActivity::class.java))
                         }, totalDuration+3000)
                     }
                     mediaPlayer = null // Reset the reference

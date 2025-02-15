@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DashboardActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private lateinit var drawerLayout: DrawerLayout
@@ -179,7 +179,7 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.nav_dashboard -> startActivity(
                     Intent(
                         this,
-                        DashboardActivity::class.java
+                        HomeActivity::class.java
                     ).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     })
@@ -237,7 +237,7 @@ class DashboardActivity : AppCompatActivity() {
             if (currentUser == null) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashboardActivity,
+                        this@HomeActivity,
                         "User not logged in!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -259,7 +259,7 @@ class DashboardActivity : AppCompatActivity() {
                     .await()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashboardActivity,
+                        this@HomeActivity,
                         "Feeling updated successfully!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -267,7 +267,7 @@ class DashboardActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
-                        this@DashboardActivity,
+                        this@HomeActivity,
                         "Failed to update feeling: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()

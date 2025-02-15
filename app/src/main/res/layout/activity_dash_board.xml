@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#5C6E7A"
-    tools:context=".DashboardActivity">
+    tools:context=".HomeActivity">
 
     <!-- Main content layout within DrawerLayout -->
 
@@ -30,18 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mehButton"
             app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/monthlyButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Monthly Calender"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.933"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/journalButton" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -197,6 +185,18 @@
             app:layout_constraintHorizontal_bias="0.137"
             app:layout_constraintStart_toStartOf="@+id/journalButton"
             app:layout_constraintTop_toBottomOf="@+id/journalButton" />
+
+        <Button
+            android:id="@+id/monthlyButton"
+            android:layout_width="171dp"
+            android:layout_height="55dp"
+            android:backgroundTint="#546773"
+            android:text="Monthly Calender"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.933"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/journalButton" />
 
         <Button
             android:id="@+id/exerciseButton"

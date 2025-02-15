@@ -77,7 +77,7 @@ class LogListActivity : BaseActivity() {
         // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(HomeActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()

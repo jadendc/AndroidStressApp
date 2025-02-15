@@ -46,7 +46,7 @@ abstract class BaseActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true // Highlight the selected item
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(HomeActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_membership -> navigateTo(MembershipActivity::class.java)

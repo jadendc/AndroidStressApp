@@ -31,7 +31,7 @@ class StressInduceActivity : AppCompatActivity() {
             // Back button to navigate to Dashboard
             val backButton: ImageView = findViewById(R.id.backButton)
             backButton.setOnClickListener {
-                val intent = Intent(this, DashboardActivity::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
             }

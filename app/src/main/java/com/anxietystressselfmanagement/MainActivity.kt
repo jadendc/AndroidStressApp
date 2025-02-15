@@ -83,9 +83,9 @@ class MainActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("MainActivity", "Login successful for email: $email")
 
-                    // Transition to DashboardActivity if user is authenticated
+                    // Transition to HomeActivity if user is authenticated
                     firebaseAuth.currentUser?.let {
-                        val intent = Intent(this, DashboardActivity::class.java)
+                        val intent = Intent(this, HomeActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         finish() // Finish MainActivity

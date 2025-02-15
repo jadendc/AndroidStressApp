@@ -81,7 +81,7 @@ class DailyLogActivity : AppCompatActivity() {
         // Handle navigation menu item selection
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
+                R.id.nav_dashboard -> navigateTo(HomeActivity::class.java)
                 R.id.nav_settings -> navigateTo(SettingActivity::class.java)
                 R.id.nav_about -> navigateTo(AboutActivity::class.java)
                 R.id.nav_logout -> logOut()
@@ -93,7 +93,7 @@ class DailyLogActivity : AppCompatActivity() {
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -104,7 +104,7 @@ class DailyLogActivity : AppCompatActivity() {
         // Handle submit button click
         submitButton.setOnClickListener {
             saveDailyLog()
-            intent = Intent(this, DashboardActivity::class.java)
+            intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
