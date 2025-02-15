@@ -90,7 +90,6 @@ class DashboardActivity : AppCompatActivity() {
             updateStreakDisplay()
         }
 
-        val journalButton: Button = findViewById(R.id.journalButton)
         val exerciseButton: Button = findViewById(R.id.exerciseButton)
         val monthlyButton: Button = findViewById(R.id.monthlyButton)
         val induceButton: Button = findViewById(R.id.induceButton)
@@ -102,11 +101,6 @@ class DashboardActivity : AppCompatActivity() {
         // Fetch data and update chart
         fetchEmojiData { emojiCounts ->
             updateLineChart(emojiCounts)
-        }
-
-        journalButton.setOnClickListener {
-            intent = Intent(this, JournalActivity::class.java)
-            startActivity(intent)
         }
 
         monthlyButton.setOnClickListener {
