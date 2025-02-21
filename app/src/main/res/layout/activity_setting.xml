@@ -80,7 +80,6 @@
             app:layout_constraintVertical_bias="0.8" />
 
         <androidx.appcompat.widget.Toolbar
-            app:title="Settings"
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
@@ -91,6 +90,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@color/white"
+            app:title="Settings"
             app:titleTextColor="@android:color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
