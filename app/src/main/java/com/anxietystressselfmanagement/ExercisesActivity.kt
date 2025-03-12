@@ -39,7 +39,7 @@ class ExercisesActivity : AppCompatActivity() {
         // Back button functionality
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java) // Navigate back to Exercises page
+            val intent = Intent(this, HomeActivity::class.java) // Navigate back to Exercises page
             startActivity(intent)
             finish() // Finish current activity to prevent stacking
         }

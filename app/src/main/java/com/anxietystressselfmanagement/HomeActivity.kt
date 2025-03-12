@@ -83,6 +83,9 @@ class HomeActivity: AppCompatActivity() {
         monthlyCalendarButton.setOnClickListener {
             startActivity(Intent(this, CalendarActivity::class.java))
         }
+        learnMoreButton.setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
 
         // Add other button click handlers as needed
 
@@ -104,6 +107,10 @@ class HomeActivity: AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+
+                R.id.nav_home -> startActivity(
+                    Intent(this, HomeActivity::class.java)
+                )
                 R.id.nav_dashboard -> startActivity(
                     Intent(this, DashboardActivity::class.java)
                 )

@@ -111,7 +111,8 @@
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false"
+            android:exported="true"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
