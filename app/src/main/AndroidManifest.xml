@@ -159,6 +159,14 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
+            android:name=".MoodActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
+            android:name=".InControlActivity"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar"/>
+        <activity
             android:name=".ExercisesActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" /> <!-- Meta-data inside the application -->

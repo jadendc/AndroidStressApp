@@ -80,6 +80,10 @@ class HomeActivity: AppCompatActivity() {
             startActivity(Intent(this, ExercisesActivity::class.java))
         }
 
+        dailyRoadmapButton.setOnClickListener{
+            startActivity(Intent(this, MoodActivity::class.java))
+        }
+
         monthlyCalendarButton.setOnClickListener {
             startActivity(Intent(this, CalendarActivity::class.java))
         }
