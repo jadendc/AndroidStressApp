@@ -20,7 +20,7 @@
             android:layout_height="55dp"
             android:layout_marginBottom="328dp"
             android:backgroundTint="#4A5962"
-            android:text="FAQ and Help"
+            android:text="@string/faq_and_help"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
