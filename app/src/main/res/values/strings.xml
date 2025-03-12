@@ -68,4 +68,6 @@
     <string name="exerciseGif" />
     <string name="psychological_sigh">Psychological Sigh</string>
     <string name="faq_and_help">FAQ and Help</string>
+    <string name="notifications">Notifications</string>
+    <string name="profile">Profile</string>
 </resources>
