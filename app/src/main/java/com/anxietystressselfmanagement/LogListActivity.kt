@@ -115,16 +115,16 @@ class LogListActivity : BaseActivity() {
                     coroutineScope.launch(Dispatchers.Main) {
                         findViewById<TextView>(R.id.activityResult).text = activity
                         findViewById<TextView>(R.id.behaviorResult).text = behavior
-                        findViewById<TextView>(R.id.behaviorOutput).text = behaviorText
+//                        findViewById<TextView>(R.id.behaviorOutput).text = behaviorText
                         findViewById<TextView>(R.id.triggerResult).text = trigger
                         findViewById<TextView>(R.id.signResult).text = sign
                         findViewById<TextView>(R.id.strategiesResult).text = strategy
                         findViewById<TextView>(R.id.bodyResult).text = body
-                        findViewById<TextView>(R.id.bodyOutput).text = bodyText
+//                        findViewById<TextView>(R.id.bodyOutput).text = bodyText
                         findViewById<TextView>(R.id.mindResult).text = mind
-                        findViewById<TextView>(R.id.mindOutput).text = mindText
+//                        findViewById<TextView>(R.id.mindOutput).text = mindText
                         findViewById<TextView>(R.id.emotionResult).text = emotion
-                        findViewById<TextView>(R.id.emotionOutput).text = emotionText
+//                        findViewById<TextView>(R.id.emotionOutput).text = emotionText
                         findViewById<TextView>(R.id.feelingResult).text = feeling
                         findViewById<TextView>(R.id.journalEntry).text = journal
                     }

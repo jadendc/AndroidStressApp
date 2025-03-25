@@ -179,17 +179,17 @@
                     android:textColor="@color/white"
                     android:layout_marginTop="8dp" />
 
-                <TextView
-                    android:id="@+id/bodyOutput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:padding="5dp"
-                    android:gravity="center_vertical"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/bodyOutput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/mindTextView"
@@ -209,16 +209,16 @@
                     android:layout_marginTop="8dp"
                     android:background="#5B6E7A" />
 
-                <TextView
-                    android:id="@+id/mindOutput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="8dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/mindOutput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/emotionTextView"
@@ -240,17 +240,17 @@
                     android:padding="5dp"
                     android:layout_marginTop="8dp" />
 
-                <TextView
-                    android:id="@+id/emotionOutput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/emotionOutput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/behaviorTextView"
@@ -272,17 +272,17 @@
                     android:textSize="15sp"
                     android:layout_marginTop="8dp" />
 
-                <TextView
-                    android:id="@+id/behaviorOutput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:background="#5B6E7A"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/behaviorOutput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
                 <TextView
                     android:id="@+id/journalLabel"
                     android:layout_width="wrap_content"

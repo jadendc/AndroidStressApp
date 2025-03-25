@@ -76,17 +76,33 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp" />
-
-                <EditText
-                    android:id="@+id/activityInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                <Spinner
+                    android:id="@+id/activitySpinner"
                     android:background="#5B6E7A"
-                    android:hint="Ex. Meditation, Reading, Gym, etc."
-                    android:padding="12dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF" />
+                    style="@style/SpinnerStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="8dp" />
+
+
+                <!--                <Spinner
+                                    android:id="@+id/triggerSpinner"
+                                    android:background="#5B6E7A"
+                                    style="@style/SpinnerStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="30dp"
+                                    android:layout_marginTop="8dp" />
+
+                <!--                <EditText-->
+<!--                    android:id="@+id/activityInput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:hint="Ex. Meditation, Reading, Gym, etc."-->
+<!--                    android:padding="12dp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF" />-->
 
                 <!-- What trigger did you experience? -->
                 <TextView
@@ -160,17 +176,17 @@
                     android:background="#5B6E7A"
                     android:layout_marginTop="8dp" />
 
-                <EditText
-                    android:id="@+id/bodyInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:hint="Type here any issues physically"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <EditText-->
+<!--                    android:id="@+id/bodyInput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:hint="Type here any issues physically"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/mindTextView"
@@ -189,17 +205,17 @@
                     android:background="#5B6E7A"
                     android:layout_marginTop="8dp" />
 
-                <EditText
-                    android:id="@+id/mindInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:hint="Type here any issues mentally"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <EditText-->
+<!--                    android:id="@+id/mindInput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:hint="Type here any issues mentally"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/emotionTextView"
@@ -218,17 +234,17 @@
                     android:background="#5B6E7A"
                     android:layout_marginTop="8dp" />
 
-                <EditText
-                    android:id="@+id/emotionInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:hint="Type here any issues emotionally"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <EditText-->
+<!--                    android:id="@+id/emotionInput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:hint="Type here any issues emotionally"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/behaviorTextView"
@@ -247,17 +263,17 @@
                     android:background="#5B6E7A"
                     android:layout_marginTop="8dp" />
 
-                <EditText
-                    android:id="@+id/behaviorInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#5B6E7A"
-                    android:hint="Type here any issues with behavior"
-                    android:padding="5dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    android:textColorHint="#FFFFFF"
-                    android:layout_marginTop="8dp" />
+<!--                <EditText-->
+<!--                    android:id="@+id/behaviorInput"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    android:hint="Type here any issues with behavior"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textColorHint="#FFFFFF"-->
+<!--                    android:layout_marginTop="8dp" />-->
 
                 <TextView
                     android:id="@+id/introTextView"
@@ -286,13 +302,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/white"
         app:menu="@menu/nav_menu" />
-
 </androidx.drawerlayout.widget.DrawerLayout>

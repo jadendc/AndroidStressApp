@@ -22,6 +22,7 @@ class DailyLogActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var activityInput: EditText
     private lateinit var triggerSpinner: Spinner
+    private lateinit var activitySpinner: Spinner
     private lateinit var signSpinner: Spinner
     private lateinit var strategiesSpinner: Spinner
     private lateinit var bodySpinner: Spinner
@@ -48,8 +49,9 @@ class DailyLogActivity : AppCompatActivity() {
         // Initialize views
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-        activityInput = findViewById(R.id.activityInput)
+//        activityInput = findViewById(R.id.activityInput)
         triggerSpinner = findViewById(R.id.triggerSpinner)
+        activitySpinner = findViewById(R.id.activitySpinner)
         signSpinner = findViewById(R.id.signSpinner)
         bodySpinner = findViewById(R.id.bodySpinner)
         strategiesSpinner = findViewById(R.id.strategiesSpinner)
@@ -58,10 +60,10 @@ class DailyLogActivity : AppCompatActivity() {
         behaviorSpinner = findViewById(R.id.behaviorSpinner)
         submitButton = findViewById(R.id.submitButton)
 
-         bodyTextView = findViewById(R.id.bodyInput)
-         behaviorTextView = findViewById(R.id.behaviorInput)
-         mindTextView = findViewById(R.id.mindInput)
-         emotionTextView = findViewById(R.id.emotionInput)
+//         bodyTextView = findViewById(R.id.bodyInput)
+//         behaviorTextView = findViewById(R.id.behaviorInput)
+//         mindTextView = findViewById(R.id.mindInput)
+//         emotionTextView = findViewById(R.id.emotionInput)
 
 
         // Toolbar and navigation drawer setup

@@ -41,7 +41,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.933"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/journalButton" />
+            app:layout_constraintTop_toTopOf="@+id/dailyLogButton" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -173,11 +173,11 @@
         </FrameLayout>
 
         <Button
-            android:id="@+id/journalButton"
+            android:id="@+id/dailyLogButton"
             android:layout_width="171dp"
             android:layout_height="55dp"
             android:backgroundTint="#556874"
-            android:text="Journal"
+            android:text="Daily Log"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -193,10 +193,10 @@
             android:backgroundTint="#556874"
             android:text="Psychological Sigh"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/journalButton"
+            app:layout_constraintEnd_toEndOf="@+id/dailyLogButton"
             app:layout_constraintHorizontal_bias="0.137"
-            app:layout_constraintStart_toStartOf="@+id/journalButton"
-            app:layout_constraintTop_toBottomOf="@+id/journalButton" />
+            app:layout_constraintStart_toStartOf="@+id/dailyLogButton"
+            app:layout_constraintTop_toBottomOf="@+id/dailyLogButton" />
 
         <Button
             android:id="@+id/exerciseButton"
@@ -209,7 +209,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/monthlyButton"
-            app:layout_constraintTop_toBottomOf="@+id/journalButton" />
+            app:layout_constraintTop_toBottomOf="@+id/dailyLogButton" />
 
         <Button
             android:id="@+id/induceButton"

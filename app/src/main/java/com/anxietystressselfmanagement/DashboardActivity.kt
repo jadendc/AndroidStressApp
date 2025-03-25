@@ -95,7 +95,7 @@ class DashboardActivity : AppCompatActivity() {
         val induceButton: Button = findViewById(R.id.induceButton)
         val selfButton: Button = findViewById(R.id.selfButton)
         val awareButton: Button = findViewById(R.id.awarenessButton)
-
+        val dailyLogButton: Button = findViewById(R.id.dailyLogButton)
         lineChart = findViewById(R.id.lineChart)
 
         // Fetch data and update chart
@@ -105,6 +105,11 @@ class DashboardActivity : AppCompatActivity() {
 
         monthlyButton.setOnClickListener {
             val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
+        }
+
+        dailyLogButton.setOnClickListener {
+            val intent = Intent(this, DailyLogActivity::class.java)
             startActivity(intent)
         }
 
