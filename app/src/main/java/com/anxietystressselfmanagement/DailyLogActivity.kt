@@ -22,7 +22,7 @@ class DailyLogActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var activityInput: EditText
     private lateinit var triggerSpinner: Spinner
-    private lateinit var activitySpinner: Spinner
+
     private lateinit var signSpinner: Spinner
     private lateinit var strategiesSpinner: Spinner
     private lateinit var bodySpinner: Spinner
@@ -49,9 +49,9 @@ class DailyLogActivity : AppCompatActivity() {
         // Initialize views
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
-//        activityInput = findViewById(R.id.activityInput)
+        activityInput = findViewById(R.id.activityInput)
         triggerSpinner = findViewById(R.id.triggerSpinner)
-        activitySpinner = findViewById(R.id.activitySpinner)
+
         signSpinner = findViewById(R.id.signSpinner)
         bodySpinner = findViewById(R.id.bodySpinner)
         strategiesSpinner = findViewById(R.id.strategiesSpinner)
@@ -118,6 +118,7 @@ class DailyLogActivity : AppCompatActivity() {
 
     private fun populateSpinners() {
         val triggers = listOf("Work", "Family", "Health", "Other")
+//
         val signs = listOf("Headache", "Fatigue", "Tension", "Other")
         val strategies = listOf("Meditation", "Exercise", "Talking to Someone", "Other")
         val body = listOf("Headaches", "Skin Irritation", "High Blood Pressure", "Fatigue", "Palpitations", "Difficulty Breathing", "Custom")
@@ -203,6 +204,8 @@ class DailyLogActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to save log: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+        
+
     }
 
 

@@ -76,35 +76,19 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_marginTop="16dp" />
-                <Spinner
-                    android:id="@+id/activitySpinner"
-                    android:background="#5B6E7A"
-                    style="@style/SpinnerStyle"
+                <EditText
+                    android:id="@+id/activityInput"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
+                    android:background="#5B6E7A"
+                    android:hint="Type here any activities you'vd done"
+                    android:padding="5dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#FFFFFF"
                     android:layout_marginTop="8dp" />
 
-
-                <!--                <Spinner
-                                    android:id="@+id/triggerSpinner"
-                                    android:background="#5B6E7A"
-                                    style="@style/SpinnerStyle"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="30dp"
-                                    android:layout_marginTop="8dp" />
-
-                <!--                <EditText-->
-<!--                    android:id="@+id/activityInput"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:background="#5B6E7A"-->
-<!--                    android:hint="Ex. Meditation, Reading, Gym, etc."-->
-<!--                    android:padding="12dp"-->
-<!--                    android:textColor="@color/white"-->
-<!--                    android:textColorHint="#FFFFFF" />-->
-
-                <!-- What trigger did you experience? -->
+<!--                 What trigger did you experience? -->
                 <TextView
                     android:id="@+id/triggerLabel"
                     android:layout_width="wrap_content"
