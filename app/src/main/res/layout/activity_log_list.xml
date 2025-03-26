@@ -283,24 +283,24 @@
 <!--                    android:textColor="@color/white"-->
 <!--                    android:textColorHint="#FFFFFF"-->
 <!--                    android:layout_marginTop="8dp" />-->
-                <TextView
-                    android:id="@+id/journalLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp"
-                    android:text="Journal"
-                    android:textSize="25dp"
-                    android:textColor="@color/white"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/journalLabel"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_horizontal"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:text="Journal"-->
+<!--                    android:textSize="25dp"-->
+<!--                    android:textColor="@color/white"/>-->
 
-                <TextView
-                    android:id="@+id/journalEntry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:padding="5dp"
-                    android:background="#5B6E7A"
-                    />
+<!--                <TextView-->
+<!--                    android:id="@+id/journalEntry"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:background="#5B6E7A"-->
+<!--                    />-->
 
 
 

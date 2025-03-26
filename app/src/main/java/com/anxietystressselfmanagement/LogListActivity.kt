@@ -110,7 +110,7 @@ class LogListActivity : BaseActivity() {
                     val sign = document.getString("sign") ?: "No sign info logged"
                     val strategy = document.getString("strategy") ?: "No strategy info logged"
                     val trigger = document.getString("trigger") ?: "No trigger info logged"
-                    val journal = document.getString("text") ?: "No journal entry found"
+
 
                     coroutineScope.launch(Dispatchers.Main) {
                         findViewById<TextView>(R.id.activityResult).text = activity

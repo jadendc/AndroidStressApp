@@ -60,10 +60,7 @@ class DailyLogActivity : AppCompatActivity() {
         behaviorSpinner = findViewById(R.id.behaviorSpinner)
         submitButton = findViewById(R.id.submitButton)
 
-//         bodyTextView = findViewById(R.id.bodyInput)
-//         behaviorTextView = findViewById(R.id.behaviorInput)
-//         mindTextView = findViewById(R.id.mindInput)
-//         emotionTextView = findViewById(R.id.emotionInput)
+
 
 
         // Toolbar and navigation drawer setup
@@ -150,10 +147,7 @@ class DailyLogActivity : AppCompatActivity() {
         val mind = mindSpinner.selectedItem.toString()
         val emotion = emotionSpinner.selectedItem.toString()
         val behavior = behaviorSpinner.selectedItem.toString()
-        val bodyText = bodyTextView.text.toString().trim()
-        val behaviorText = behaviorTextView.text.toString().trim()
-        val mindText = mindTextView.text.toString().trim()
-        val emotionText = emotionTextView.text.toString().trim()
+
 
         // Validate required fields
         if (activity.isEmpty()) {
@@ -185,10 +179,7 @@ class DailyLogActivity : AppCompatActivity() {
             "emotion" to emotion,
             "behavior" to behavior,
             "date" to currentDate,
-            "bodyText" to bodyText,
-            "mindText" to mindText,
-            "emotionText" to emotionText,
-            "behaviorText" to behaviorText
+
         )
 
         // Save the log under the user's document in Firestore
