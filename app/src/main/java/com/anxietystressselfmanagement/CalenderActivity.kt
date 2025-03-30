@@ -33,7 +33,7 @@ class CalendarActivity : AppCompatActivity() {
 
         // Set click listener for the continue button
         continueButton.setOnClickListener {
-            val intent = Intent(this, LogListActivity::class.java)
+            val intent = Intent(this, MoodActivity::class.java)
             intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
         }

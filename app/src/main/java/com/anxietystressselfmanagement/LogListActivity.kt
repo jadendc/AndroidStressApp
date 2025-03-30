@@ -126,7 +126,7 @@ class LogListActivity : BaseActivity() {
                         findViewById<TextView>(R.id.emotionResult).text = emotion
 //                        findViewById<TextView>(R.id.emotionOutput).text = emotionText
                         findViewById<TextView>(R.id.feelingResult).text = feeling
-                        findViewById<TextView>(R.id.journalEntry).text = journal
+//                        findViewById<TextView>(R.id.journalEntry).text = journal
                     }
                 } else {
                     Log.e("Firestore", "No log found for the date: $date")

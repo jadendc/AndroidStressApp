@@ -52,7 +52,7 @@ class MoodActivity : AppCompatActivity() {
         // Set up back button click listener
         backButton.setOnClickListener {
             // Navigate back to the previous screen (HomeActivity)
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, CalendarActivity::class.java)
             startActivity(intent)
             finish() // Close this activity
         }

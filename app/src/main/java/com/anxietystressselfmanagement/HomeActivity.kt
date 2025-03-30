@@ -48,9 +48,9 @@ class HomeActivity: AppCompatActivity() {
         home_WelcomeMes = findViewById(R.id.home_WelcomeMes)
         val dashboardButton: Button = findViewById(R.id.home_DashBut)
         val exercisesButton: Button = findViewById(R.id.home_ExBut)
-        val dailyRoadmapButton: Button = findViewById(R.id.home_DailyRoadBut)
+//        val dailyRoadmapButton: Button = findViewById(R.id.home_DailyRoadBut)
         val monthlyCalendarButton: Button = findViewById(R.id.home_MonthlyCalBut)
-        val learnMoreButton: Button = findViewById(R.id.home_LearnMoreBut)
+//        val learnMoreButton: Button = findViewById(R.id.home_LearnMoreBut)
 
         // Display user welcome message
         val currentUser: FirebaseUser? = auth.currentUser
@@ -80,16 +80,16 @@ class HomeActivity: AppCompatActivity() {
             startActivity(Intent(this, ExercisesActivity::class.java))
         }
 
-        dailyRoadmapButton.setOnClickListener{
-            startActivity(Intent(this, MoodActivity::class.java))
-        }
+//        dailyRoadmapButton.setOnClickListener{
+//            startActivity(Intent(this, MoodActivity::class.java))
+//        }
 
         monthlyCalendarButton.setOnClickListener {
             startActivity(Intent(this, CalendarActivity::class.java))
         }
-        learnMoreButton.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
+//        learnMoreButton.setOnClickListener {
+//            startActivity(Intent(this, AboutActivity::class.java))
+//        }
 
         // Add other button click handlers as needed
 

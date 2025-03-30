@@ -19,7 +19,7 @@ class SOTD : AppCompatActivity() {
 
         // Set a click listener to navigate back to MainActivity
         backButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
+            val intent = Intent(this, InControlActivity::class.java)
             startActivity(intent)
             finish() // Optional: Closes SOTD activity
 
