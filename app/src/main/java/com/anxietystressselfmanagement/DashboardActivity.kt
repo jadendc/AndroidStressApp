@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 class DashboardActivity : AppCompatActivity() {
     private lateinit var barChart: BarChart
+    private lateinit var pieChart: PieChart
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,11 +43,12 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dash_board)
 
         barChart = findViewById(R.id.barChart)
+        pieChart = findViewById(R.id.pieChart)
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
         fetchInControlData()
-
+        fetchMoodData()
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout) // Use correct ID
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -121,10 +123,67 @@ class DashboardActivity : AppCompatActivity() {
             calendar.add(Calendar.DAY_OF_YEAR, -1) // Move to the previous day
         }
     }
+    private fun fetchMoodData() {
+        val currentUser = auth.currentUser ?: return
+        val userId = currentUser.uid
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        // Map to count moods
+        val moodCounts = mutableMapOf(
+            "Excited" to 0,
+            "Happy" to 0,
+            "Indifferent" to 0,
+            "Sad" to 0,
+            "Angry" to 0
+        )
+
+        for (i in 0..6) {  // Fetch data for the last 7 days starting from today
+            val dateKey = dateFormat.format(calendar.time)
+
+            // Fetch mood data for this specific date
+            db.collection("users").document(userId)
+                .collection("dailyLogs").document(dateKey)
+                .get()
+                .addOnSuccessListener { document ->
+                    val mood = document.getString("feeling") ?: ""
+                    when (mood) {
+                        "😁" -> moodCounts["Excited"] = moodCounts["Excited"]!! + 1
+                        "😊" -> moodCounts["Happy"] = moodCounts["Happy"]!! + 1
+                        "😐" -> moodCounts["Indifferent"] = moodCounts["Indifferent"]!! + 1
+                        "😔" -> moodCounts["Sad"] = moodCounts["Sad"]!! + 1
+                        "😢" -> moodCounts["Angry"] = moodCounts["Angry"]!! + 1
+                    }
+
+                    // After processing all 7 days, update the pie chart
+                    if (i == 6) setupPieChart(moodCounts)
+                }
+                .addOnFailureListener { e ->
+                    Log.e("DashboardActivity", "Error fetching mood data", e)
+                }
+
+            // Move to the previous day
+            calendar.add(Calendar.DAY_OF_YEAR, -1)
+        }
+    }
 
 
 
 
+    private fun setupPieChart(moodCounts: Map<String, Int>) {
+        val entries = mutableListOf<PieEntry>()
+        moodCounts.forEach { (mood, count) ->
+            if (count > 0) entries.add(PieEntry(count.toFloat(), mood))
+        }
+
+        val dataSet = PieDataSet(entries, "Feelings")
+        dataSet.colors = listOf(Color.GREEN, Color.BLUE, Color.YELLOW, Color.GRAY, Color.RED)
+        val data = PieData(dataSet)
+
+        pieChart.data = data
+        pieChart.description.isEnabled = false
+        pieChart.invalidate()
+    }
     private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
         val barDataSet = BarDataSet(entries, "In Control")
         barDataSet.color = Color.BLUE
