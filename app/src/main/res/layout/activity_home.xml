@@ -12,6 +12,19 @@
         android:layout_height="match_parent"
         android:background="@color/grey">
 
+        <Button
+            android:id="@+id/home_awarenessbut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:backgroundTint="#556874"
+            android:text="Awareness Questions"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="@id/home_DashBut"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/home_DashBut"
+            app:layout_constraintTop_toBottomOf="@id/home_DashBut" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
@@ -63,10 +76,10 @@
             android:backgroundTint="#556874"
             android:text="Immediate Exercises"
             android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="@+id/home_DashBut"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/home_DashBut"
-            app:layout_constraintTop_toBottomOf="@+id/home_DashBut" />
+            app:layout_constraintEnd_toEndOf="@id/home_awarenessbut"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/home_awarenessbut"
+            app:layout_constraintTop_toBottomOf="@id/home_awarenessbut" />
 
         <Button
             android:id="@+id/home_MonthlyCalBut"

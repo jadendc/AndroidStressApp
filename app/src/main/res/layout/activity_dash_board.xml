@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/saveButton"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#5C6E7A"
@@ -19,40 +19,17 @@
 
         <!-- Toolbar for the navigation drawer -->
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
-            android:layout_width="382dp"
-            android:layout_height="249dp"
-            android:background="@color/grey"
-            android:elevation="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mehButton"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/monthlyButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Monthly Calender"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.933"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dailyLogButton" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@android:color/white"
-            app:title="Dashboard"
+            app:title="\t \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\Dashboard"
             app:titleTextColor="@android:color/white" />
 
         <TextView
@@ -61,203 +38,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif"
-            android:text="Welcome, User!"
+            android:text="Intention to Change"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-        <TextView
-            android:id="@+id/streakTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="Streak: 0 days"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintBottom_toTopOf="@+id/moodTextView"
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
-
-        <Button
-            android:id="@+id/verySadButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="196dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="😢"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@id/sadButton"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/sadButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="196dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="😔"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@id/mehButton"
-            app:layout_constraintStart_toEndOf="@id/verySadButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/mehButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="196dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="😐"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@id/happyButton"
-            app:layout_constraintStart_toEndOf="@id/sadButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/happyButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="196dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="😊"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@id/veryHappyButton"
-            app:layout_constraintStart_toEndOf="@id/mehButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/veryHappyButton"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="196dp"
-            android:background="?attr/selectableItemBackground"
-            android:text="😁"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/happyButton"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/moodTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="How are you feeling?"
-            android:textAlignment="center"
-            android:textColor="#FDFDFD"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/mehButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.629"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="423dp"
-            android:layout_height="83dp"
-            android:background="#677888"
-            app:layout_constraintBottom_toBottomOf="@+id/mehButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mehButton"
-            app:layout_constraintVertical_bias="0.269">
-
-        </FrameLayout>
-
-        <Button
-            android:id="@+id/dailyLogButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#556874"
-            android:text="Daily Log"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.066"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineChart"
-            app:layout_constraintVertical_bias="0.296" />
-
-        <Button
-            android:id="@+id/psychButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#556874"
-            android:text="Psychological Sigh"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/dailyLogButton"
-            app:layout_constraintHorizontal_bias="0.137"
-            app:layout_constraintStart_toStartOf="@+id/dailyLogButton"
-            app:layout_constraintTop_toBottomOf="@+id/dailyLogButton" />
-
-        <Button
-            android:id="@+id/exerciseButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:layout_marginEnd="52dp"
-            android:backgroundTint="#546773"
-            android:text="Exercises"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/monthlyButton"
-            app:layout_constraintTop_toBottomOf="@+id/dailyLogButton" />
-
-        <Button
-            android:id="@+id/induceButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Hormone Induce"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/psychButton"
-            app:layout_constraintHorizontal_bias="0.062"
-            app:layout_constraintStart_toStartOf="@+id/psychButton"
-            app:layout_constraintTop_toBottomOf="@+id/psychButton" />
-
-        <Button
-            android:id="@+id/selfButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Self-Reflect"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/exerciseButton"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/exerciseButton"
-            app:layout_constraintTop_toBottomOf="@+id/exerciseButton" />
-
-        <Button
-            android:id="@+id/awarenessButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Food for Thought"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/induceButton"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/induceButton"
-            app:layout_constraintTop_toBottomOf="@+id/selfButton" />
-
-        <Button
-            android:id="@+id/SOTDButton"
-            android:layout_width="171dp"
-            android:layout_height="55dp"
-            android:backgroundTint="#546773"
-            android:text="Stressor of the Day"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/selfButton"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/selfButton"
-            app:layout_constraintTop_toBottomOf="@+id/selfButton" />
+            app:layout_constraintTop_toBottomOf="@id/welcomeTextView" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

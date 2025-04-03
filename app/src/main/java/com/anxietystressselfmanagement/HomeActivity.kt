@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import com.anxietystressselfmanagement.DashboardActivity.StreakManager
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -50,6 +49,7 @@ class HomeActivity: AppCompatActivity() {
         val exercisesButton: Button = findViewById(R.id.home_ExBut)
 //        val dailyRoadmapButton: Button = findViewById(R.id.home_DailyRoadBut)
         val monthlyCalendarButton: Button = findViewById(R.id.home_MonthlyCalBut)
+        val awarenessButton: Button = findViewById(R.id.home_awarenessbut)
 //        val learnMoreButton: Button = findViewById(R.id.home_LearnMoreBut)
 
         // Display user welcome message
@@ -78,6 +78,9 @@ class HomeActivity: AppCompatActivity() {
 
         exercisesButton.setOnClickListener {
             startActivity(Intent(this, ExercisesActivity::class.java))
+        }
+        awarenessButton.setOnClickListener {
+            startActivity(Intent(this, SelfReflectActivity::class.java))
         }
 
 //        dailyRoadmapButton.setOnClickListener{
