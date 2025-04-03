@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIconTint="@android:color/white"
-            app:title="\t \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\Dashboard"
+            app:title="\t \t\t\t\t\t\t\t\t\\tDashboard"
             app:titleTextColor="@android:color/white" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif"
-            android:text="Intention to Change"
+            android:text="In Control"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"

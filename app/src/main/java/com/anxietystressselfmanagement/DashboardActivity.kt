@@ -92,27 +92,38 @@ class DashboardActivity : AppCompatActivity() {
         val dates = mutableListOf<String>()
         val entries = mutableListOf<BarEntry>()
 
-        for (i in 4 downTo 0) { // Fetch last 5 days
-            calendar.add(Calendar.DAY_OF_YEAR, -i)
+        // Start from today and go back 5 days
+        for (i in 0..4) { // From today (0) to 4 days ago
             val dateKey = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             val formattedDate = dateFormat.format(calendar.time)
+
+            // Add the formatted date to the dates list
             dates.add(formattedDate)
 
+            // Fetch the data for this day
             db.collection("users").document(userId)
                 .collection("dailyLogs").document(dateKey)
                 .get()
                 .addOnSuccessListener { document ->
+                    // If data exists, add the control value; otherwise, use 0f
                     val controlLevel = document.getLong("control")?.toFloat() ?: 0f
-                    entries.add(BarEntry(dates.indexOf(formattedDate).toFloat(), controlLevel))
-                    if (entries.size == dates.size) {
+                    entries.add(BarEntry(entries.size.toFloat(), controlLevel))
+
+                    // If all 5 days have been processed, update the chart
+                    if (entries.size == 5) {
                         setupBarChart(entries, dates)
                     }
                 }
                 .addOnFailureListener { e ->
                     Log.e("DashboardActivity", "Error fetching control data", e)
                 }
+
+            calendar.add(Calendar.DAY_OF_YEAR, -1) // Move to the previous day
         }
     }
+
+
+
 
     private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
         val barDataSet = BarDataSet(entries, "In Control")
@@ -137,8 +148,9 @@ class DashboardActivity : AppCompatActivity() {
 
         // Set y-axis properties
         val leftAxis = barChart.axisLeft
-        leftAxis.axisMinimum = 0f
+        leftAxis.axisMinimum = 1f
         leftAxis.axisMaximum = 5f
+        leftAxis.granularity = 1f
         barChart.axisRight.isEnabled = false
 
         barChart.invalidate()
