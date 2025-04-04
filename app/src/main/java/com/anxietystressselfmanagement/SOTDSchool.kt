@@ -10,8 +10,6 @@ import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class SOTDSchool : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +26,7 @@ class SOTDSchool : AppCompatActivity() {
 
         }
         val customInput = findViewById<EditText>(R.id.customInput)
-        val customToggle = findViewById<Button>(R.id.button11)
+        val customToggle = findViewById<Button>(R.id.saveCustom)
 
 
         customToggle.setOnClickListener{
@@ -111,7 +109,7 @@ class SOTDSchool : AppCompatActivity() {
                 customToggle7.setTextColor(Color.BLACK)
             }
         }
-        val checkStatesButton = findViewById<Button>(R.id.button13)
+        val checkStatesButton = findViewById<Button>(R.id.continueButtonSotdHome)
         checkStatesButton.setOnClickListener {
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()

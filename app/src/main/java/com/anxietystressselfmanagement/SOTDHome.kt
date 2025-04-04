@@ -5,9 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +26,7 @@ class SOTDHome : AppCompatActivity() {
 
         }
         val customInput = findViewById<EditText>(R.id.customInput)
-        val customToggle = findViewById<Button>(R.id.button11)
+        val customToggle = findViewById<Button>(R.id.saveCustom)
 
 
         // Set up ToggleButton behavior
@@ -112,7 +110,7 @@ class SOTDHome : AppCompatActivity() {
                 customToggle7.setTextColor(Color.BLACK)
             }
         }
-        val checkStatesButton = findViewById<Button>(R.id.button13)
+        val checkStatesButton = findViewById<Button>(R.id.continueButtonSotdHome)
         checkStatesButton.setOnClickListener {
             // Check the state of each toggle button
             val toggleStates = mutableListOf<String>()

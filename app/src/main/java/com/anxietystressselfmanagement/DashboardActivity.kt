@@ -2,6 +2,7 @@ package com.anxietystressselfmanagement
 
 import com.github.mikephil.charting.formatter.ValueFormatter
 import android.graphics.Color
+import com.github.mikephil.charting.formatter.PercentFormatter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.*
@@ -92,35 +93,57 @@ class DashboardActivity : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
         val calendar = Calendar.getInstance()
         val dates = mutableListOf<String>()
-        val entries = mutableListOf<BarEntry>()
+        val entriesMap = mutableMapOf<Int, Float>() // Map position to control value
+        var daysProcessed = 0
 
-        // Start from today and go back 5 days
-        for (i in 0..4) { // From today (0) to 4 days ago
+
+        for (i in 0..6) {
             val dateKey = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
             val formattedDate = dateFormat.format(calendar.time)
 
-            // Add the formatted date to the dates list
-            dates.add(formattedDate)
 
-            // Fetch the data for this day
+            dates.add(0, formattedDate)
+
+
+            val position = i
             db.collection("users").document(userId)
                 .collection("dailyLogs").document(dateKey)
                 .get()
                 .addOnSuccessListener { document ->
-                    // If data exists, add the control value; otherwise, use 0f
                     val controlLevel = document.getLong("control")?.toFloat() ?: 0f
-                    entries.add(BarEntry(entries.size.toFloat(), controlLevel))
+                    entriesMap[position] = controlLevel
+                    daysProcessed++
 
-                    // If all 5 days have been processed, update the chart
-                    if (entries.size == 5) {
+
+                    if (daysProcessed == 7) {
+
+                        val entries = (0..6).map { pos ->
+
+                            BarEntry((6-pos).toFloat(), entriesMap[pos] ?: 0f)
+                        }
+
+
                         setupBarChart(entries, dates)
+
+
+                        Log.d("DashboardActivity", "Bar chart data: $entriesMap")
+                        Log.d("DashboardActivity", "Bar chart dates: $dates")
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e("DashboardActivity", "Error fetching control data", e)
+                    Log.e("DashboardActivity", "Error fetching control data for $dateKey", e)
+                    daysProcessed++
+
+
+                    if (daysProcessed == 7) {
+                        val entries = (0..6).map { pos ->
+                            BarEntry((6-pos).toFloat(), entriesMap[pos] ?: 0f)
+                        }
+                        setupBarChart(entries, dates)
+                    }
                 }
 
-            calendar.add(Calendar.DAY_OF_YEAR, -1) // Move to the previous day
+            calendar.add(Calendar.DAY_OF_YEAR, -1) //
         }
     }
     private fun fetchMoodData() {
@@ -128,6 +151,7 @@ class DashboardActivity : AppCompatActivity() {
         val userId = currentUser.uid
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        var daysProcessed = 0
 
         // Map to count moods
         val moodCounts = mutableMapOf(
@@ -140,6 +164,7 @@ class DashboardActivity : AppCompatActivity() {
 
         for (i in 0..6) {  // Fetch data for the last 7 days starting from today
             val dateKey = dateFormat.format(calendar.time)
+            Log.d("DashboardActivity", "Fetching mood for date: $dateKey")
 
             // Fetch mood data for this specific date
             db.collection("users").document(userId)
@@ -147,6 +172,8 @@ class DashboardActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { document ->
                     val mood = document.getString("feeling") ?: ""
+                    Log.d("DashboardActivity", "Mood for $dateKey: $mood")
+
                     when (mood) {
                         "😁" -> moodCounts["Excited"] = moodCounts["Excited"]!! + 1
                         "😊" -> moodCounts["Happy"] = moodCounts["Happy"]!! + 1
@@ -155,11 +182,21 @@ class DashboardActivity : AppCompatActivity() {
                         "😢" -> moodCounts["Angry"] = moodCounts["Angry"]!! + 1
                     }
 
+                    daysProcessed++
                     // After processing all 7 days, update the pie chart
-                    if (i == 6) setupPieChart(moodCounts)
+                    if (daysProcessed == 7) {
+                        Log.d("DashboardActivity", "Updating pie chart with data: $moodCounts")
+                        setupPieChart(moodCounts)
+                    }
                 }
                 .addOnFailureListener { e ->
-                    Log.e("DashboardActivity", "Error fetching mood data", e)
+                    Log.e("DashboardActivity", "Error fetching mood data for $dateKey", e)
+                    daysProcessed++
+                    // Still try to update chart if we failed to get some data
+                    if (daysProcessed == 7) {
+                        Log.d("DashboardActivity", "Updating pie chart after some errors: $moodCounts")
+                        setupPieChart(moodCounts)
+                    }
                 }
 
             // Move to the previous day
@@ -176,22 +213,47 @@ class DashboardActivity : AppCompatActivity() {
             if (count > 0) entries.add(PieEntry(count.toFloat(), mood))
         }
 
-        val dataSet = PieDataSet(entries, "Feelings")
-        dataSet.colors = listOf(Color.GREEN, Color.BLUE, Color.YELLOW, Color.GRAY, Color.RED)
+        val pastelColors = listOf(
+            Color.parseColor("#77dd77"), // Pastel Green
+            Color.parseColor("#a2c2e0"), // Pastel Blue
+            Color.parseColor("#fdfd96"), // Pastel Yellow
+            Color.parseColor("#d3d3d3"), // Pastel Gray
+            Color.parseColor("#f7a9a9")  // Pastel Red
+        )
+
+        val dataSet = PieDataSet(entries, "")
+        dataSet.colors = pastelColors
+        dataSet.setValueFormatter(PercentFormatter(pieChart))
+        dataSet.setDrawValues(true)
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.valueTextSize = 16f
+
         val data = PieData(dataSet)
 
         pieChart.data = data
+        pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
+        pieChart.setDrawHoleEnabled(false)
+        pieChart.setDrawEntryLabels(false)
         pieChart.invalidate()
+
+        // Setup legend
+        val legend = pieChart.legend
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.setDrawInside(false)
+        legend.textColor = Color.BLACK
+        legend.textSize = 16f
     }
     private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
         val barDataSet = BarDataSet(entries, "In Control")
-        barDataSet.color = Color.BLUE
+        barDataSet.color = Color.parseColor("#77dd77")
         val barData = BarData(barDataSet)
 
         barData.setValueFormatter(object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString() // Remove decimal points
+                return value.toInt().toString()
             }
         })
 
@@ -207,10 +269,13 @@ class DashboardActivity : AppCompatActivity() {
 
         // Set y-axis properties
         val leftAxis = barChart.axisLeft
-        leftAxis.axisMinimum = 1f
-        leftAxis.axisMaximum = 5f
+        leftAxis.axisMinimum = 0f  // Start from 0
+        leftAxis.axisMaximum = 5f  // Max value is 5
         leftAxis.granularity = 1f
         barChart.axisRight.isEnabled = false
+
+        // Ensure all 7 labels are visible
+        xAxis.labelCount = 7
 
         barChart.invalidate()
     }
