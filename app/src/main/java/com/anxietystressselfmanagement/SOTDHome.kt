@@ -3,133 +3,210 @@ package com.anxietystressselfmanagement
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SOTDHome : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private var selectedOption: String? = null
+    private lateinit var allToggleButtons: List<ToggleButton>
+    private var customStressorActive = false
+    private val defaultButtonColor = Color.parseColor("#556874") // Match the XML background color
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Set the content view to your XML layout
         setContentView(R.layout.activity_sotd_home)
+
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
         val backButton = findViewById<ImageView>(R.id.backButton)
 
-        // Set a click listener to navigate back to MainActivity
+        // Set a click listener to navigate back to SOTD activity
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
             startActivity(intent)
-            finish() // Optional: Closes SOTD activity
-
+            finish() // Optional: Closes current activity
         }
+
+        // Get references to all toggle buttons
+        val togglePartner = findViewById<ToggleButton>(R.id.button)
+        val toggleFamily = findViewById<ToggleButton>(R.id.button6)
+        val toggleInLaws = findViewById<ToggleButton>(R.id.button7)
+        val toggleFinancial = findViewById<ToggleButton>(R.id.button8)
+        val toggleDomestic = findViewById<ToggleButton>(R.id.button9)
+        val toggleSickness = findViewById<ToggleButton>(R.id.button10)
+
+        // Add all toggle buttons to a list for easier management
+        allToggleButtons = listOf(
+            togglePartner, toggleFamily, toggleInLaws,
+            toggleFinancial, toggleDomestic, toggleSickness
+        )
+
+        // Initialize all toggle buttons (hide text and set default color)
+        for (button in allToggleButtons) {
+            button.textOn = ""
+            button.textOff = ""
+            button.text = ""
+            button.setBackgroundColor(defaultButtonColor)
+        }
+
+        // Get references to other UI elements
         val customInput = findViewById<EditText>(R.id.customInput)
-        val customToggle = findViewById<Button>(R.id.saveCustom)
+        val saveCustomButton = findViewById<Button>(R.id.saveCustom)
 
+        // Set up toggle button listeners
+        setupToggleButtons()
 
-        // Set up ToggleButton behavior
-        customToggle.setOnClickListener{
+        // Set up custom stressor functionality
+        saveCustomButton.setOnClickListener {
             val inputText = customInput.text.toString()
             if (inputText.isEmpty()) {
-                Toast.makeText(this, "Please enter text before saving", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        val customToggle2 = findViewById<ToggleButton>(R.id.button)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle2.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle2.setBackgroundColor(Color.GREEN) // ON state
-                customToggle2.setTextColor(Color.WHITE)
+                Toast.makeText(this, "Please enter text before saving", Toast.LENGTH_SHORT).show()
             } else {
-                customToggle2.setBackgroundColor(Color.RED) // OFF state
-                customToggle2.setTextColor(Color.BLACK)
+                // Deselect all other toggle buttons
+                deselectAllToggles()
+                customStressorActive = true
+
+                // Show confirmation toast
+                Toast.makeText(this, "Custom stressor selected: $inputText", Toast.LENGTH_SHORT).show()
             }
         }
-        val customToggle3 = findViewById<ToggleButton>(R.id.button6)
 
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle3.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle3.setBackgroundColor(Color.GREEN) // ON state
-                customToggle3.setTextColor(Color.WHITE)
+        // Set up continue button
+        val continueButton = findViewById<Button>(R.id.continueButtonSotdHome)
+        continueButton.setOnClickListener {
+            selectedOption = getSelectedStressor(customInput.text.toString())
+
+            if (selectedOption.isNullOrEmpty()) {
+                Toast.makeText(this, "Please select a stressor", Toast.LENGTH_SHORT).show()
             } else {
-                customToggle3.setBackgroundColor(Color.RED) // OFF state
-                customToggle3.setTextColor(Color.BLACK)
+                saveSOTDHomeToFirestor()
             }
-        }
-        val customToggle4 = findViewById<ToggleButton>(R.id.button7)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle4.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle4.setBackgroundColor(Color.GREEN) // ON state
-                customToggle4.setTextColor(Color.WHITE)
-            } else {
-                customToggle4.setBackgroundColor(Color.RED) // OFF state
-                customToggle4.setTextColor(Color.BLACK)
-            }
-        }
-        val customToggle5 = findViewById<ToggleButton>(R.id.button8)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle5.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle5.setBackgroundColor(Color.GREEN) // ON state
-                customToggle5.setTextColor(Color.WHITE)
-            } else {
-                customToggle5.setBackgroundColor(Color.RED) // OFF state
-                customToggle5.setTextColor(Color.BLACK)
-            }
-        }
-        val customToggle6 = findViewById<ToggleButton>(R.id.button9)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle6.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle6.setBackgroundColor(Color.GREEN) // ON state
-                customToggle6.setTextColor(Color.WHITE)
-            } else {
-                customToggle6.setBackgroundColor(Color.RED) // OFF state
-                customToggle6.setTextColor(Color.BLACK)
-            }
-        }
-        val customToggle7 = findViewById<ToggleButton>(R.id.button10)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle7.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle7.setBackgroundColor(Color.GREEN) // ON state
-                customToggle7.setTextColor(Color.WHITE)
-            } else {
-                customToggle7.setBackgroundColor(Color.RED) // OFF state
-                customToggle7.setTextColor(Color.BLACK)
-            }
-        }
-        val checkStatesButton = findViewById<Button>(R.id.continueButtonSotdHome)
-        checkStatesButton.setOnClickListener {
-            // Check the state of each toggle button
-            val toggleStates = mutableListOf<String>()
-
-            if (customToggle2.isChecked) toggleStates.add("Partner")
-            if (customToggle3.isChecked) toggleStates.add("Family")
-            if (customToggle4.isChecked) toggleStates.add("In Laws")
-            if (customToggle5.isChecked) toggleStates.add("Financial")
-            if (customToggle6.isChecked) toggleStates.add("Domestic Dispute")
-            if (customToggle7.isChecked) toggleStates.add("Sickness")
-
-            // Display the states
-            if (toggleStates.isEmpty()) {
-                Toast.makeText(this, "No buttons are ON", Toast.LENGTH_SHORT).show()
-            } else {
-                startActivity(Intent(this,SOTD::class.java))
-                Toast.makeText(this, "${toggleStates.joinToString(", ")} are ON", Toast.LENGTH_SHORT).show()
-            }
-        }
-
         }
     }
+
+    private fun setupToggleButtons() {
+        // Set up listeners for all toggle buttons
+        for (toggleButton in allToggleButtons) {
+            toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    // Deselect all other toggle buttons
+                    for (otherButton in allToggleButtons) {
+                        if (otherButton != buttonView) {
+                            otherButton.isChecked = false
+                            otherButton.setBackgroundColor(defaultButtonColor)
+                        }
+                    }
+
+                    // Reset custom stressor if a toggle button is selected
+                    customStressorActive = false
+
+                    // Update selected button appearance
+                    toggleButton.setBackgroundColor(Color.GREEN)
+                } else {
+                    // If being unchecked, reset to default color
+                    toggleButton.setBackgroundColor(defaultButtonColor)
+                }
+            }
+        }
+    }
+
+    private fun deselectAllToggles() {
+        for (toggleButton in allToggleButtons) {
+            toggleButton.isChecked = false
+            toggleButton.setBackgroundColor(defaultButtonColor)
+        }
+    }
+
+    private fun saveSOTDHomeToFirestor() {
+        val currentUser = auth.currentUser
+        if (currentUser != null && selectedOption != null) {
+            val userId = currentUser.uid
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val today = dateFormat.format(Date())
+
+            // Show saving indicator
+            Toast.makeText(this, "Saving your option selection...", Toast.LENGTH_SHORT).show()
+
+            // Create map with home option data
+            val homeOptionData: MutableMap<String, Any?> = hashMapOf(
+                "homeOption" to selectedOption,
+            )
+
+            // Save to Firestore
+            db.collection("users")
+                .document(userId)
+                .collection("dailyLogs")
+                .document(today)
+                .update(homeOptionData)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Option saved successfully!", Toast.LENGTH_SHORT).show()
+                    Log.d("SOTD", "Home option updated in existing document")
+
+                    // Navigate to the Awareness activity
+                    val intent = Intent(this, AwarenessActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Log.w("SOTD", "Error updating document, trying to create new one", e)
+
+                    // The document might not exist yet
+                    // In that case, we'll create a new document
+                    db.collection("users")
+                        .document(userId)
+                        .collection("dailyLogs")
+                        .document(today)
+                        .set(homeOptionData, SetOptions.merge())
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Option saved successfully!", Toast.LENGTH_SHORT).show()
+                            Log.d("SOTD", "Created new document with home option")
+
+                            // Navigate to the Awareness activity
+                            val intent = Intent(this, AwarenessActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .addOnFailureListener { e2 ->
+                            Log.e("SOTD", "Error saving data: ${e2.message}", e2)
+                            Toast.makeText(this, "Failed to save your response: ${e2.message}", Toast.LENGTH_LONG).show()
+                        }
+                }
+        } else {
+            Toast.makeText(this, "Please select an option first", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getSelectedStressor(customText: String): String {
+        // Check if custom stressor is active
+        if (customStressorActive && customText.isNotEmpty()) {
+            return "Custom: $customText"
+        }
+
+        // Check which toggle button is selected
+        val toggleLabels = listOf("Partner", "Family", "In Laws", "Financial", "Domestic Dispute", "Sickness")
+
+        for (i in allToggleButtons.indices) {
+            if (allToggleButtons[i].isChecked) {
+                return toggleLabels[i]
+            }
+        }
+
+        return "" // No stressor selected
+    }
+}

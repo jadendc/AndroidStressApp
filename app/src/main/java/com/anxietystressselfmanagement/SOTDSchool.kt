@@ -8,128 +8,170 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.SetOptions
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SOTDSchool : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var allToggleButtons: List<ToggleButton>
+    private var customStressorActive = false
+    private val defaultButtonColor = Color.parseColor("#556874") // Match the XML background color
+    private var selectedOption: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_sotd_school)
-        val backButton = findViewById<ImageView>(R.id.backButton)
 
-        // Set a click listener to navigate back to MainActivity
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
             startActivity(intent)
-            finish() // Optional: Closes SOTD activity
-
+            finish()
         }
+
+        // Get references to all toggle buttons
+        val toggleTeachers = findViewById<ToggleButton>(R.id.button)
+        val toggleClassmates = findViewById<ToggleButton>(R.id.button6)
+        val toggleGrades = findViewById<ToggleButton>(R.id.button7)
+        val toggleHomework = findViewById<ToggleButton>(R.id.button8)
+        val toggleExams = findViewById<ToggleButton>(R.id.button9)
+        val toggleDeadlines = findViewById<ToggleButton>(R.id.button10)
+
+        // Add all toggle buttons to a list for easier management
+        allToggleButtons = listOf(
+            toggleTeachers, toggleClassmates, toggleGrades,
+            toggleHomework, toggleExams, toggleDeadlines
+        )
+
+        // Initialize all toggle buttons (hide text and set default color)
+        for (button in allToggleButtons) {
+            button.textOn = ""
+            button.textOff = ""
+            button.text = ""
+            button.setBackgroundColor(defaultButtonColor)
+        }
+
+        // Get references to other UI elements
         val customInput = findViewById<EditText>(R.id.customInput)
-        val customToggle = findViewById<Button>(R.id.saveCustom)
+        val saveCustomButton = findViewById<Button>(R.id.saveCustom)
 
+        // Set up toggle button listeners
+        setupToggleButtons()
 
-        customToggle.setOnClickListener{
+        // Set up custom stressor functionality
+        saveCustomButton.setOnClickListener {
             val inputText = customInput.text.toString()
             if (inputText.isEmpty()) {
-                Toast.makeText(this, "Please enter text before saving", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-
-        val customToggle2 = findViewById<ToggleButton>(R.id.button)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle2.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle2.setBackgroundColor(Color.GREEN) // ON state
-                customToggle2.setTextColor(Color.WHITE)
+                Toast.makeText(this, "Please enter text before saving", Toast.LENGTH_SHORT).show()
             } else {
-                customToggle2.setBackgroundColor(Color.RED) // OFF state
-                customToggle2.setTextColor(Color.BLACK)
+                deselectAllToggles()
+                customStressorActive = true
+                Toast.makeText(this, "Custom stressor selected: $inputText", Toast.LENGTH_SHORT).show()
             }
         }
-        val customToggle3 = findViewById<ToggleButton>(R.id.button6)
 
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle3.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle3.setBackgroundColor(Color.GREEN) // ON state
-                customToggle3.setTextColor(Color.WHITE)
+        // Set up continue button
+        val continueButton = findViewById<Button>(R.id.continueButtonSotdHome)
+        continueButton.setOnClickListener {
+            selectedOption = getSelectedStressor(customInput.text.toString())
+            if (selectedOption.isNullOrEmpty()) {
+                Toast.makeText(this, "Please select a stressor", Toast.LENGTH_SHORT).show()
             } else {
-                customToggle3.setBackgroundColor(Color.RED) // OFF state
-                customToggle3.setTextColor(Color.BLACK)
+                saveSOTDSchoolToFirestore()
             }
         }
-        val customToggle4 = findViewById<ToggleButton>(R.id.button7)
+    }
 
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle4.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle4.setBackgroundColor(Color.GREEN) // ON state
-                customToggle4.setTextColor(Color.WHITE)
-            } else {
-                customToggle4.setBackgroundColor(Color.RED) // OFF state
-                customToggle4.setTextColor(Color.BLACK)
+    private fun setupToggleButtons() {
+        for (toggleButton in allToggleButtons) {
+            toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    for (otherButton in allToggleButtons) {
+                        if (otherButton != buttonView) {
+                            otherButton.isChecked = false
+                            otherButton.setBackgroundColor(defaultButtonColor)
+                        }
+                    }
+                    customStressorActive = false
+                    toggleButton.setBackgroundColor(Color.GREEN)
+                } else {
+                    toggleButton.setBackgroundColor(defaultButtonColor)
+                }
             }
         }
-        val customToggle5 = findViewById<ToggleButton>(R.id.button8)
+    }
 
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle5.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle5.setBackgroundColor(Color.GREEN) // ON state
-                customToggle5.setTextColor(Color.WHITE)
-            } else {
-                customToggle5.setBackgroundColor(Color.RED) // OFF state
-                customToggle5.setTextColor(Color.BLACK)
+    private fun deselectAllToggles() {
+        for (toggleButton in allToggleButtons) {
+            toggleButton.isChecked = false
+            toggleButton.setBackgroundColor(defaultButtonColor)
+        }
+    }
+
+    private fun getSelectedStressor(customText: String): String {
+        if (customStressorActive && customText.isNotEmpty()) {
+            return "Custom: $customText"
+        }
+        val toggleLabels = listOf("Teachers", "Classmates", "Grades", "Homework", "Exams", "Deadlines")
+        for (i in allToggleButtons.indices) {
+            if (allToggleButtons[i].isChecked) {
+                return toggleLabels[i]
             }
         }
-        val customToggle6 = findViewById<ToggleButton>(R.id.button9)
+        return ""
+    }
 
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle6.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle6.setBackgroundColor(Color.GREEN) // ON state
-                customToggle6.setTextColor(Color.WHITE)
-            } else {
-                customToggle6.setBackgroundColor(Color.RED) // OFF state
-                customToggle6.setTextColor(Color.BLACK)
-            }
+    private fun saveSOTDSchoolToFirestore() {
+        val currentUser = auth.currentUser
+        if (currentUser != null && selectedOption != null) {
+            val userId = currentUser.uid
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val today = dateFormat.format(Date())
+
+            val stressorData: MutableMap<String, Any?> = hashMapOf(
+                "schoolOption" to selectedOption,
+            )
+
+            db.collection("users")
+                .document(userId)
+                .collection("dailyLogs")
+                .document(today)
+                .update(stressorData)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, AwarenessActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    db.collection("users")
+                        .document(userId)
+                        .collection("dailyLogs")
+                        .document(today)
+                        .set(stressorData, SetOptions.merge())
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, AwarenessActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Failed to save stressor: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                }
+        } else {
+            Toast.makeText(this, "Please select a stressor", Toast.LENGTH_SHORT).show()
         }
-        val customToggle7 = findViewById<ToggleButton>(R.id.button10)
-
-        // Set an OnCheckedChangeListener to toggle colors
-        customToggle7.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                customToggle7.setBackgroundColor(Color.GREEN) // ON state
-                customToggle7.setTextColor(Color.WHITE)
-            } else {
-                customToggle7.setBackgroundColor(Color.RED) // OFF state
-                customToggle7.setTextColor(Color.BLACK)
-            }
-        }
-        val checkStatesButton = findViewById<Button>(R.id.continueButtonSotdHome)
-        checkStatesButton.setOnClickListener {
-            // Check the state of each toggle button
-            val toggleStates = mutableListOf<String>()
-
-
-            if (customToggle2.isChecked) toggleStates.add("Homework")
-            if (customToggle3.isChecked) toggleStates.add("Exams")
-            if (customToggle4.isChecked) toggleStates.add("Organization")
-            if (customToggle5.isChecked) toggleStates.add("Bullying")
-            if (customToggle6.isChecked) toggleStates.add("Grades")
-            if (customToggle7.isChecked) toggleStates.add("Financial")
-
-            // Display the states
-            if (toggleStates.isEmpty()) {
-                Toast.makeText(this, "No buttons are ON", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "${toggleStates.joinToString(", ")} are ON", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this,SOTD::class.java))
-            }
-        }
-
     }
 }
