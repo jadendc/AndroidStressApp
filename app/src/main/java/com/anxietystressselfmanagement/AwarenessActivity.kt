@@ -13,15 +13,15 @@ import java.util.*
 
 class AwarenessActivity : AppCompatActivity() {
     private val firestore = FirebaseFirestore.getInstance()
+    private lateinit var auth: FirebaseAuth
     private lateinit var bodyButton: Button
     private lateinit var mindButton: Button
     private lateinit var feelingsButton: Button
     private lateinit var behaviorButton: Button
-    private lateinit var BMFBbut: Button
-    private var selectedOption: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
         enableEdgeToEdge()
         setContentView(R.layout.activity_awareness)
 
@@ -29,29 +29,19 @@ class AwarenessActivity : AppCompatActivity() {
         mindButton = findViewById(R.id.mindButton)
         feelingsButton = findViewById(R.id.feelingButton)
         behaviorButton = findViewById(R.id.behaviorButton)
-        BMFBbut = findViewById(R.id.BMFBbut)
 
-        // Set click listeners to track the selected option
+        // Set click listeners to track the selected option and navigate
         bodyButton.setOnClickListener {
-            selectedOption = "Body"
+            saveAndNavigate("Body")
         }
         mindButton.setOnClickListener {
-            selectedOption = "Mind"
+            saveAndNavigate("Mind")
         }
         feelingsButton.setOnClickListener {
-            selectedOption = "Feelings"
+            saveAndNavigate("Feelings")
         }
         behaviorButton.setOnClickListener {
-            selectedOption = "Behavior"
-        }
-
-        // Continue button functionality
-        BMFBbut.setOnClickListener {
-            if (selectedOption != null) {
-                saveAwareness(selectedOption!!)
-            } else {
-                Toast.makeText(this, "Please select an option!", Toast.LENGTH_SHORT).show()
-            }
+            saveAndNavigate("Behavior")
         }
 
         val backButton: ImageView = findViewById(R.id.backButton)
@@ -62,35 +52,41 @@ class AwarenessActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveAwareness(option: String) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
-            return
+    private fun saveAndNavigate(selected: String) {
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val today = dateFormat.format(Date())
+
+            val selectedOptionData: MutableMap<String, Any?> = hashMapOf(
+                "signsOption" to selected
+            )
+
+            firestore.collection("users")
+                .document(userId)
+                .collection("dailyLogs")
+                .document(today)
+                .set(selectedOptionData, SetOptions.merge())
+                .addOnSuccessListener {
+                    Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
+
+                    // Navigate to the appropriate activity based on the selected option
+                    val nextActivity = when (selected) {
+                        "Body" -> BodyActivity::class.java
+                        "Mind" -> MindActivity::class.java  // Replace with the actual activity
+                        "Feelings" -> FeelingsActivity::class.java  // Replace with the actual activity
+                        "Behavior" -> BehaviorActivity::class.java  // Replace with the actual activity
+                        else -> throw IllegalArgumentException("Unknown option: $selected")
+                    }
+
+                    val intent = Intent(this, nextActivity)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to save selected option: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
-
-        val userId = currentUser.uid
-        val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-
-        val awarenessData = mapOf(
-            "selectedOption" to option
-        )
-
-        firestore.collection("users")
-            .document(userId)
-            .collection("awarenessLogs")
-            .document(currentDate)
-            .set(awarenessData, SetOptions.merge())
-            .addOnSuccessListener {
-                Toast.makeText(this, "$option saved!", Toast.LENGTH_SHORT).show()
-
-                // Navigate to the next activity (e.g., BodyActivity)
-                val intent = Intent(this, BodyActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error saving: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 }
