@@ -39,6 +39,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var pieChart: PieChart
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var continueButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board)
@@ -47,7 +48,11 @@ class DashboardActivity : AppCompatActivity() {
         pieChart = findViewById(R.id.pieChart)
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-
+        continueButton = findViewById(R.id.continueDashboardButton)
+        continueButton.setOnClickListener {
+            val intent = Intent(this, DashboardActivity2::class.java)
+            startActivity(intent)
+        }
         fetchInControlData()
         fetchMoodData()
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout) // Use correct ID

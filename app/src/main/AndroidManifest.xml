@@ -114,6 +114,14 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
+            android:name=".DashboardActivity2"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
+        <activity
+            android:name=".DashboardActivity3"
+            android:exported="false"
+            android:theme="@style/Theme.App.NoActionBar" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"

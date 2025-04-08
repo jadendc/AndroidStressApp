@@ -19,78 +19,67 @@
 
         <!-- Toolbar for the navigation drawer -->
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIconTint="@android:color/white"
-            app:title="\t \t\t\t\t\t\t\t\t\tDashboard"
-            app:titleTextColor="@android:color/white" />
-
         <TextView
-            android:id="@+id/triggersTextView"
+            android:id="@+id/strategiesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="100dp"
             android:fontFamily="sans-serif"
-            android:text="In Control"
+            android:text="Strategies"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChart4"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@id/strategiesTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/triggersTextView" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
+            android:id="@+id/pieChart5"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:layout_marginTop="124dp"
+            android:layout_marginTop="120dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barChart" />
+            app:layout_constraintTop_toBottomOf="@id/pieChart4" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/actionsTextView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="160dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif"
-            android:text="Feelings"
+            android:text="Actions"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.006"
+            app:layout_constraintHorizontal_bias="0.083"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barChart" />
+            app:layout_constraintTop_toBottomOf="@id/pieChart4" />
 
-        <Button
-            android:id="@+id/continueDashboardButton"
-            android:layout_width="169dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:text="Continue"
-            app:layout_constraintEnd_toEndOf="parent"
+        <ImageView
+            android:id="@+id/dbackButton"
+            android:layout_width="40dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:clickable="true"
+            android:contentDescription="@string/sound_button"
+            android:elevation="1dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#67788B"
-            app:layout_constraintTop_toBottomOf="@+id/pieChart" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/backbutton" />
+
 
 
 
