@@ -103,7 +103,7 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
 
         firestore.collection("users")
             .document(userId)
-            .collection("strategiesActions")
+            .collection("dailyLogs")
             .document(currentDate)
             .set(logData, SetOptions.merge())
             .addOnSuccessListener {
