@@ -8,20 +8,20 @@
     android:padding="16dp"
     tools:context=".FeelingsActivity">
 
-    <!-- Back Arrow Button -->
+    <!-- Back Button -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
         android:layout_height="43dp"
         android:clickable="true"
-        android:contentDescription="@string/sound_button"
+        android:contentDescription="@string/back_button"
         android:elevation="1dp"
         app:layout_constraintBottom_toBottomOf="@+id/app_logo"
         app:layout_constraintEnd_toStartOf="@+id/app_logo"
-        app:layout_constraintHorizontal_bias="0.247"
+        app:layout_constraintHorizontal_bias="0.171"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/app_logo"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.456"
         app:srcCompat="@drawable/backbutton" />
 
     <!-- App Logo -->
@@ -31,41 +31,47 @@
         android:layout_height="100dp"
         android:contentDescription="App Logo"
         android:src="@drawable/logo"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Section Title -->
+    <!-- Title -->
     <TextView
-        android:id="@+id/title_feeling"
+        android:id="@+id/title_Feelings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingBottom="16dp"
         android:text="Feelings"
         android:textColor="#FFFFFF"
         android:textSize="48sp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/app_logo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Body Bullet Points -->
-    <TextView
-        android:id="@+id/body_bullet_points"
+    <!-- Feelings Spinner -->
+    <Spinner
+        android:id="@+id/feelingsSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
         android:background="#67788B"
-        android:gravity="start"
-        android:lineSpacingExtra="6dp"
         android:padding="16dp"
-        android:text="This may look like:\n• Alienation\n• Apathy\n• Depression\n• Fear\n• Irritability\n• Loss of confidence"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@id/title_feeling"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/title_Feelings" />
+
+    <Button
+        android:id="@+id/continueFeelingsButton"
+        android:layout_width="169dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="200dp"
+        android:text="Continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feelingsSpinner" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

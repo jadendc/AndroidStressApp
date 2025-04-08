@@ -8,6 +8,22 @@
     android:padding="16dp"
     tools:context=".MindActivity">
 
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+        android:clickable="true"
+        android:contentDescription="@string/back_button"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/app_logo"
+        app:layout_constraintEnd_toStartOf="@+id/app_logo"
+        app:layout_constraintHorizontal_bias="0.171"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/app_logo"
+        app:layout_constraintVertical_bias="0.456"
+        app:srcCompat="@drawable/backbutton" />
+
     <!-- App Logo -->
     <ImageView
         android:id="@+id/app_logo"
@@ -15,60 +31,47 @@
         android:layout_height="100dp"
         android:contentDescription="App Logo"
         android:src="@drawable/logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Section Title -->
-
-    <!-- Body Bullet Points -->
-
-    <TextView
-        android:id="@+id/title_mind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:paddingBottom="16dp"
-        android:text="Mind"
-        android:textColor="@color/white"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_logo" />
-
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="40dp"
-        android:layout_height="43dp"
-        android:clickable="true"
-        android:contentDescription="@string/sound_button"
-        android:elevation="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/app_logo"
-        app:layout_constraintEnd_toStartOf="@+id/app_logo"
-        app:layout_constraintHorizontal_bias="0.247"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/app_logo"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/backbutton" />
-
-    <TextView
-        android:id="@+id/body_bullet_points"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:background="#67788B"
-        android:gravity="start"
-        android:lineSpacingExtra="6dp"
-        android:padding="16dp"
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        android:text="This may look like:\n• Difficulty concentrating\n• Impaired judgement\n• Indecision\n• Muddled thinking\n• Negativity\n• Worrying"
-        app:layout_constraintTop_toBottomOf="@id/title_mind"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title_Mind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Mind"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/app_logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Mind Spinner -->
+    <Spinner
+        android:id="@+id/mindSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="#67788B"
+        android:padding="16dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_Mind" />
+
+    <Button
+        android:id="@+id/continueMindButton"
+        android:layout_width="169dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="200dp"
+        android:text="Continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mindSpinner" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

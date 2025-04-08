@@ -145,7 +145,7 @@ class SOTDHome : AppCompatActivity() {
 
             // Create map with home option data
             val homeOptionData: MutableMap<String, Any?> = hashMapOf(
-                "homeOption" to selectedOption,
+                "selectedOption" to selectedOption,
             )
 
             // Save to Firestore

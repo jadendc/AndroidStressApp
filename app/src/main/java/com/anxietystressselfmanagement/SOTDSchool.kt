@@ -11,7 +11,6 @@ import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,17 +40,17 @@ class SOTDSchool : AppCompatActivity() {
         }
 
         // Get references to all toggle buttons
-        val toggleTeachers = findViewById<ToggleButton>(R.id.button)
-        val toggleClassmates = findViewById<ToggleButton>(R.id.button6)
-        val toggleGrades = findViewById<ToggleButton>(R.id.button7)
-        val toggleHomework = findViewById<ToggleButton>(R.id.button8)
-        val toggleExams = findViewById<ToggleButton>(R.id.button9)
-        val toggleDeadlines = findViewById<ToggleButton>(R.id.button10)
+        val toggleFinancial = findViewById<ToggleButton>(R.id.button10)
+        val toggleBullying = findViewById<ToggleButton>(R.id.button8)
+        val toggleGrades = findViewById<ToggleButton>(R.id.button9)
+        val toggleHomework = findViewById<ToggleButton>(R.id.button)
+        val toggleExams = findViewById<ToggleButton>(R.id.button6)
+        val toggleOrganization = findViewById<ToggleButton>(R.id.button7)
 
         // Add all toggle buttons to a list for easier management
         allToggleButtons = listOf(
-            toggleTeachers, toggleClassmates, toggleGrades,
-            toggleHomework, toggleExams, toggleDeadlines
+            toggleFinancial, toggleBullying, toggleGrades,
+            toggleHomework, toggleExams, toggleOrganization
         )
 
         // Initialize all toggle buttons (hide text and set default color)
@@ -140,7 +139,7 @@ class SOTDSchool : AppCompatActivity() {
             val today = dateFormat.format(Date())
 
             val stressorData: MutableMap<String, Any?> = hashMapOf(
-                "schoolOption" to selectedOption,
+                "selectedOption" to selectedOption,
             )
 
             db.collection("users")

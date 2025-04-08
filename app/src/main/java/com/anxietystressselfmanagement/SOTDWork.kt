@@ -140,7 +140,7 @@ class SOTDWork : AppCompatActivity() {
             val today = dateFormat.format(Date())
 
             val stressorData: MutableMap<String, Any?> = hashMapOf(
-                "workOption" to selectedOption,
+                "selectedOption" to selectedOption,
             )
 
             db.collection("users")
