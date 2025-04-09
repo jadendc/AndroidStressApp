@@ -19,6 +19,27 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private val firestore = FirebaseFirestore.getInstance()
 
+    // Define shortened labels for strategies and actions
+    private val strategyShortenedLabels = mapOf(
+        "Breathing: Deep, slow breaths to calm the mind" to "Breathing",
+        "Time Management: Plan and prioritize tasks" to "Time Management",
+        "Movement: Walk, stretch, or exercise" to "Movement",
+        "Digital Detox: Limit screen time" to "Digital Detox",
+        "Social Connection: Talk to friends or family" to "Social Connection",
+        "Gratitude: Focus on positive" to "Gratitude",
+        "Relaxation: Meditate or listen to music" to "Relaxation"
+    )
+
+    private val actionShortenedLabels = mapOf(
+        "5-min deep breathing in the morning" to "5-min Breathing",
+        "Plan tasks using a list or app" to "Plan Tasks",
+        "10-min walk or stretch after lunch" to "10-min Walk",
+        "No screens 1 hour before bed" to "No Screens",
+        "Call or message a friend" to "Call Friend",
+        "Write 3 things you’re grateful for" to "Gratitude Writing",
+        "Listen to relaxing music or meditation" to "Relax Music"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.strategies_and_actions_activity)
@@ -28,6 +49,7 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         continueButton = findViewById(R.id.continueButton)
         backButton = findViewById(R.id.backButton)
 
+        // List of full descriptions for strategies and actions
         val strategyOptions = listOf("7 Stress Management Strategies...") + listOf(
             "Breathing: Deep, slow breaths to calm the mind",
             "Time Management: Plan and prioritize tasks",
@@ -48,8 +70,13 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
             "Listen to relaxing music or meditation"
         )
 
-        setupSpinner(strategySpinner, strategyOptions)
-        setupSpinner(actionSpinner, actionOptions)
+        // Map full descriptions to shortened labels
+        val shortenedStrategyOptions = strategyOptions.map { strategyShortenedLabels[it] ?: it }
+        val shortenedActionOptions = actionOptions.map { actionShortenedLabels[it] ?: it }
+
+        // Pass both options to the setupSpinner method
+        setupSpinner(strategySpinner, shortenedStrategyOptions, strategyOptions)
+        setupSpinner(actionSpinner, shortenedActionOptions, actionOptions)
 
         backButton.setOnClickListener {
             startActivity(Intent(this, AwarenessActivity::class.java))
@@ -61,16 +88,16 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSpinner(spinner: Spinner, options: List<String>) {
-        val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, options)
+    private fun setupSpinner(spinner: Spinner, shortenedOptions: List<String>, fullOptions: List<String>) {
+        val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, shortenedOptions)
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if (position == 0) {
-                    (view as? TextView)?.setTextColor(resources.getColor(R.color.white))
-                }
+                // Show full description when an item is selected
+                val fullDescription = fullOptions[position]
+                Toast.makeText(this@StrategiesAndActionsActivity, fullDescription, Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}

@@ -10,6 +10,15 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import android.view.Gravity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.highlight.Highlight
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.google.firebase.auth.FirebaseAuth
@@ -37,7 +46,7 @@ class DashboardActivity3 : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         backButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
+            val intent = Intent(this, DashboardActivity2::class.java)
             startActivity(intent)
             finish()
         }
@@ -123,16 +132,17 @@ class DashboardActivity3 : AppCompatActivity() {
             if (count > 0) entries.add(PieEntry(count.toFloat(), item))
         }
 
+        // If no data, add an empty entry to show empty chart
         if (entries.isEmpty()) {
             entries.add(PieEntry(1f, "No Data"))
         }
 
         val pastelColors = listOf(
-            Color.parseColor("#77dd77"), // Pastel Green
-            Color.parseColor("#a2c2e0"), // Pastel Blue
-            Color.parseColor("#fdfd96"), // Pastel Yellow
-            Color.parseColor("#d3d3d3"), // Pastel Gray
-            Color.parseColor("#f7a9a9")  // Pastel Red
+            Color.parseColor("#F4B6C2"), // Pastel Blush
+            Color.parseColor("#A6E1D9"), // Pastel Aqua
+            Color.parseColor("#F6D1C1"), // Pastel Salmon
+            Color.parseColor("#E3A7D4"), // Pastel Orchid
+            Color.parseColor("#C8D8A9")  // Pastel Olive Green
         )
 
         val dataSet = PieDataSet(entries, "")
@@ -143,27 +153,112 @@ class DashboardActivity3 : AppCompatActivity() {
         dataSet.valueTextSize = 16f
 
         val data = PieData(dataSet)
-
         chart.data = data
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.setDrawHoleEnabled(false)
         chart.setDrawEntryLabels(false)
+
+        // Set up OnChartValueSelectedListener with the correct implementation
+        if (label == "Strategies") {
+            chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: com.github.mikephil.charting.data.Entry?, h: Highlight?) {
+                    if (e is PieEntry) {
+                        val categoryName = e.label
+                        Toast.makeText(this@DashboardActivity3,
+                            "Loading details for $categoryName",
+                            Toast.LENGTH_SHORT).show()
+
+                        // Fetch the data for the selected category
+                        fetchDetailsForCategory(categoryName)
+                    }
+                }
+
+                override fun onNothingSelected() {
+                    // Do nothing when nothing is selected
+                }
+            })
+        }
+
         chart.invalidate()
 
+        // Setup legend
         val legend = chart.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
         legend.textColor = Color.BLACK
         legend.textSize = 16f
 
-        // Add these lines to enable word wrapping
+        // Enable word wrapping for legend labels
         legend.isWordWrapEnabled = true
         legend.maxSizePercent = 0.4f  // Adjust this value as needed (40% of chart width)
 
         // Optional: adjust entry spacing for better readability
         legend.yEntrySpace = 10f
+    }
+
+    // Helper method to fetch and display category details
+    private fun fetchDetailsForCategory(category: String) {
+        val currentUser = auth.currentUser ?: return
+        val userId = currentUser.uid
+
+        // Get data from the last 7 days
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val selectedSymptoms = mutableListOf<String>()
+        var completedQueries = 0
+
+        for (i in 0..6) {
+            val dateKey = dateFormat.format(calendar.time)
+
+            db.collection("users").document(userId)
+                .collection("dailyLogs").document(dateKey)
+                .get()
+                .addOnSuccessListener { document ->
+                    val strategies = document.getString("7strategies") ?: ""
+                    val selectedSymptom = document.getString("selectedSymptom") ?: ""
+
+                    if (strategies == category && selectedSymptom.isNotEmpty()) {
+                        selectedSymptoms.add(selectedSymptom)
+                    }
+
+                    completedQueries++
+                    if (completedQueries == 7) {
+                        if (selectedSymptoms.isEmpty()) {
+                            Toast.makeText(this,
+                                "No symptoms found for $category",
+                                Toast.LENGTH_LONG).show()
+                        } else {
+                            // Format options for display
+                            val uniqueSymptoms = selectedSymptoms.toSet()
+                            val displayText = StringBuilder("$category details:\n")
+                            uniqueSymptoms.forEach { symptom ->
+                                val count = selectedSymptoms.count { it == symptom }
+                                displayText.append("• $symptom ($count)\n")
+                            }
+
+                            // Show in a custom dialog
+                            val dialog = AlertDialog.Builder(this)
+                                .setTitle("Details for $category")
+                                .setMessage(displayText.toString())
+                                .setPositiveButton("OK", null)
+                                .create()
+                            dialog.show()
+                        }
+                    }
+                }
+                .addOnFailureListener {
+                    completedQueries++
+                    if (completedQueries == 7) {
+                        Toast.makeText(this,
+                            "Error loading details for $category",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            calendar.add(Calendar.DAY_OF_YEAR, -1)
+        }
     }
 }
