@@ -22,7 +22,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
-            app:title="Calender"
+            app:title="Calendar"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="4dp"
             app:drawerArrowStyle="@color/white"

@@ -11,7 +11,7 @@ import java.util.Calendar
 class CalendarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_calender)
+        setContentView(R.layout.activity_calendar)
 
         val continueButton: Button = findViewById(R.id.continueButton)
         val calendarView = findViewById<CalendarView>(R.id.calendarView)
