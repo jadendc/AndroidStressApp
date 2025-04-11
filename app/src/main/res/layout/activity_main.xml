@@ -16,7 +16,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#CE8F69"
-
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,21 +76,31 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextTextEmailAddress"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!-- Remember Me Checkbox -->
+    <CheckBox
+        android:id="@+id/rememberMeCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Remember Me"
+        android:textColor="@android:color/white"
+        android:buttonTint="@android:color/white"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+
     <Button
         android:id="@+id/signup"
         android:layout_width="100dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="156dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#EF851C"
         android:text="@string/sign_up"
         android:textColor="#FFFFFF"
         app:cornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheckBox"
         app:strokeColor="#FFFFFF"
         app:strokeWidth="2dp" />
 
@@ -100,24 +109,19 @@
         android:id="@+id/login"
         android:layout_width="100dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="156dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#ED841C"
         android:text="Login"
         android:textColor="#FFFFFF"
         app:cornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.704"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/rememberMeCheckBox"
         app:strokeColor="#FFFFFF"
         app:strokeWidth="2dp" />
 
-    <!-- Streak Text -->
-
     <!-- Forgot Password -->
-
     <TextView
         android:id="@+id/forgot"
         android:layout_width="191dp"
@@ -130,8 +134,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
-        app:layout_constraintVertical_bias="0.61" />
+        app:layout_constraintTop_toBottomOf="@+id/login"
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/textView7"
