@@ -12,19 +12,6 @@
         android:layout_height="match_parent"
         android:background="@color/grey">
 
-        <Button
-            android:id="@+id/home_awarenessbut"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:backgroundTint="#556874"
-            android:text="Awareness Questions"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="@id/home_DashBut"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/home_DashBut"
-            app:layout_constraintTop_toBottomOf="@id/home_DashBut" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
@@ -37,62 +24,114 @@
             app:title="Home"
             app:titleTextColor="@android:color/white" />
 
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="App logo"
+            android:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="H,1:0.8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="180dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:srcCompat="@drawable/logo" />
+
         <TextView
             android:id="@+id/home_WelcomeMes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="64dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
             android:text="Welcome User, What Would You Like To Do?"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
-        <Button
-            android:id="@+id/home_DashBut"
+        <ScrollView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="64dp"
-            android:backgroundTint="#556874"
-            android:text="Dashboard"
-            android:textColor="@android:color/white"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_WelcomeMes" />
+            app:layout_constraintTop_toBottomOf="@+id/home_WelcomeMes">
 
-        <Button
-            android:id="@+id/home_ExBut"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:backgroundTint="#556874"
-            android:text="Immediate Exercises"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="@id/home_awarenessbut"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@id/home_awarenessbut"
-            app:layout_constraintTop_toBottomOf="@id/home_awarenessbut" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="24dp"
+                android:paddingBottom="24dp">
 
-        <Button
-            android:id="@+id/home_MonthlyCalBut"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:backgroundTint="#556874"
-            android:text="Monthly Calendar"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="@+id/home_ExBut"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/home_ExBut"
-            app:layout_constraintTop_toBottomOf="@+id/home_ExBut" />
+                <Button
+                    android:id="@+id/home_DashBut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#556874"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Dashboard"
+                    android:textColor="@android:color/white"
+                    android:maxWidth="400dp" />
+
+                <Button
+                    android:id="@+id/home_awarenessbut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#556874"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Awareness Questions"
+                    android:textColor="@android:color/white"
+                    android:maxWidth="400dp" />
+
+                <Button
+                    android:id="@+id/home_ExBut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#556874"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Immediate Exercises"
+                    android:textColor="@android:color/white"
+                    android:maxWidth="400dp" />
+
+                <Button
+                    android:id="@+id/home_MonthlyCalBut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginEnd="48dp"
+                    android:backgroundTint="#556874"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Monthly Calendar"
+                    android:textColor="@android:color/white"
+                    android:maxWidth="400dp" />
+
+            </LinearLayout>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
