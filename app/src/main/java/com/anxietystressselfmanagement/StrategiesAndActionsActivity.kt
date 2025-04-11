@@ -36,9 +36,13 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         "10-min walk or stretch after lunch" to "10-min Walk",
         "No screens 1 hour before bed" to "No Screens",
         "Call or message a friend" to "Call Friend",
-        "Write 3 things you’re grateful for" to "Gratitude Writing",
+        "Write 3 things you're grateful for" to "Gratitude Writing",
         "Listen to relaxing music or meditation" to "Relax Music"
     )
+
+    // Define prompt texts for easier validation
+    private val strategyPrompt = "7 Stress Management Strategies..."
+    private val actionPrompt = "7 Stress Management Actions..."
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +54,7 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         backButton = findViewById(R.id.backButton)
 
         // List of full descriptions for strategies and actions
-        val strategyOptions = listOf("7 Stress Management Strategies...") + listOf(
+        val strategyOptions = listOf(strategyPrompt) + listOf(
             "Breathing: Deep, slow breaths to calm the mind",
             "Time Management: Plan and prioritize tasks",
             "Movement: Walk, stretch, or exercise",
@@ -60,13 +64,13 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
             "Relaxation: Meditate or listen to music"
         )
 
-        val actionOptions = listOf("7 Stress Management Actions...") + listOf(
+        val actionOptions = listOf(actionPrompt) + listOf(
             "5-min deep breathing in the morning",
             "Plan tasks using a list or app",
             "10-min walk or stretch after lunch",
             "No screens 1 hour before bed",
             "Call or message a friend",
-            "Write 3 things you’re grateful for",
+            "Write 3 things you're grateful for",
             "Listen to relaxing music or meditation"
         )
 
@@ -84,11 +88,14 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         }
 
         continueButton.setOnClickListener {
-            saveStrategiesAndActions()
+            if (validateSelections()) {
+                saveStrategiesAndActions()
+            }
         }
     }
 
-    private fun setupSpinner(spinner: Spinner, shortenedOptions: List<String>, fullOptions: List<String>) {
+    private fun setupSpinner(spinner: Spinner, shortenedOptions: List<String>,
+                             fullOptions: List<String>) {
         val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, shortenedOptions)
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         spinner.adapter = adapter
@@ -97,21 +104,42 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 // Show full description when an item is selected
                 val fullDescription = fullOptions[position]
-                Toast.makeText(this@StrategiesAndActionsActivity, fullDescription, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@StrategiesAndActionsActivity, fullDescription,
+                    Toast.LENGTH_LONG).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
+    private fun validateSelections(): Boolean {
+        val strategyPosition = strategySpinner.selectedItemPosition
+        val actionPosition = actionSpinner.selectedItemPosition
+
+        // Check if either spinner is still at the first position (prompt text)
+        if (strategyPosition == 0 || actionPosition == 0) {
+            // Show more specific error message
+            val message = when {
+                strategyPosition == 0 && actionPosition == 0 -> "Please select both a strategy" +
+                        " and an action"
+                strategyPosition == 0 -> "Please select a strategy"
+                else -> "Please select an action"
+            }
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
     private fun saveStrategiesAndActions() {
+        // Get the full description strings from the original options lists
+        val strategyPosition = strategySpinner.selectedItemPosition
+        val actionPosition = actionSpinner.selectedItemPosition
+
+        // Since we validated, we know these aren't at position 0
         val strategy = strategySpinner.selectedItem.toString()
         val action = actionSpinner.selectedItem.toString()
-
-        if (strategy.startsWith("Select") || action.startsWith("Select")) {
-            Toast.makeText(this, "Please select both a strategy and an action", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser == null) {
@@ -140,7 +168,8 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to save: ${e.message}",
+                    Toast.LENGTH_SHORT).show()
             }
     }
 }
