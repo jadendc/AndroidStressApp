@@ -59,6 +59,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:layout_marginTop="24dp"
+        android:maxLength="19"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
@@ -73,6 +74,7 @@
         android:inputType="text"
         android:layout_marginTop="12dp"
         android:textColorHint="@color/white"
+        android:maxLength="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardNumber" />
@@ -88,6 +90,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColorHint="@color/white"
+        android:maxLength="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expiryDate" />
 
