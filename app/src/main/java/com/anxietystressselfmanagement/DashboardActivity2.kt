@@ -61,51 +61,42 @@ class DashboardActivity2 : AppCompatActivity() {
         applyButton = findViewById(R.id.applyRangeButton)
         dateRangeLayout = findViewById(R.id.dateRangeLayout)
 
-//        // Setup navigation drawer
-//        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-//        val navigationView: NavigationView = findViewById(R.id.nav_view)
-//        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-//
-//        val toggle = ActionBarDrawerToggle(
-//            this,
-//            drawerLayout,
-//            toolbar,
-//            R.string.navigation_drawer_open,
-//            R.string.navigation_drawer_close
-//        )
-//        drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
-//        toggle.drawerArrowDrawable.color = getColor(R.color.white)
-//
-//        navigationView.setNavigationItemSelectedListener { menuItem ->
-//            when (menuItem.itemId) {
-//                R.id.nav_dashboard -> drawerLayout.closeDrawers()
-//                R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java))
-//                R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java))
-//                R.id.nav_home -> startActivity(Intent(this, HomeActivity::class.java))
-//                R.id.nav_membership -> startActivity(Intent(this, MembershipActivity::class.java))
-//                R.id.nav_exercises -> startActivity(Intent(this, ExercisesActivity::class.java))
-//                R.id.nav_logout -> {
-//                    FirebaseAuth.getInstance().signOut()
-//                    startActivity(Intent(this, MainActivity::class.java))
-//                    finish()
-//                }
-//            }
-//            drawerLayout.closeDrawers()
-//            true
-//        }
+        // *** NEW CODE: Load saved date range if available ***
+        val savedRange = DateRangeManager.getDateRange(this)
+        if (savedRange != null) {
+            currentRangeType = savedRange.rangeType
+            startCalendar.time = savedRange.startDate
+            endCalendar.time = savedRange.endDate
+            // We'll update the UI after setting up the spinner
+        }
 
         // Date range setup
         setupRangeSpinner()
-        setDateRange(7) // Default to 7 days
-        updateDateButtonText()
+
+        // *** NEW CODE: Now update the UI to reflect any loaded date range ***
+        if (savedRange != null) {
+            // Set spinner selection based on range type
+            when (currentRangeType) {
+                "Last 7 Days" -> rangeSpinner.setSelection(0)
+                "Last 14 Days" -> rangeSpinner.setSelection(1)
+                "Last 30 Days" -> rangeSpinner.setSelection(2)
+                "Custom Range" -> {
+                    rangeSpinner.setSelection(3)
+                    dateRangeLayout.visibility = View.VISIBLE
+                }
+            }
+            updateDateButtonText()
+        } else {
+            // Set initial dates if no saved range
+            setDateRange(7) // Default to 7 days
+            updateDateButtonText()
+        }
+
         setupDateButtons()
 
+        // *** UPDATED: Use finish() instead of starting a new activity
         backButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
-            startActivity(intent)
-            finish()
+            finish() // Just finish this activity to go back to Dashboard 1
         }
 
         continueButton.setOnClickListener {
@@ -115,7 +106,40 @@ class DashboardActivity2 : AppCompatActivity() {
         fetchDataForCurrentRange()
     }
 
-    // -- DATE RANGE CODE (Same as DashboardActivity) --
+    override fun onResume() {
+        super.onResume()
+
+        val savedRange = DateRangeManager.getDateRange(this)
+        if (savedRange != null) {
+            val currentStart = startCalendar.timeInMillis
+            val currentEnd = endCalendar.timeInMillis
+            val savedStart = savedRange.startDate.time
+            val savedEnd = savedRange.endDate.time
+
+            if (currentStart != savedStart || currentEnd != savedEnd || currentRangeType != savedRange.rangeType) {
+                currentRangeType = savedRange.rangeType
+                startCalendar.time = savedRange.startDate
+                endCalendar.time = savedRange.endDate
+
+                // Update UI components
+                when (currentRangeType) {
+                    "Last 7 Days" -> rangeSpinner.setSelection(0, false)
+                    "Last 14 Days" -> rangeSpinner.setSelection(1, false)
+                    "Last 30 Days" -> rangeSpinner.setSelection(2, false)
+                    "Custom Range" -> {
+                        rangeSpinner.setSelection(3, false)
+                        dateRangeLayout.visibility = View.VISIBLE
+                    }
+                }
+                updateDateButtonText()
+
+                // Refresh data
+                fetchDataForCurrentRange()
+            }
+        }
+    }
+
+    // -- DATE RANGE CODE
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ranges) {
@@ -178,7 +202,7 @@ class DashboardActivity2 : AppCompatActivity() {
         val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
         val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
         if (diffInDays > 90) {
-            Toast.makeText(this, "Date range cannot exceed a year", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Date range cannot exceed 90 days", Toast.LENGTH_SHORT).show()
             return false
         }
         return true
@@ -210,7 +234,7 @@ class DashboardActivity2 : AppCompatActivity() {
         fetchSignsData()
     }
 
-    // -- TRIGGERS/SIGNS SPECIFIC CODE --
+    // -- TRIGGERS/SIGNS SPECIFIC CODE -- (unchanged)
     private fun fetchTriggersData() {
         val userId = auth.currentUser?.uid ?: return
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

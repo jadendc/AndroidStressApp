@@ -44,6 +44,9 @@ class DashboardActivity : AppCompatActivity() {
     private val endCalendar = Calendar.getInstance()
     private var currentRangeType = "Last 7 Days"
 
+    // NEW: Add a flag to prevent triggering data fetch multiple times
+    private var isInitialLoad = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board)
@@ -60,12 +63,35 @@ class DashboardActivity : AppCompatActivity() {
         applyButton = findViewById(R.id.applyRangeButton)
         dateRangeLayout = findViewById(R.id.dateRangeLayout)
 
+        // *** LOAD SAVED DATE RANGE IF AVAILABLE ***
+        val savedRange = DateRangeManager.getDateRange(this)
+        if (savedRange != null) {
+            currentRangeType = savedRange.rangeType
+            startCalendar.time = savedRange.startDate
+            endCalendar.time = savedRange.endDate
+        }
+
         // Configure date range spinner
         setupRangeSpinner()
 
-        // Set initial dates
-        setDateRange(7) // Default to 7 days
-        updateDateButtonText()
+        // Update UI to reflect any loaded date range
+        if (savedRange != null) {
+            // Set spinner selection based on range type
+            when (currentRangeType) {
+                "Last 7 Days" -> rangeSpinner.setSelection(0)
+                "Last 14 Days" -> rangeSpinner.setSelection(1)
+                "Last 30 Days" -> rangeSpinner.setSelection(2)
+                "Custom Range" -> {
+                    rangeSpinner.setSelection(3)
+                    dateRangeLayout.visibility = View.VISIBLE
+                }
+            }
+            updateDateButtonText()
+        } else {
+            // Set initial dates if no saved range
+            setDateRange(7) // Default to 7 days
+            updateDateButtonText()
+        }
 
         // Setup date picker buttons
         setupDateButtons()
@@ -75,9 +101,61 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        isInitialLoad = false
         // Initial data fetch
         fetchDataForCurrentRange()
 
+        // Set up navigation drawer
+        setupNavigationDrawer()
+    }
+
+    // NEW METHOD: Add onResume to update when returning from Dashboard2
+    override fun onResume() {
+        super.onResume()
+
+        // Skip refresh during initial loading (already handled in onCreate)
+        if (isInitialLoad) return
+
+        // Check if date range has been updated in Dashboard2 or Dashboard3
+        val savedRange = DateRangeManager.getDateRange(this)
+        if (savedRange != null) {
+            // Only update if the current range is different from what's saved
+            val currentStartTime = startCalendar.timeInMillis
+            val currentEndTime = endCalendar.timeInMillis
+            val savedStartTime = savedRange.startDate.time
+            val savedEndTime = savedRange.endDate.time
+
+            if (currentStartTime != savedStartTime ||
+                currentEndTime != savedEndTime ||
+                currentRangeType != savedRange.rangeType) {
+
+                Log.d("DashboardActivity", "Date range changed - refreshing")
+
+                // Update our local variables
+                currentRangeType = savedRange.rangeType
+                startCalendar.time = savedRange.startDate
+                endCalendar.time = savedRange.endDate
+
+                // Update UI
+                when (currentRangeType) {
+                    "Last 7 Days" -> rangeSpinner.setSelection(0, false)
+                    "Last 14 Days" -> rangeSpinner.setSelection(1, false)
+                    "Last 30 Days" -> rangeSpinner.setSelection(2, false)
+                    "Custom Range" -> {
+                        rangeSpinner.setSelection(3, false)
+                        dateRangeLayout.visibility = View.VISIBLE
+                    }
+                }
+
+                updateDateButtonText()
+
+                // Refresh data
+                fetchDataForCurrentRange()
+            }
+        }
+    }
+
+    private fun setupNavigationDrawer() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
@@ -101,7 +179,10 @@ class DashboardActivity : AppCompatActivity() {
                 R.id.nav_dashboard -> drawerLayout.closeDrawers()
                 R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java))
                 R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java))
-                R.id.nav_home -> startActivity(Intent(this, HomeActivity::class.java))
+                R.id.nav_home -> {
+                    DateRangeManager.clearDateRange(this)
+                    startActivity(Intent(this, HomeActivity::class.java))
+                }
                 R.id.nav_membership -> startActivity(Intent(this, MembershipActivity::class.java))
                 R.id.nav_exercises -> startActivity(Intent(this, ExercisesActivity::class.java))
                 R.id.nav_logout -> {
@@ -114,6 +195,7 @@ class DashboardActivity : AppCompatActivity() {
             true
         }
     }
+
 
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
@@ -247,6 +329,7 @@ class DashboardActivity : AppCompatActivity() {
         fetchMoodData()
     }
 
+    // The rest of your methods remain unchanged
     private fun fetchInControlData() {
         val currentUser = auth.currentUser ?: return
         val userId = currentUser.uid
