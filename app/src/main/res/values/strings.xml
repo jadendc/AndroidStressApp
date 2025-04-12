@@ -67,4 +67,9 @@
     <string name="gifbackground">gifbackground</string>
     <string name="exerciseGif" />
     <string name="psychological_sigh">Psychological Sigh</string>
+    <string name="card_details">Card Details</string>
+    <string name="card_number">Card Number</string>
+    <string name="expiry_date_mm_yy">Expiry Date (MM/YY)</string>
+    <string name="cvv">CVV</string>
+    <string name="confirm_payment">Confirm Payment</string>
 </resources>
