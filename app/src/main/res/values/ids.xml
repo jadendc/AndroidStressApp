@@ -7,4 +7,7 @@
     <item name="textHoldRight" type="id" />
     <item name="textBreatheBottom" type="id" />
     <item name="textHoldLeft" type="id" />
+    <item name="RightLungImageView" type="id" />
+    <item name="LeftlungImageView" type="id" />
+    <item name="instructionTextView" type="id" />
 </resources>
