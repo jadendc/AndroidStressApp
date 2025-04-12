@@ -24,7 +24,7 @@
         android:id="@+id/toolbarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notification Settings"
+        android:text="@string/notification_settings"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -45,6 +45,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/toolbar" />
 
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="App logo"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="H,1:0.8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/logo" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +69,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/imageView7"> <!-- Changed from toolbar to imageView7 -->
 
         <!-- Daily Reminder Toggle -->
         <LinearLayout
@@ -65,7 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enable Daily Reminders"
+                android:text="@string/enable_daily_reminders"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
@@ -73,7 +90,8 @@
                 android:id="@+id/switchDaily"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false" />
+                android:checked="false"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
         <!-- Default Time -->
@@ -89,7 +107,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Use Default Time (12:00 PM)"
+                android:text="@string/use_default_time_12_00_pm"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
@@ -97,7 +115,8 @@
                 android:id="@+id/switchDefaultTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true" />
+                android:checked="true"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
         <!-- Time Format Toggle -->
@@ -111,7 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Use 24-Hour Format"
+                android:text="@string/use_24_hour_format"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
@@ -119,7 +138,8 @@
                 android:id="@+id/switchTimeFormat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true" />
+                android:checked="true"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
         <!-- Custom Time -->
@@ -154,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:backgroundTint="#67788B"
-            android:text="Test Notification"
+            android:text="@string/test_notification"
             android:textColor="@android:color/white" />
 
         <Button
@@ -163,7 +183,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:backgroundTint="#4A5962"
-            android:text="Save Settings"
+            android:text="@string/save_settings"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>
     </LinearLayout>

@@ -76,4 +76,7 @@ dependencies {
     implementation (libs.firebase.auth.v2310)
     implementation (libs.play.services.base.v1820)
     implementation (libs.androidx.work.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+
 }

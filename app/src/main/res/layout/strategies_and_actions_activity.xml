@@ -1,69 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="@color/grey"
+    tools:context=".StrategiesAndActionsActivity">
 
+    <!-- Toolbar with consistent styling -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIconTint="@android:color/white"
+        app:titleTextColor="@android:color/white" />
+
+    <!-- Custom title for toolbar -->
+    <TextView
+        android:id="@+id/toolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Strategies &amp; Actions"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintHorizontal_bias="0.3" />
+
+    <!-- Back Button with proper constraints -->
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="43dp"
         android:layout_marginStart="16dp"
         android:clickable="true"
         android:contentDescription="Back"
+        android:focusable="true"
         android:src="@drawable/backbutton"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="36dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
 
+    <!-- App Logo with consistent positioning and constraints -->
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="169dp"
-        android:layout_height="147dp"
-        android:layout_marginBottom="708dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imageView7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="App logo"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="H,1:0.8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:srcCompat="@drawable/logo" />
+
+    <!-- Title text to explain the purpose -->
+    <TextView
+        android:id="@+id/instructionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/select_a_strategy_and_action"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+    <!-- Strategy Spinner with proper positioning -->
+    <TextView
+        android:id="@+id/strategyLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Strategy"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/strategySpinner"
+        app:layout_constraintTop_toBottomOf="@+id/instructionText" />
 
     <Spinner
         android:id="@+id/strategySpinner"
         style="@style/SpinnerStyle"
-        android:layout_width="305dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/spinner_background"
         android:drawableEnd="@drawable/ic_arrow_down"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backButton" />
+        app:layout_constraintTop_toBottomOf="@id/strategyLabel" />
+
+    <!-- Action Spinner with proper positioning -->
+    <TextView
+        android:id="@+id/actionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Action"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/actionSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/strategySpinner" />
 
     <Spinner
         android:id="@+id/actionSpinner"
         style="@style/SpinnerStyle"
-        android:layout_width="305dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:background="@drawable/spinner_background"
         android:drawableEnd="@drawable/ic_arrow_down"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/strategySpinner" />
+        app:layout_constraintTop_toBottomOf="@id/actionLabel" />
 
+    <!-- Continue Button with proper positioning -->
     <Button
         android:id="@+id/continueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="245dp"
         android:backgroundTint="#556874"
+        android:padding="12dp"
         android:text="Continue"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actionSpinner" />
+        app:layout_constraintTop_toBottomOf="@id/actionSpinner"
+        app:layout_constraintVertical_bias="0.3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

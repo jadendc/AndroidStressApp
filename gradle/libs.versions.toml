@@ -31,6 +31,8 @@ okhttp = "4.11.0"
 playServicesAuth = "21.2.0"
 firebaseVertexai = "16.0.2"
 workRuntime = "2.10.0"
+lifecycle = "2.7.0"
+coroutines = "1.7.3"
 
 [libraries]
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
@@ -67,6 +69,9 @@ google-firebase-vertexai = { group = "com.google.firebase", name = "firebase-ver
 play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuthVersion" }
 play-services-base = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBase" }
 play-services-base-v1820 = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBaseVersion" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
