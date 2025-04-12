@@ -24,7 +24,8 @@ class SettingActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val logOutButton: Button = findViewById(R.id.logOutButton)
         val currentUser: FirebaseUser? = auth.currentUser
-        val btnProfile: Button = findViewById(R.id.profileButton)
+        val profileButton: Button = findViewById(R.id.profileButton)
+        val notificationButton: Button = findViewById(R.id.profileButton4)
 
         drawerLayout = findViewById(R.id.saveButton)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
@@ -50,8 +51,13 @@ class SettingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        btnProfile.setOnClickListener{
+        profileButton.setOnClickListener{
             val intent = Intent(this,ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        notificationButton.setOnClickListener {
+            val intent = Intent(this, NotificationsActivity::class.java)
             startActivity(intent)
         }
 
