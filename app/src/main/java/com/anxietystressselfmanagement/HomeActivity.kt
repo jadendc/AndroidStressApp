@@ -1,106 +1,90 @@
 package com.anxietystressselfmanagement
+
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import androidx.lifecycle.Observer
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
-import java.util.*
+/**
+ * Modern Home Activity implementation using MVVM architecture and Material Design components.
+ * The Home screen serves as the main entry point for users after logging in.
+ */
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-class HomeActivity: AppCompatActivity() {
+    // UI Components
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var home_WelcomeMes: TextView
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var welcomeMessage: MaterialTextView
+    private lateinit var dashboardButton: MaterialButton
+    private lateinit var exercisesButton: MaterialButton
+    private lateinit var monthlyCalendarButton: MaterialButton
+    private lateinit var awarenessButton: MaterialButton
+    private lateinit var navigationView: NavigationView
+
+    // ViewModel using the by viewModels() delegate
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home) // Make sure this points to your home layout
+        setContentView(R.layout.activity_home)
 
-        // Initialize Firebase
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        // Initialize UI components
+        initializeViews()
 
-        // Initialize views
-        home_WelcomeMes = findViewById(R.id.home_WelcomeMes)
-        val dashboardButton: Button = findViewById(R.id.home_DashBut)
-        val exercisesButton: Button = findViewById(R.id.home_ExBut)
-//        val dailyRoadmapButton: Button = findViewById(R.id.home_DailyRoadBut)
-        val monthlyCalendarButton: Button = findViewById(R.id.home_MonthlyCalBut)
-        val awarenessButton: Button = findViewById(R.id.home_awarenessbut)
-//        val learnMoreButton: Button = findViewById(R.id.home_LearnMoreBut)
+        // Setup navigation components
+        setupNavigationDrawer()
 
-        // Display user welcome message
-        val currentUser: FirebaseUser? = auth.currentUser
-        if (currentUser != null) {
-            val userName = currentUser.displayName
-            if (!userName.isNullOrEmpty()) {
-                home_WelcomeMes.text = "Welcome, $userName! What would you like to do?"
-            } else {
-                val userId = currentUser.uid
-                db.collection("users").document(userId).get().addOnSuccessListener { document ->
-                    if (document != null) {
-                        val name = document.getString("first name")
-                        home_WelcomeMes.text = "Welcome, $name! What would you like to do?"
-                    }
-                }.addOnFailureListener {
-                    home_WelcomeMes.text = "Welcome! What would you like to do?"
-                }
-            }
-        }
+        // Setup modern back navigation
+        setupBackNavigation()
 
-        // Button click handlers
-        dashboardButton.setOnClickListener {
-            startActivity(Intent(this, DashboardActivity::class.java))
-        }
+        // Setup button click listeners
+        setupButtonListeners()
 
-        exercisesButton.setOnClickListener {
-            startActivity(Intent(this, ExercisesActivity::class.java))
-        }
-        awarenessButton.setOnClickListener {
-            startActivity(Intent(this, SelfReflectActivity::class.java))
-        }
+        // Observe LiveData from ViewModel
+        observeViewModel()
 
-//        dailyRoadmapButton.setOnClickListener{
-//            startActivity(Intent(this, MoodActivity::class.java))
-//        }
+        // Load user data
+        homeViewModel.loadUserData()
+    }
 
-        monthlyCalendarButton.setOnClickListener {
-            startActivity(Intent(this, CalendarActivity::class.java))
-        }
-//        learnMoreButton.setOnClickListener {
-//            startActivity(Intent(this, AboutActivity::class.java))
-//        }
-
-        // Add other button click handlers as needed
-
-        // Setup navigation drawer
+    /**
+     * Initialize UI components
+     */
+    private fun initializeViews() {
+        // Find toolbar and navigation components
+        toolbar = findViewById(R.id.toolbar)
         drawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+        navigationView = findViewById(R.id.nav_view)
+
+        // Find text views
+        welcomeMessage = findViewById(R.id.home_WelcomeMes)
+
+        // Find buttons
+        dashboardButton = findViewById(R.id.home_DashBut)
+        exercisesButton = findViewById(R.id.home_ExBut)
+        monthlyCalendarButton = findViewById(R.id.home_MonthlyCalBut)
+        awarenessButton = findViewById(R.id.home_awarenessbut)
+
+        // Setup toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.title = "Home"
+    }
+
+    /**
+     * Setup the Navigation Drawer
+     */
+    private fun setupNavigationDrawer() {
         toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -108,46 +92,114 @@ class HomeActivity: AppCompatActivity() {
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
+
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         toggle.drawerArrowDrawable.color = getColor(R.color.white)
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
+        navigationView.setNavigationItemSelectedListener(this)
+    }
 
-                R.id.nav_home -> startActivity(
-                    Intent(this, HomeActivity::class.java)
-                )
-                R.id.nav_dashboard -> startActivity(
-                    Intent(this, DashboardActivity::class.java)
-                )
+    /**
+     * Setup modern back press handling
+     */
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    // Since this is the home screen, consider if you want to:
+                    // 1. Exit the app
+                    // 2. Show a confirmation dialog before exiting
+                    // 3. Do something else
 
-                R.id.nav_settings -> startActivity(
-                    Intent(this, SettingActivity::class.java)
-                )
-
-                R.id.nav_about -> startActivity(
-                    Intent(this, AboutActivity::class.java)
-                )
-
-                R.id.nav_membership -> startActivity(
-                    Intent(this, MembershipActivity::class.java)
-                )
-
-                R.id.nav_exercises -> startActivity(
-                    Intent(this, ExercisesActivity::class.java)
-                )
-
-                R.id.nav_logout -> {
-                    auth.signOut()
-                    startActivity(Intent(this, MainActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    })
+                    // For now, we'll just finish the activity
                     finish()
                 }
             }
-            drawerLayout.closeDrawers()
-            true
+        })
+    }
+
+    /**
+     * Setup button click listeners
+     */
+    private fun setupButtonListeners() {
+        dashboardButton.setOnClickListener {
+            navigateTo(DashboardActivity::class.java)
         }
+
+        exercisesButton.setOnClickListener {
+            navigateTo(ExercisesActivity::class.java)
+        }
+
+        awarenessButton.setOnClickListener {
+            navigateTo(SelfReflectActivity::class.java)
+        }
+
+        monthlyCalendarButton.setOnClickListener {
+            navigateTo(CalendarActivity::class.java)
+        }
+    }
+
+    /**
+     * Observe LiveData from ViewModel
+     */
+    private fun observeViewModel() {
+        // Observe user name
+        homeViewModel.userName.observe(this, Observer { name ->
+            if (!name.isNullOrEmpty()) {
+                welcomeMessage.text = "Welcome, $name! What would you like to do?"
+            } else {
+                welcomeMessage.text = "Welcome! What would you like to do?"
+            }
+        })
+    }
+
+    /**
+     * Handle navigation menu item selection
+     */
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_home -> refreshCurrentScreen()
+            R.id.nav_dashboard -> navigateTo(DashboardActivity::class.java)
+            R.id.nav_settings -> navigateTo(SettingActivity::class.java)
+            R.id.nav_about -> navigateTo(AboutActivity::class.java)
+            R.id.nav_membership -> navigateTo(MembershipActivity::class.java)
+            R.id.nav_exercises -> navigateTo(ExercisesActivity::class.java)
+            R.id.nav_logout -> logoutUser()
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    /**
+     * Navigate to another activity
+     */
+    private fun navigateTo(destinationClass: Class<*>) {
+        startActivity(Intent(this, destinationClass))
+    }
+
+    /**
+     * Refresh the current screen (used when selecting Home while already on Home)
+     */
+    private fun refreshCurrentScreen() {
+        // No need to navigate, but you could refresh data if needed
+        homeViewModel.loadUserData()
+    }
+
+    /**
+     * Log out the user and navigate to login screen
+     */
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+
+        // Navigate to login with flags to clear the back stack
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 }
