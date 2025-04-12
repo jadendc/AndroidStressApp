@@ -21,17 +21,21 @@ object DateRangeManager {
      * Save the current date range settings
      */
     fun saveDateRange(context: Context, rangeType: String, startCalendar: Calendar, endCalendar: Calendar) {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit().apply {
+            putString(KEY_RANGE_TYPE, rangeType)
+            putLong(KEY_START_DATE, startCalendar.timeInMillis)
+            putLong(KEY_END_DATE, endCalendar.timeInMillis)
+            apply()
+        }
+    }
+
+    fun clearDateRange(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = prefs.edit()
-
-        // Save range type
-        editor.putString(KEY_RANGE_TYPE, rangeType)
-
-        // Save dates as milliseconds
-        editor.putLong(KEY_START_DATE, startCalendar.timeInMillis)
-        editor.putLong(KEY_END_DATE, endCalendar.timeInMillis)
-
-        editor.apply()
+        prefs.edit()
+            .remove(KEY_RANGE_TYPE)
+            .remove(KEY_START_DATE)
+            .remove(KEY_END_DATE)
+            .apply()
     }
 
     /**
@@ -92,5 +96,30 @@ object DateRangeManager {
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
 
         return "Date Range: ${dateFormat.format(startDate.time)} - ${dateFormat.format(endDate.time)}"
+    }
+
+    /**
+     * Get all date range information as a single object
+     * @return DateRangeInfo object containing all date range settings
+     */
+    fun getDateRange(context: Context): DateRangeInfo? {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+        // Check if we have any saved date range data
+        if (!prefs.contains(KEY_RANGE_TYPE)) {
+            return null
+        }
+
+        // Get the individual components
+        val rangeType = getRangeType(context)
+        val startCalendar = getStartDate(context)
+        val endCalendar = getEndDate(context)
+
+        // Package them in a DateRangeInfo object
+        return DateRangeInfo(
+            rangeType = rangeType,
+            startDate = startCalendar.time,
+            endDate = endCalendar.time
+        )
     }
 }
