@@ -73,4 +73,6 @@
     <string name="cvv">CVV</string>
     <string name="confirm_payment">Confirm Payment</string>
     <string name="notifications">Notifications</string>
+    <string name="faq_and_help">FAQ and Help</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -3,105 +3,116 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/saveButton"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<androidx.constraintlayout.widget.ConstraintLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/grey">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/grey">
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="0dp"
+    android:layout_height="?attr/actionBarSize"
+    android:layout_marginTop="4dp"
+    app:drawerArrowStyle="@color/white"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:navigationIconTint="@color/white"
+    app:title="Settings"
+    app:titleTextColor="@android:color/white" />
 
+<ImageView
+    android:id="@+id/imageView7"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="32dp"
+    android:adjustViewBounds="true"
+    android:contentDescription="App logo"
+    android:scaleType="fitCenter"
+    app:layout_constraintDimensionRatio="H,1:0.8"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHeight_max="120dp"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toBottomOf="@+id/toolbar"
+app:srcCompat="@drawable/logo" />
 
-        <Button
-            android:id="@+id/profileButton3"
-            android:layout_width="376dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="328dp"
-            android:backgroundTint="#4A5962"
-            android:text="FAQ and Help"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.58" />
+<Button
+    android:id="@+id/profileButton3"
+    android:layout_width="376dp"
+    android:layout_height="55dp"
+    android:backgroundTint="#4A5962"
+    android:text="@string/faq_and_help"
+    android:textAlignment="textStart"
+    android:textColor="#FFFFFF"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/toolbar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/imageView7"
+    android:layout_marginTop="32dp"
+android:layout_marginStart="16dp"
+android:layout_marginEnd="16dp" />
 
-        <Button
-            android:id="@+id/profileButton4"
-            android:layout_width="376dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="328dp"
-            android:backgroundTint="#4A5962"
-            android:text="@string/notifications"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.738" />
+<Button
+    android:id="@+id/profileButton4"
+    android:layout_width="376dp"
+    android:layout_height="55dp"
+    android:backgroundTint="#4A5962"
+    android:text="@string/notifications"
+    android:textAlignment="textStart"
+    android:textColor="#FFFFFF"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/toolbar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/profileButton3"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" />
 
-        <Button
-            android:id="@+id/profileButton"
-            android:layout_width="376dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="328dp"
-            android:backgroundTint="#4A5962"
-            android:text="Profile"
-            android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/toolbar"
-            app:layout_constraintHorizontal_bias="0.542"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.422" />
+<Button
+    android:id="@+id/profileButton"
+    android:layout_width="376dp"
+    android:layout_height="55dp"
+    android:backgroundTint="#4A5962"
+    android:text="@string/profile"
+    android:textAlignment="textStart"
+    android:textColor="#FFFFFF"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="@id/toolbar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/profileButton4"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" />
 
-        <Button
-            android:id="@+id/logOutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3D4952"
-            android:text="@string/log_out"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
+<Button
+    android:id="@+id/logOutButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#3D4952"
+    android:text="@string/log_out"
+    android:textColor="@color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/profileButton"
+    app:layout_constraintVertical_bias="0.3"
+android:layout_marginTop="32dp" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="4dp"
-            app:drawerArrowStyle="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIconTint="@color/white"
-            app:title="Settings"
-            app:titleTextColor="@android:color/white" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<com.google.android.material.navigation.NavigationView
+android:id="@+id/nav_view"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+app:menu="@menu/nav_menu">
+</com.google.android.material.navigation.NavigationView>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/nav_menu" >
-
-    </com.google.android.material.navigation.NavigationView>
-
-</androidx.drawerlayout.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
