@@ -22,12 +22,19 @@ class SOTDSocial : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var allToggleButtons: List<ToggleButton>
     private var customStressorActive = false
-    private val defaultButtonColor = Color.parseColor("#556874") // Match the XML background color
+    private val defaultButtonColor = Color.parseColor("#556874")
     private var selectedOption: String? = null
+    private var selectedDate: String = "" // Store selected date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sotd_social)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
@@ -36,6 +43,7 @@ class SOTDSocial : AppCompatActivity() {
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
+            intent.putExtra("selectedDate", selectedDate) // Pass date back
             startActivity(intent)
             finish()
         }
@@ -54,7 +62,7 @@ class SOTDSocial : AppCompatActivity() {
             toggleFriendDispute, togglePandemic, toggleSportsPerformance
         )
 
-        // Initialize all toggle buttons (hide text and set default color)
+        // Initialize all toggle buttons
         for (button in allToggleButtons) {
             button.textOn = ""
             button.textOff = ""
@@ -93,6 +101,7 @@ class SOTDSocial : AppCompatActivity() {
         }
     }
 
+    // Other methods remain largely the same
     private fun setupToggleButtons() {
         for (toggleButton in allToggleButtons) {
             toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -136,8 +145,6 @@ class SOTDSocial : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null && selectedOption != null) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             val stressorData: MutableMap<String, Any?> = hashMapOf(
                 "selectedOption" to selectedOption,
@@ -146,11 +153,12 @@ class SOTDSocial : AppCompatActivity() {
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate) // Use selectedDate instead of today
                 .update(stressorData)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, AwarenessActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
                     startActivity(intent)
                     finish()
                 }
@@ -158,11 +166,12 @@ class SOTDSocial : AppCompatActivity() {
                     db.collection("users")
                         .document(userId)
                         .collection("dailyLogs")
-                        .document(today)
+                        .document(selectedDate) // Use selectedDate here too
                         .set(stressorData, SetOptions.merge())
                         .addOnSuccessListener {
                             Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, AwarenessActivity::class.java)
+                            intent.putExtra("selectedDate", selectedDate) // Pass date
                             startActivity(intent)
                             finish()
                         }

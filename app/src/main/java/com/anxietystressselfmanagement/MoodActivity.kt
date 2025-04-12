@@ -26,12 +26,20 @@ class MoodActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    private var selectedDate: String = ""
     private var selectedMood: Int = 0 // 0 = none, 1 = angry, 2 = sad, 3 = neutral,
     // 4 = happy, 5 = excited
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            // Fallback to today if no date provided
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
@@ -114,8 +122,6 @@ class MoodActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null && selectedMood > 0) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             val emojiValue = when(selectedMood) {
                 1 -> "😢"  // Very sad
@@ -136,7 +142,7 @@ class MoodActivity : AppCompatActivity() {
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate)  // Use selectedDate instead of today
                 .set(moodData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "Mood saved successfully!",
@@ -144,6 +150,7 @@ class MoodActivity : AppCompatActivity() {
 
                     // Navigate to InControlActivity
                     val intent = Intent(this, InControlActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate)  // Pass the date to next activity
                     startActivity(intent)
                     finish()
                 }

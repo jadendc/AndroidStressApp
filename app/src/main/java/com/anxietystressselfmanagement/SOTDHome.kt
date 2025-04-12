@@ -24,11 +24,18 @@ class SOTDHome : AppCompatActivity() {
     private var selectedOption: String? = null
     private lateinit var allToggleButtons: List<ToggleButton>
     private var customStressorActive = false
-    private val defaultButtonColor = Color.parseColor("#556874") // Match the XML background color
+    private val defaultButtonColor = Color.parseColor("#556874")
+    private var selectedDate: String = "" // Store selected date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sotd_home)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
@@ -39,8 +46,9 @@ class SOTDHome : AppCompatActivity() {
         // Set a click listener to navigate back to SOTD activity
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
+            intent.putExtra("selectedDate", selectedDate) // Pass date back
             startActivity(intent)
-            finish() // Optional: Closes current activity
+            finish()
         }
 
         // Get references to all toggle buttons
@@ -57,7 +65,7 @@ class SOTDHome : AppCompatActivity() {
             toggleFinancial, toggleDomestic, toggleSickness
         )
 
-        // Initialize all toggle buttons (hide text and set default color)
+        // Initialize all toggle buttons
         for (button in allToggleButtons) {
             button.textOn = ""
             button.textOff = ""
@@ -101,7 +109,7 @@ class SOTDHome : AppCompatActivity() {
     }
 
     private fun setupToggleButtons() {
-        // Set up listeners for all toggle buttons
+        // Setup code remains the same
         for (toggleButton in allToggleButtons) {
             toggleButton.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked) {
@@ -137,8 +145,6 @@ class SOTDHome : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null && selectedOption != null) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             // Show saving indicator
             Toast.makeText(this, "Saving your option selection...", Toast.LENGTH_SHORT).show()
@@ -148,18 +154,19 @@ class SOTDHome : AppCompatActivity() {
                 "selectedOption" to selectedOption,
             )
 
-            // Save to Firestore
+            // Save to Firestore using selectedDate instead of today
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate) // Use selectedDate instead of today
                 .update(homeOptionData)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Option saved successfully!", Toast.LENGTH_SHORT).show()
                     Log.d("SOTD", "Home option updated in existing document")
 
-                    // Navigate to the Awareness activity
+                    // Navigate to the Awareness activity with the date
                     val intent = Intent(this, AwarenessActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
                     startActivity(intent)
                     finish()
                 }
@@ -167,18 +174,18 @@ class SOTDHome : AppCompatActivity() {
                     Log.w("SOTD", "Error updating document, trying to create new one", e)
 
                     // The document might not exist yet
-                    // In that case, we'll create a new document
                     db.collection("users")
                         .document(userId)
                         .collection("dailyLogs")
-                        .document(today)
+                        .document(selectedDate) // Use selectedDate here too
                         .set(homeOptionData, SetOptions.merge())
                         .addOnSuccessListener {
                             Toast.makeText(this, "Option saved successfully!", Toast.LENGTH_SHORT).show()
                             Log.d("SOTD", "Created new document with home option")
 
-                            // Navigate to the Awareness activity
+                            // Navigate to the Awareness activity with the date
                             val intent = Intent(this, AwarenessActivity::class.java)
+                            intent.putExtra("selectedDate", selectedDate) // Pass date
                             startActivity(intent)
                             finish()
                         }
@@ -193,12 +200,11 @@ class SOTDHome : AppCompatActivity() {
     }
 
     private fun getSelectedStressor(customText: String): String {
-        // Check if custom stressor is active
+        // Existing code remains the same
         if (customStressorActive && customText.isNotEmpty()) {
             return "Custom: $customText"
         }
 
-        // Check which toggle button is selected
         val toggleLabels = listOf("Partner", "Family", "In Laws", "Financial", "Domestic Dispute", "Sickness")
 
         for (i in allToggleButtons.indices) {
@@ -207,6 +213,6 @@ class SOTDHome : AppCompatActivity() {
             }
         }
 
-        return "" // No stressor selected
+        return ""
     }
 }

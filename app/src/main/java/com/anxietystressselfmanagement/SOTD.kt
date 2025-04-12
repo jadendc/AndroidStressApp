@@ -16,10 +16,17 @@ class SOTD : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private var selectedDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sotd)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -32,28 +39,37 @@ class SOTD : AppCompatActivity() {
 
         backButton.setOnClickListener {
             val intent = Intent(this, InControlActivity::class.java)
+            intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
             finish()
         }
 
         button2.setOnClickListener {
             saveSelectedSOTD("Home")
-            startActivity(Intent(this, SOTDHome::class.java))
+            val intent = Intent(this, SOTDHome::class.java)
+            intent.putExtra("selectedDate", selectedDate)
+            startActivity(intent)
         }
 
         button3.setOnClickListener {
             saveSelectedSOTD("School")
-            startActivity(Intent(this, SOTDSchool::class.java))
+            val intent = Intent(this, SOTDSchool::class.java)
+            intent.putExtra("selectedDate", selectedDate)
+            startActivity(intent)
         }
 
         button4.setOnClickListener {
             saveSelectedSOTD("Social")
-            startActivity(Intent(this, SOTDSocial::class.java))
+            val intent = Intent(this, SOTDSocial::class.java)
+            intent.putExtra("selectedDate", selectedDate)
+            startActivity(intent)
         }
 
         button5.setOnClickListener {
             saveSelectedSOTD("Work")
-            startActivity(Intent(this, SOTDWork::class.java))
+            val intent = Intent(this, SOTDWork::class.java)
+            intent.putExtra("selectedDate", selectedDate)
+            startActivity(intent)
         }
     }
 
@@ -61,8 +77,6 @@ class SOTD : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             val selectedSOTDData: MutableMap<String, Any?> = hashMapOf(
                 "selectedSOTD" to selected
@@ -71,7 +85,7 @@ class SOTD : AppCompatActivity() {
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate)  // Use selectedDate
                 .set(selectedSOTDData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected selected", Toast.LENGTH_SHORT).show()

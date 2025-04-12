@@ -15,18 +15,27 @@ class BodyActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
-    private var selectedSymptom: String? = null  // Hold selection until Continue is clicked
+    private var selectedSymptom: String? = null
+    private var selectedDate: String = "" // Store selected date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_body)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         val backButton: ImageView = findViewById(R.id.backButton)
         val bodySpinner: Spinner = findViewById(R.id.bodySpinner)
         val continueButton: Button = findViewById(R.id.continueBodyButton)
 
         backButton.setOnClickListener {
-            startActivity(Intent(this, AwarenessActivity::class.java))
+            val intent = Intent(this, AwarenessActivity::class.java)
+            intent.putExtra("selectedDate", selectedDate) // Pass date back
+            startActivity(intent)
             finish()
         }
 
@@ -60,20 +69,19 @@ class BodyActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             val selectedData = mapOf("selectedSymptom" to selected)
 
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate) // Use selectedDate instead of today
                 .set(selectedData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
                     // Go to StrategiesAndActionsActivity
                     val intent = Intent(this, StrategiesAndActionsActivity::class.java)
+                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
                     startActivity(intent)
                     finish()
                 }

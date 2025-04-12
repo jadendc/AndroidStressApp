@@ -22,12 +22,19 @@ class InControlActivity : AppCompatActivity(), ControlGaugeView.OnControlLevelSe
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    private var selectedDate: String = ""
     private var controlLevel: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         try {
             setContentView(R.layout.activity_in_control)
+
+            // Get selected date from intent
+            selectedDate = intent.getStringExtra("selectedDate") ?: run {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                dateFormat.format(Date())
+            }
 
             auth = FirebaseAuth.getInstance()
             db = FirebaseFirestore.getInstance()
@@ -42,7 +49,9 @@ class InControlActivity : AppCompatActivity(), ControlGaugeView.OnControlLevelSe
             controlGaugeView.setOnControlLevelSelectedListener(this)
 
             backButton.setOnClickListener {
-                startActivity(Intent(this, MoodActivity::class.java))
+                val intent = Intent(this, MoodActivity::class.java)
+                intent.putExtra("selectedDate", selectedDate)
+                startActivity(intent)
                 finish()
             }
 
@@ -75,8 +84,6 @@ class InControlActivity : AppCompatActivity(), ControlGaugeView.OnControlLevelSe
         val currentUser = auth.currentUser
         if (currentUser != null && controlLevel > 0) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             Toast.makeText(this, "Saving your control level...", Toast.LENGTH_SHORT).show()
 
@@ -88,22 +95,26 @@ class InControlActivity : AppCompatActivity(), ControlGaugeView.OnControlLevelSe
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate)  // Use selectedDate
                 .update("control", controlLevel, "controlLevel", controlLevel)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Control level saved successfully!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, SOTD::class.java))
+                    val intent = Intent(this, SOTD::class.java)
+                    intent.putExtra("selectedDate", selectedDate)  // Pass date to next activity
+                    startActivity(intent)
                     finish()
                 }
                 .addOnFailureListener {
                     db.collection("users")
                         .document(userId)
                         .collection("dailyLogs")
-                        .document(today)
+                        .document(selectedDate)  // Use selectedDate
                         .set(controlData, SetOptions.merge())
                         .addOnSuccessListener {
                             Toast.makeText(this, "Control level saved successfully!", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, SOTD::class.java))
+                            val intent = Intent(this, SOTD::class.java)
+                            intent.putExtra("selectedDate", selectedDate)  // Pass date
+                            startActivity(intent)
                             finish()
                         }
                         .addOnFailureListener { e2 ->

@@ -18,6 +18,7 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
     private lateinit var continueButton: Button
     private lateinit var backButton: ImageView
     private val firestore = FirebaseFirestore.getInstance()
+    private var selectedDate: String = "" // Store selected date
 
     // Define shortened labels for strategies and actions
     private val strategyShortenedLabels = mapOf(
@@ -47,6 +48,12 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.strategies_and_actions_activity)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         strategySpinner = findViewById(R.id.strategySpinner)
         actionSpinner = findViewById(R.id.actionSpinner)
@@ -83,7 +90,10 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         setupSpinner(actionSpinner, shortenedActionOptions, actionOptions)
 
         backButton.setOnClickListener {
-            startActivity(Intent(this, AwarenessActivity::class.java))
+            // We don't know which awareness option they chose, so let's go back to the main AwarenessActivity
+            val intent = Intent(this, AwarenessActivity::class.java)
+            intent.putExtra("selectedDate", selectedDate) // Pass date back
+            startActivity(intent)
             finish()
         }
 
@@ -148,8 +158,6 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         }
 
         val userId = currentUser.uid
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = dateFormatter.format(Date())
 
         val logData = mapOf(
             "7strategies" to strategy,
@@ -159,11 +167,12 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         firestore.collection("users")
             .document(userId)
             .collection("dailyLogs")
-            .document(currentDate)
+            .document(selectedDate) // Use selectedDate instead of today
             .set(logData, SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Saved successfully!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, DashboardActivity::class.java)
+                intent.putExtra("selectedDate", selectedDate) // Pass date to dashboard
                 startActivity(intent)
                 finish()
             }

@@ -18,12 +18,20 @@ class AwarenessActivity : AppCompatActivity() {
     private lateinit var mindButton: Button
     private lateinit var feelingsButton: Button
     private lateinit var behaviorButton: Button
+    private var selectedDate: String = "" // Add this field to store the selected date
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
         enableEdgeToEdge()
         setContentView(R.layout.activity_awareness)
+
+        // Get selected date from intent
+        selectedDate = intent.getStringExtra("selectedDate") ?: run {
+            // Fallback to today if no date provided
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            dateFormat.format(Date())
+        }
 
         bodyButton = findViewById(R.id.bodyButton)
         mindButton = findViewById(R.id.mindButton)
@@ -47,6 +55,7 @@ class AwarenessActivity : AppCompatActivity() {
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
+            intent.putExtra("selectedDate", selectedDate) // Pass date back
             startActivity(intent)
             finish()
         }
@@ -56,8 +65,6 @@ class AwarenessActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val today = dateFormat.format(Date())
 
             val selectedOptionData: MutableMap<String, Any?> = hashMapOf(
                 "signsOption" to selected
@@ -66,7 +73,7 @@ class AwarenessActivity : AppCompatActivity() {
             firestore.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(today)
+                .document(selectedDate) // Use selectedDate instead of today
                 .set(selectedOptionData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
@@ -74,13 +81,14 @@ class AwarenessActivity : AppCompatActivity() {
                     // Navigate to the appropriate activity based on the selected option
                     val nextActivity = when (selected) {
                         "Body" -> BodyActivity::class.java
-                        "Mind" -> MindActivity::class.java  // Replace with the actual activity
-                        "Feelings" -> FeelingsActivity::class.java  // Replace with the actual activity
-                        "Behavior" -> BehaviorActivity::class.java  // Replace with the actual activity
+                        "Mind" -> MindActivity::class.java
+                        "Feelings" -> FeelingsActivity::class.java
+                        "Behavior" -> BehaviorActivity::class.java
                         else -> throw IllegalArgumentException("Unknown option: $selected")
                     }
 
                     val intent = Intent(this, nextActivity)
+                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
                     startActivity(intent)
                     finish()
                 }
