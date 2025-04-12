@@ -7,6 +7,7 @@ import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -35,6 +36,8 @@ class PsychSighActivity : AppCompatActivity() {
         lungRightImageView = findViewById(R.id.RightLungImageView)
         instructionTextView = findViewById(R.id.instructionTextView)
 
+        startButton.visibility = View.VISIBLE
+
         // Back button navigation
         backButton.setOnClickListener {
             navigateToExercises()
@@ -43,6 +46,7 @@ class PsychSighActivity : AppCompatActivity() {
         // Start button functionality
         startButton.setOnClickListener {
             startPhysiologicalSigh()
+            startButton.visibility = View.GONE
         }
     }
 
