@@ -204,8 +204,8 @@ class DashboardActivity : AppCompatActivity() {
         val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
         val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
 
-        if (diffInDays > 366) {
-            Toast.makeText(this, "Date range cannot exceed a year", Toast.LENGTH_SHORT).show()
+        if (diffInDays > 90) {
+            Toast.makeText(this, "Date range cannot exceed 90 days", Toast.LENGTH_SHORT).show()
             return false
         }
 
@@ -256,8 +256,8 @@ class DashboardActivity : AppCompatActivity() {
         val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
         val daysInRange = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
 
-        // 365 day cap for data visualization. This might be too much, so 90 days is maybe better.
-        val daysToProcess = min(daysInRange, 365)
+        // 90 day cap for queries.
+        val daysToProcess = min(daysInRange, 90)
 
         val dates = ArrayList<String>()
         val entriesMap = mutableMapOf<Int, Float>()
@@ -313,7 +313,7 @@ class DashboardActivity : AppCompatActivity() {
         val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
         val daysInRange = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
 
-        val daysToProcess = min(daysInRange, 365)
+        val daysToProcess = min(daysInRange, 90)
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         var daysProcessed = 0
