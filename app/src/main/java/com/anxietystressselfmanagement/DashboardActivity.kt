@@ -1,168 +1,132 @@
 package com.anxietystressselfmanagement
 
-import com.github.mikephil.charting.formatter.ValueFormatter
 import android.app.DatePickerDialog
-import android.graphics.Color
-import com.github.mikephil.charting.formatter.PercentFormatter
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.charts.*
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.*
 import android.content.Intent
-import android.util.Log
+import android.graphics.Color
+import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.math.min
+import java.util.Calendar
+import java.util.Locale
 
-class DashboardActivity : AppCompatActivity() {
+/**
+ * Modern implementation of DashboardActivity using MVVM architecture pattern
+ * with ViewModels, LiveData, and Material Design components.
+ */
+class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    // UI Components
     private lateinit var barChart: BarChart
     private lateinit var pieChart: PieChart
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var continueButton: Button
-    private lateinit var rangeSpinner: Spinner
-    private lateinit var startDateButton: Button
-    private lateinit var endDateButton: Button
-    private lateinit var applyButton: Button
-    private lateinit var dateRangeLayout: LinearLayout
+    private lateinit var continueButton: MaterialButton
+    private lateinit var rangeSpinner: MaterialButton
+    private lateinit var startDateButton: MaterialButton
+    private lateinit var endDateButton: MaterialButton
+    private lateinit var applyButton: MaterialButton
+    private lateinit var dateRangeLayout: View
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var triggersTextView: TextView
+    private lateinit var feelingsTextView: TextView
+    private lateinit var navigationView: NavigationView
 
-    // Date range values
-    private val calendar = Calendar.getInstance()
-    private val startCalendar = Calendar.getInstance()
-    private val endCalendar = Calendar.getInstance()
-    private var currentRangeType = "Last 7 Days"
+    // ViewModel using the by viewModels() delegate
+    private val dashboardViewModel: DashboardViewModel by viewModels()
 
-    // NEW: Add a flag to prevent triggering data fetch multiple times
+    // Flag to prevent initial double-loading
     private var isInitialLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board)
 
-        // Initialize views
-        barChart = findViewById(R.id.barChart)
-        pieChart = findViewById(R.id.pieChart)
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-        continueButton = findViewById(R.id.continueDashboardButton)
-        rangeSpinner = findViewById(R.id.rangeSpinner)
-        startDateButton = findViewById(R.id.startDateButton)
-        endDateButton = findViewById(R.id.endDateButton)
-        applyButton = findViewById(R.id.applyRangeButton)
-        dateRangeLayout = findViewById(R.id.dateRangeLayout)
+        // Initialize UI components
+        initializeViews()
 
-        // *** LOAD SAVED DATE RANGE IF AVAILABLE ***
-        val savedRange = DateRangeManager.getDateRange(this)
-        if (savedRange != null) {
-            currentRangeType = savedRange.rangeType
-            startCalendar.time = savedRange.startDate
-            endCalendar.time = savedRange.endDate
-        }
+        // Setup navigation components
+        setupNavigationDrawer()
 
-        // Configure date range spinner
+        // Setup button click listeners
+        setupButtonListeners()
+
+        // Setup range spinner
         setupRangeSpinner()
 
-        // Update UI to reflect any loaded date range
-        if (savedRange != null) {
-            // Set spinner selection based on range type
-            when (currentRangeType) {
-                "Last 7 Days" -> rangeSpinner.setSelection(0)
-                "Last 14 Days" -> rangeSpinner.setSelection(1)
-                "Last 30 Days" -> rangeSpinner.setSelection(2)
-                "Custom Range" -> {
-                    rangeSpinner.setSelection(3)
-                    dateRangeLayout.visibility = View.VISIBLE
-                }
-            }
-            updateDateButtonText()
-        } else {
-            // Set initial dates if no saved range
-            setDateRange(7) // Default to 7 days
-            updateDateButtonText()
-        }
+        // Observe LiveData from ViewModel
+        observeViewModel()
 
-        // Setup date picker buttons
-        setupDateButtons()
-
-        continueButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity2::class.java)
-            startActivity(intent)
-        }
-
+        // Load saved date range and initial data
+        dashboardViewModel.loadSavedDateRange(this)
         isInitialLoad = false
-        // Initial data fetch
-        fetchDataForCurrentRange()
-
-        // Set up navigation drawer
-        setupNavigationDrawer()
     }
 
-    // NEW METHOD: Add onResume to update when returning from Dashboard2
     override fun onResume() {
         super.onResume()
 
         // Skip refresh during initial loading (already handled in onCreate)
         if (isInitialLoad) return
 
-        // Check if date range has been updated in Dashboard2 or Dashboard3
-        val savedRange = DateRangeManager.getDateRange(this)
-        if (savedRange != null) {
-            // Only update if the current range is different from what's saved
-            val currentStartTime = startCalendar.timeInMillis
-            val currentEndTime = endCalendar.timeInMillis
-            val savedStartTime = savedRange.startDate.time
-            val savedEndTime = savedRange.endDate.time
-
-            if (currentStartTime != savedStartTime ||
-                currentEndTime != savedEndTime ||
-                currentRangeType != savedRange.rangeType) {
-
-                Log.d("DashboardActivity", "Date range changed - refreshing")
-
-                // Update our local variables
-                currentRangeType = savedRange.rangeType
-                startCalendar.time = savedRange.startDate
-                endCalendar.time = savedRange.endDate
-
-                // Update UI
-                when (currentRangeType) {
-                    "Last 7 Days" -> rangeSpinner.setSelection(0, false)
-                    "Last 14 Days" -> rangeSpinner.setSelection(1, false)
-                    "Last 30 Days" -> rangeSpinner.setSelection(2, false)
-                    "Custom Range" -> {
-                        rangeSpinner.setSelection(3, false)
-                        dateRangeLayout.visibility = View.VISIBLE
-                    }
-                }
-
-                updateDateButtonText()
-
-                // Refresh data
-                fetchDataForCurrentRange()
-            }
-        }
+        // Check for date range changes when returning to this activity
+        dashboardViewModel.loadSavedDateRange(this)
     }
 
-    private fun setupNavigationDrawer() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navigationView: NavigationView = findViewById(R.id.nav_view)
-        val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar)
+    /**
+     * Initialize all UI components from layout
+     */
+    private fun initializeViews() {
+        // Find views
+        barChart = findViewById(R.id.barChart)
+        pieChart = findViewById(R.id.pieChart)
+        continueButton = findViewById(R.id.continueDashboardButton)
+        rangeSpinner = findViewById(R.id.rangeSpinner)
+        startDateButton = findViewById(R.id.startDateButton)
+        endDateButton = findViewById(R.id.endDateButton)
+        applyButton = findViewById(R.id.applyRangeButton)
+        dateRangeLayout = findViewById(R.id.dateRangeLayout)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        toolbar = findViewById(R.id.toolbar)
+        triggersTextView = findViewById(R.id.triggersTextView)
+        feelingsTextView = findViewById(R.id.textView16)
+        navigationView = findViewById(R.id.nav_view)
 
+        // Setup toolbar
         setSupportActionBar(toolbar)
+        supportActionBar?.title = "Dashboard"
+    }
 
-        val toggle = ActionBarDrawerToggle(
+    /**
+     * Setup the Navigation Drawer
+     */
+    private fun setupNavigationDrawer() {
+        toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
             toolbar,
@@ -174,283 +138,236 @@ class DashboardActivity : AppCompatActivity() {
         toggle.syncState()
         toggle.drawerArrowDrawable.color = getColor(R.color.white)
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_dashboard -> drawerLayout.closeDrawers()
-                R.id.nav_settings -> startActivity(Intent(this, SettingActivity::class.java))
-                R.id.nav_about -> startActivity(Intent(this, AboutActivity::class.java))
-                R.id.nav_home -> {
-                    DateRangeManager.clearDateRange(this)
-                    startActivity(Intent(this, HomeActivity::class.java))
-                }
-                R.id.nav_membership -> startActivity(Intent(this, MembershipActivity::class.java))
-                R.id.nav_exercises -> startActivity(Intent(this, ExercisesActivity::class.java))
-                R.id.nav_logout -> {
-                    FirebaseAuth.getInstance().signOut()
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
+        navigationView.setNavigationItemSelectedListener(this)
+    }
+
+    /**
+     * Setup button click listeners
+     */
+    private fun setupButtonListeners() {
+        continueButton.setOnClickListener {
+            navigateTo(DashboardActivity2::class.java)
+        }
+
+        startDateButton.setOnClickListener {
+            showDatePicker(true)
+        }
+
+        endDateButton.setOnClickListener {
+            showDatePicker(false)
+        }
+
+        applyButton.setOnClickListener {
+            val (isValid, errorMessage) = dashboardViewModel.validateDateRange()
+            if (isValid) {
+                dashboardViewModel.fetchDataForCurrentRange(this)
+            } else {
+                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
-            drawerLayout.closeDrawers()
-            true
         }
     }
 
-
+    /**
+     * Setup the range selection dropdown
+     */
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
 
-        // Create a completely custom ArrayAdapter with explicit text colors
-        val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ranges) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getView(position, convertView, parent)
-                val textView = view as TextView
-                textView.setTextColor(Color.WHITE)
-                textView.textSize = 16f
-                textView.setPadding(16, 16, 16, 16)
-                textView.setBackgroundColor(Color.parseColor("#556874"))
-                return view
-            }
+        // Make sure the initial text is visible
+        rangeSpinner.text = dashboardViewModel.dateRange.value?.first ?: "Last 7 Days"
 
-            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val view = super.getDropDownView(position, convertView, parent)
-                val textView = view as TextView
-                textView.setTextColor(Color.BLACK)
-                textView.textSize = 16f
-                textView.setPadding(16, 16, 16, 16)
-                textView.setBackgroundColor(Color.WHITE)
-                return view
-            }
+        // Add dropdown icon if missing
+        if (rangeSpinner.icon == null) {
+            rangeSpinner.setIconResource(R.drawable.ic_calendar)
+            rangeSpinner.iconGravity = MaterialButton.ICON_GRAVITY_START
         }
 
-        // Set the adapter's dropdown view resource
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        rangeSpinner.adapter = adapter
+        // Setup popup menu for range selection
+        rangeSpinner.setOnClickListener {
+            val popupMenu = androidx.appcompat.widget.PopupMenu(this, rangeSpinner)
 
-        rangeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                currentRangeType = ranges[position]
+            // Add items to menu
+            ranges.forEachIndexed { index, item ->
+                popupMenu.menu.add(0, index, index, item)
+            }
+
+            // Set click listener
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                val selectedRange = ranges[menuItem.itemId]
+                rangeSpinner.text = selectedRange
 
                 // Show/hide custom date range inputs
-                if (currentRangeType == "Custom Range") {
+                if (selectedRange == "Custom Range") {
                     dateRangeLayout.visibility = View.VISIBLE
                 } else {
                     dateRangeLayout.visibility = View.GONE
 
                     // Reset date range based on selection and fetch data
-                    when (currentRangeType) {
-                        "Last 7 Days" -> setDateRange(7)
-                        "Last 14 Days" -> setDateRange(14)
-                        "Last 30 Days" -> setDateRange(30)
+                    when (selectedRange) {
+                        "Last 7 Days" -> dashboardViewModel.setDateRange(7)
+                        "Last 14 Days" -> dashboardViewModel.setDateRange(14)
+                        "Last 30 Days" -> dashboardViewModel.setDateRange(30)
                     }
 
-                    fetchDataForCurrentRange()
+                    dashboardViewModel.fetchDataForCurrentRange(this)
                 }
+                true
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Do nothing
-            }
+            popupMenu.show()
         }
     }
 
-    private fun setupDateButtons() {
-        startDateButton.setOnClickListener {
-            showDatePicker(startCalendar) {
+    /**
+     * Show date picker dialog
+     * @param isStartDate True if picking start date, false if picking end date
+     */
+    private fun showDatePicker(isStartDate: Boolean) {
+        dashboardViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+            val calendar = if (isStartDate) startCal else endCal
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+                val newCalendar = Calendar.getInstance()
+                newCalendar.set(selectedYear, selectedMonth, selectedDay)
+
+                if (isStartDate) {
+                    // Update start date
+                    val endCalendar = Calendar.getInstance()
+                    endCalendar.time = endCal.time
+                    dashboardViewModel.setCustomDateRange(newCalendar, endCalendar)
+                } else {
+                    // Update end date
+                    val startCalendar = Calendar.getInstance()
+                    startCalendar.time = startCal.time
+                    dashboardViewModel.setCustomDateRange(startCalendar, newCalendar)
+                }
+
+                // Update button text
                 updateDateButtonText()
-                // Don't automatically fetch data for custom range until Apply is clicked
-            }
-        }
-
-        endDateButton.setOnClickListener {
-            showDatePicker(endCalendar) {
-                updateDateButtonText()
-                // Don't automatically fetch data for custom range until Apply is clicked
-            }
-        }
-
-        applyButton.setOnClickListener {
-            if (validateDateRange()) {
-                fetchDataForCurrentRange()
-            }
+            }, year, month, day).show()
         }
     }
 
-    private fun validateDateRange(): Boolean {
-        if (startCalendar.after(endCalendar)) {
-            Toast.makeText(this, "Start date cannot be after end date", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        // Calculate days between dates
-        val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
-        val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
-
-        if (diffInDays > 90) {
-            Toast.makeText(this, "Date range cannot exceed 90 days", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
-    }
-
-    private fun showDatePicker(calendar: Calendar, onDateSet: () -> Unit) {
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-            calendar.set(selectedYear, selectedMonth, selectedDay)
-            onDateSet()
-        }, year, month, day).show()
-    }
-
+    /**
+     * Update date button text based on current range
+     */
     private fun updateDateButtonText() {
-        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        startDateButton.text = dateFormat.format(startCalendar.time)
-        endDateButton.text = dateFormat.format(endCalendar.time)
-    }
-
-    private fun setDateRange(days: Int) {
-        // Reset end date to today
-        endCalendar.time = Calendar.getInstance().time
-
-        // Set start date to days before end date
-        startCalendar.time = endCalendar.time
-        startCalendar.add(Calendar.DAY_OF_YEAR, -(days - 1))
-
-        updateDateButtonText()
-    }
-
-    private fun fetchDataForCurrentRange() {
-        DateRangeManager.saveDateRange(this, currentRangeType, startCalendar, endCalendar)
-
-        fetchInControlData()
-        fetchMoodData()
-    }
-
-    // The rest of your methods remain unchanged
-    private fun fetchInControlData() {
-        val currentUser = auth.currentUser ?: return
-        val userId = currentUser.uid
-        val dateFormat = SimpleDateFormat("MM/dd", Locale.getDefault())
-
-        // How many days are we displaying
-        val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
-        val daysInRange = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
-
-        // 90 day cap for queries.
-        val daysToProcess = min(daysInRange, 90)
-
-        val dates = ArrayList<String>()
-        val entriesMap = mutableMapOf<Int, Float>()
-        var daysProcessed = 0
-
-        // Create a temporary calendar for iteration
-        val tempCalendar = Calendar.getInstance()
-        tempCalendar.time = endCalendar.time
-
-        for (i in 0 until daysToProcess) {
-            val dateKey = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(tempCalendar.time)
-            val formattedDate = dateFormat.format(tempCalendar.time)
-
-            dates.add(0, formattedDate)
-
-            val position = i
-            db.collection("users").document(userId)
-                .collection("dailyLogs").document(dateKey)
-                .get()
-                .addOnSuccessListener { document ->
-                    val controlLevel = document.getLong("control")?.toFloat() ?: 0f
-                    entriesMap[position] = controlLevel
-                    daysProcessed++
-
-                    if (daysProcessed == daysToProcess) {
-                        val entries = (0 until daysToProcess).map { pos ->
-                            BarEntry((daysToProcess - 1 - pos).toFloat(), entriesMap[pos] ?: 0f)
-                        }
-
-                        setupBarChart(entries, dates)
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("DashboardActivity", "Error fetching control data for $dateKey", e)
-                    daysProcessed++
-
-                    if (daysProcessed == daysToProcess) {
-                        val entries = (0 until daysToProcess).map { pos ->
-                            BarEntry((daysToProcess - 1 - pos).toFloat(), entriesMap[pos] ?: 0f)
-                        }
-                        setupBarChart(entries, dates)
-                    }
-                }
-
-            tempCalendar.add(Calendar.DAY_OF_YEAR, -1)
+        dashboardViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+            val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            startDateButton.text = dateFormat.format(startCal.time)
+            endDateButton.text = dateFormat.format(endCal.time)
         }
     }
 
-    private fun fetchMoodData() {
-        val currentUser = auth.currentUser ?: return
-        val userId = currentUser.uid
-
-        val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
-        val daysInRange = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
-
-        val daysToProcess = min(daysInRange, 90)
-
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        var daysProcessed = 0
-
-        // Map to count moods
-        val moodCounts = mutableMapOf(
-            "Excited" to 0,
-            "Happy" to 0,
-            "Indifferent" to 0,
-            "Sad" to 0,
-            "Angry" to 0
-        )
-
-        val tempCalendar = Calendar.getInstance()
-        tempCalendar.time = endCalendar.time
-
-        for (i in 0 until daysToProcess) {
-            val dateKey = dateFormat.format(tempCalendar.time)
-
-            // Fetch mood data for this specific date
-            db.collection("users").document(userId)
-                .collection("dailyLogs").document(dateKey)
-                .get()
-                .addOnSuccessListener { document ->
-                    val mood = document.getString("feeling") ?: ""
-
-                    when (mood) {
-                        "😁" -> moodCounts["Excited"] = moodCounts["Excited"]!! + 1
-                        "😊" -> moodCounts["Happy"] = moodCounts["Happy"]!! + 1
-                        "😐" -> moodCounts["Indifferent"] = moodCounts["Indifferent"]!! + 1
-                        "😔" -> moodCounts["Sad"] = moodCounts["Sad"]!! + 1
-                        "😢" -> moodCounts["Angry"] = moodCounts["Angry"]!! + 1
-                    }
-
-                    daysProcessed++
-                    // After processing all days, update the pie chart
-                    if (daysProcessed == daysToProcess) {
-                        setupPieChart(moodCounts)
-                    }
+    /**
+     * Observe LiveData from ViewModel to update UI accordingly
+     */
+    private fun observeViewModel() {
+        // Observe date range changes
+        dashboardViewModel.dateRange.observe(this, Observer { (rangeType, startCal, endCal) ->
+            // Update UI to reflect date range
+            when (rangeType) {
+                "Last 7 Days", "Last 14 Days", "Last 30 Days" -> {
+                    rangeSpinner.text = rangeType
+                    dateRangeLayout.visibility = View.GONE
                 }
-                .addOnFailureListener { e ->
-                    Log.e("DashboardActivity", "Error fetching mood data for $dateKey", e)
-                    daysProcessed++
-                    // Still try to update chart if we failed to get some data
-                    if (daysProcessed == daysToProcess) {
-                        setupPieChart(moodCounts)
-                    }
+                "Custom Range" -> {
+                    rangeSpinner.text = rangeType
+                    dateRangeLayout.visibility = View.VISIBLE
                 }
+            }
 
-            // Move to the previous day
-            tempCalendar.add(Calendar.DAY_OF_YEAR, -1)
-        }
+            // Update date buttons
+            val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            startDateButton.text = dateFormat.format(startCal.time)
+            endDateButton.text = dateFormat.format(endCal.time)
+
+            // Fetch data if not already loading
+            if (!isInitialLoad) {
+                dashboardViewModel.fetchDataForCurrentRange(this)
+            }
+        })
+
+        // Observe bar chart data
+        dashboardViewModel.barChartData.observe(this, Observer { (entries, dates) ->
+            setupBarChart(entries, dates)
+        })
+
+        // Observe pie chart data
+        dashboardViewModel.pieChartData.observe(this, Observer { moodCounts ->
+            setupPieChart(moodCounts)
+        })
+
+        // Observe loading state
+        dashboardViewModel.isLoading.observe(this, Observer { isLoading ->
+            // You could show a progress indicator here
+        })
+
+        // Observe error messages
+        dashboardViewModel.errorMessage.observe(this, Observer { message ->
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+                dashboardViewModel.clearErrorMessage()
+            }
+        })
     }
 
+    /**
+     * Setup bar chart with data
+     */
+    private fun setupBarChart(entries: List<com.github.mikephil.charting.data.BarEntry>, dates: List<String>) {
+        val barDataSet = BarDataSet(entries, "In Control")
+        barDataSet.color = Color.parseColor("#77dd77")
+        val barData = BarData(barDataSet)
+
+        barData.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return value.toInt().toString()
+            }
+        })
+
+        barChart.data = barData
+        barChart.description.isEnabled = false
+
+        // Set x-axis labels
+        val xAxis = barChart.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(dates)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.setDrawGridLines(false)
+
+        // Set y-axis properties
+        val leftAxis = barChart.axisLeft
+        leftAxis.axisMinimum = 0f  // Start from 0
+        leftAxis.axisMaximum = 5f  // Max value is 5
+        leftAxis.granularity = 1f
+        barChart.axisRight.isEnabled = false
+
+        // Adjust label count based on number of dates
+        if (dates.size <= 14) {
+            xAxis.labelCount = dates.size
+        } else {
+            // For larger date ranges, show fewer labels to avoid overcrowding
+            xAxis.labelCount = 7
+        }
+
+        // Update chart title to reflect the date range
+        dashboardViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+            val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+            val startDate = dateFormat.format(startCal.time)
+            val endDate = dateFormat.format(endCal.time)
+            triggersTextView.text = "In Control ($startDate - $endDate)"
+        }
+
+        barChart.invalidate()
+    }
+
+    /**
+     * Setup pie chart with data
+     */
     private fun setupPieChart(moodCounts: Map<String, Int>) {
         val entries = mutableListOf<PieEntry>()
         moodCounts.forEach { (mood, count) ->
@@ -491,59 +408,51 @@ class DashboardActivity : AppCompatActivity() {
         legend.textSize = 16f
 
         // Update feelings title to include date range
-        val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
-        val startDate = dateFormat.format(startCalendar.time)
-        val endDate = dateFormat.format(endCalendar.time)
-
-        val feelingsTextView = findViewById<TextView>(R.id.textView16)
-        feelingsTextView.text = "Feelings ($startDate - $endDate)"
+        dashboardViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+            val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+            val startDate = dateFormat.format(startCal.time)
+            val endDate = dateFormat.format(endCal.time)
+            feelingsTextView.text = "Feelings ($startDate - $endDate)"
+        }
     }
 
-    private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
-        val barDataSet = BarDataSet(entries, "In Control")
-        barDataSet.color = Color.parseColor("#77dd77")
-        val barData = BarData(barDataSet)
-
-        barData.setValueFormatter(object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return value.toInt().toString()
+    /**
+     * Handle navigation item selection
+     */
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_dashboard -> { /* Already on dashboard */ }
+            R.id.nav_settings -> navigateTo(SettingActivity::class.java)
+            R.id.nav_about -> navigateTo(AboutActivity::class.java)
+            R.id.nav_home -> {
+                DateRangeManager.clearDateRange(this)
+                navigateTo(HomeActivity::class.java)
             }
-        })
-
-        barChart.data = barData
-        barChart.description.isEnabled = false
-
-        // Set x-axis labels
-        val xAxis = barChart.xAxis
-        xAxis.valueFormatter = IndexAxisValueFormatter(dates)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.granularity = 1f
-        xAxis.setDrawGridLines(false)
-
-        // Set y-axis properties
-        val leftAxis = barChart.axisLeft
-        leftAxis.axisMinimum = 0f  // Start from 0
-        leftAxis.axisMaximum = 5f  // Max value is 5
-        leftAxis.granularity = 1f
-        barChart.axisRight.isEnabled = false
-
-        // Adjust label count based on number of dates
-        if (dates.size <= 14) {
-            xAxis.labelCount = dates.size
-        } else {
-            // For larger date ranges, show fewer labels to avoid overcrowding
-            xAxis.labelCount = 7
+            R.id.nav_membership -> navigateTo(MembershipActivity::class.java)
+            R.id.nav_exercises -> navigateTo(ExercisesActivity::class.java)
+            R.id.nav_logout -> logoutUser()
         }
 
-        // Update chart title to reflect the date range
-        val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
-        val startDate = dateFormat.format(startCalendar.time)
-        val endDate = dateFormat.format(endCalendar.time)
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
 
-        // Find and update the title TextView
-        val titleTextView = findViewById<TextView>(R.id.triggersTextView)
-        titleTextView.text = "In Control ($startDate - $endDate)"
+    /**
+     * Navigate to another activity
+     */
+    private fun navigateTo(destinationClass: Class<*>) {
+        startActivity(Intent(this, destinationClass))
+    }
 
-        barChart.invalidate()
+    /**
+     * Log out user and navigate to login screen
+     */
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 }

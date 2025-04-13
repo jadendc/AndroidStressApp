@@ -12,6 +12,8 @@
     <color name="background_color_music">#E7E7E7</color>
     <color name="button_grey">#556874</color>
     <color name="gray">#323C45</color>
+    <color name="chart_label_color">#FFFFFF</color>
+    <color name="chart_line_color">#78909C</color>
 
 
 </resources>
