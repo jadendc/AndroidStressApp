@@ -205,7 +205,7 @@ class DashboardViewModel : ViewModel() {
 
             // Map to count moods
             val moodCounts = mutableMapOf(
-                "Excited" to 0,
+                "Very Happy" to 0,
                 "Happy" to 0,
                 "Indifferent" to 0,
                 "Sad" to 0,
@@ -227,7 +227,8 @@ class DashboardViewModel : ViewModel() {
                     val mood = document.getString("feeling") ?: ""
 
                     when (mood) {
-                        "😁" -> moodCounts["Excited"] = moodCounts["Excited"]!! + 1
+                        "😁" -> moodCounts["Very Happy"] = moodCounts["Very Happy"]!! + 1
+                        "Excited" -> moodCounts["Very Happy"] = moodCounts["Very Happy"]!! + 1 // old specs used "Excited"
                         "😊" -> moodCounts["Happy"] = moodCounts["Happy"]!! + 1
                         "😐" -> moodCounts["Indifferent"] = moodCounts["Indifferent"]!! + 1
                         "😔" -> moodCounts["Sad"] = moodCounts["Sad"]!! + 1
