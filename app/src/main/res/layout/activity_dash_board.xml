@@ -160,58 +160,74 @@
                     app:strokeColor="#78909C"
                     app:strokeWidth="1dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:layout_height="wrap_content">
 
-                        <!-- In Control Header -->
-                        <TextView
-                            android:id="@+id/triggersTextView"
+                        <LinearLayout
+                            android:id="@+id/chartsContainer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:text="In Control"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
+                            android:orientation="vertical"
+                            android:padding="16dp">
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/barChart"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_marginBottom="16dp" />
+                            <!-- In Control Header -->
+                            <TextView
+                                android:id="@+id/triggersTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="In Control"
+                                android:textColor="@android:color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
 
-                        <!-- Feelings Header -->
-                        <TextView
-                            android:id="@+id/textView16"
-                            android:layout_width="match_parent"
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/barChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- Feelings Header -->
+                            <TextView
+                                android:id="@+id/textView16"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="Feelings"
+                                android:textColor="@android:color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/pieChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/continueDashboardButton"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:backgroundTint="#556874"
+                                android:text="Continue"
+                                android:textColor="@android:color/white"
+                                app:cornerRadius="8dp"
+                                app:icon="@drawable/ic_arrow_forward"
+                                app:iconGravity="textEnd"
+                                app:iconTint="@android:color/white" />
+                        </LinearLayout>
+
+                        <!-- Loading Indicator -->
+                        <ProgressBar
+                            android:id="@+id/loadingIndicator"
+                            style="?android:attr/progressBarStyleLarge"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:text="Feelings"
-                            android:textColor="@android:color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold" />
-
-                        <com.github.mikephil.charting.charts.PieChart
-                            android:id="@+id/pieChart"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/continueDashboardButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:backgroundTint="#556874"
-                            android:text="Continue"
-                            android:textColor="@android:color/white"
-                            app:cornerRadius="8dp"
-                            app:icon="@drawable/ic_arrow_forward"
-                            app:iconGravity="textEnd"
-                            app:iconTint="@android:color/white" />
-                    </LinearLayout>
+                            android:layout_gravity="center"
+                            android:indeterminateTint="@android:color/white"
+                            android:visibility="gone" />
+                    </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

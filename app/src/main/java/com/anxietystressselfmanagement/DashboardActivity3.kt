@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,8 +26,11 @@ import java.util.*
 /**
  * Modern implementation of DashboardActivity3 using MVVM architecture pattern
  * with ViewModels, LiveData, and Material Design components.
+ * Includes robust error handling and UI state management.
  */
 class DashboardActivity3 : AppCompatActivity() {
+
+    private val TAG = "DashboardActivity3"
 
     // UI Components
     private lateinit var pieChart4: PieChart
@@ -38,6 +43,8 @@ class DashboardActivity3 : AppCompatActivity() {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
     private lateinit var strategiesTextView: TextView
     private lateinit var actionsTextView: TextView
+    private var loadingIndicator: ProgressBar? = null
+    private var chartsContainer: View? = null
 
     // ViewModel using the by viewModels() delegate
     private val dashboard3ViewModel: Dashboard3ViewModel by viewModels()
@@ -72,28 +79,60 @@ class DashboardActivity3 : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        // Skip refresh during initial loading (already handled in onCreate)
         if (isInitialLoad) return
 
-        // Check for date range changes when returning to this activity
         dashboard3ViewModel.loadSavedDateRange(this)
     }
 
     /**
-     * Initialize all UI components from layout
+     * Initialize all UI components from layout with robust error handling
      */
     private fun initializeViews() {
-        // Find views
-        pieChart4 = findViewById(R.id.pieChart4)
-        pieChart5 = findViewById(R.id.pieChart5)
-        rangeSpinner = findViewById(R.id.rangeSpinner)
-        startDateButton = findViewById(R.id.startDateButton)
-        endDateButton = findViewById(R.id.endDateButton)
-        applyButton = findViewById(R.id.applyRangeButton)
-        dateRangeLayout = findViewById(R.id.dateRangeLayout)
-        toolbar = findViewById(R.id.toolbar)
-        strategiesTextView = findViewById(R.id.strategiesTextView)
-        actionsTextView = findViewById(R.id.actionsTextView)
+        try {
+            // Find views - core components
+            pieChart4 = findViewById(R.id.pieChart4)
+            pieChart5 = findViewById(R.id.pieChart5)
+            rangeSpinner = findViewById(R.id.rangeSpinner)
+            startDateButton = findViewById(R.id.startDateButton)
+            endDateButton = findViewById(R.id.endDateButton)
+            applyButton = findViewById(R.id.applyRangeButton)
+            dateRangeLayout = findViewById(R.id.dateRangeLayout)
+            toolbar = findViewById(R.id.toolbar)
+            strategiesTextView = findViewById(R.id.strategiesTextView)
+            actionsTextView = findViewById(R.id.actionsTextView)
+
+            try {
+                loadingIndicator = findViewById(R.id.loadingIndicator)
+                Log.d(TAG, "loadingIndicator found: ${loadingIndicator != null}")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error finding loadingIndicator: ${e.message}")
+            }
+
+            try {
+                chartsContainer = findViewById(R.id.chartsContainer)
+                Log.d(TAG, "chartsContainer found: ${chartsContainer != null}")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error finding chartsContainer: ${e.message}")
+            }
+
+            setupChartDefaults()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error initializing views: ${e.message}", e)
+            Toast.makeText(this, "Error initializing dashboard. Please try again.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Setup default settings for charts
+     */
+    private fun setupChartDefaults() {
+        pieChart4.setNoDataText("Loading data...")
+        pieChart4.setNoDataTextColor(Color.WHITE)
+        pieChart4.description.isEnabled = false
+
+        pieChart5.setNoDataText("Loading data...")
+        pieChart5.setNoDataTextColor(Color.WHITE)
+        pieChart5.description.isEnabled = false
     }
 
     /**
@@ -142,16 +181,13 @@ class DashboardActivity3 : AppCompatActivity() {
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
 
-        // Make sure the initial text is visible
         rangeSpinner.text = dashboard3ViewModel.dateRange.value?.first ?: "Last 7 Days"
 
-        // Add dropdown icon if missing
         if (rangeSpinner.icon == null) {
             rangeSpinner.setIconResource(R.drawable.ic_calendar)
             rangeSpinner.iconGravity = MaterialButton.ICON_GRAVITY_START
         }
 
-        // Use AlertDialog instead of PopupMenu for better styling control
         rangeSpinner.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select Date Range")
@@ -165,7 +201,6 @@ class DashboardActivity3 : AppCompatActivity() {
                     } else {
                         dateRangeLayout.visibility = View.GONE
 
-                        // Reset date range based on selection and fetch data
                         when (selectedRange) {
                             "Last 7 Days" -> dashboard3ViewModel.setDateRange(7)
                             "Last 14 Days" -> dashboard3ViewModel.setDateRange(14)
@@ -207,7 +242,6 @@ class DashboardActivity3 : AppCompatActivity() {
                     dashboard3ViewModel.setCustomDateRange(startCalendar, newCalendar)
                 }
 
-                // Update button text
                 updateDateButtonText()
             }, year, month, day).show()
         }
@@ -228,9 +262,7 @@ class DashboardActivity3 : AppCompatActivity() {
      * Observe LiveData from ViewModel to update UI accordingly
      */
     private fun observeViewModel() {
-        // Observe date range changes
         dashboard3ViewModel.dateRange.observe(this, Observer { (rangeType, startCal, endCal) ->
-            // Update UI to reflect date range
             when (rangeType) {
                 "Last 7 Days", "Last 14 Days", "Last 30 Days" -> {
                     rangeSpinner.text = rangeType
@@ -263,9 +295,37 @@ class DashboardActivity3 : AppCompatActivity() {
             setupPieChart(pieChart5, actionCounts, "Actions")
         })
 
-        // Observe loading state
         dashboard3ViewModel.isLoading.observe(this, Observer { isLoading ->
-            // You could show a progress indicator here
+            try {
+                if (isLoading) {
+                    // Show loading indicator
+                    loadingIndicator?.visibility = View.VISIBLE
+
+                    if (chartsContainer != null) {
+                        chartsContainer?.alpha = 0.3f
+                    } else {
+                        // Fallback approach - dim individual components
+                        pieChart4.alpha = 0.3f
+                        pieChart5.alpha = 0.3f
+                        strategiesTextView.alpha = 0.3f
+                        actionsTextView.alpha = 0.3f
+                    }
+                } else {
+                    loadingIndicator?.visibility = View.GONE
+
+                    // Restore normal visibility
+                    if (chartsContainer != null) {
+                        chartsContainer?.alpha = 1.0f
+                    } else {
+                        pieChart4.alpha = 1.0f
+                        pieChart5.alpha = 1.0f
+                        strategiesTextView.alpha = 1.0f
+                        actionsTextView.alpha = 1.0f
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error updating loading state: ${e.message}", e)
+            }
         })
 
         // Observe error messages
@@ -286,9 +346,11 @@ class DashboardActivity3 : AppCompatActivity() {
             if (count > 0) entries.add(PieEntry(count.toFloat(), item))
         }
 
-        // If no data, add an empty entry
         if (entries.isEmpty()) {
-            entries.add(PieEntry(1f, "No Data"))
+            chart.setNoDataText("No $label data recorded in this period")
+            chart.setNoDataTextColor(Color.WHITE)
+            chart.invalidate()
+            return
         }
 
         val pastelColors = listOf(

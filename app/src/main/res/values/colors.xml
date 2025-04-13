@@ -14,6 +14,8 @@
     <color name="gray">#323C45</color>
     <color name="chart_label_color">#FFFFFF</color>
     <color name="chart_line_color">#78909C</color>
-
+    <color name="hint_text_color">#80FFFFFF</color>
+    <color name="success_color">#4CAF50</color>
+    <color name="error_color">#F44336</color>
 
 </resources>

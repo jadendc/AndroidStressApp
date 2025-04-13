@@ -155,45 +155,60 @@
                 app:strokeColor="#78909C"
                 app:strokeWidth="1dp">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_height="wrap_content">
 
-                    <!-- Strategies Header -->
-                    <TextView
-                        android:id="@+id/strategiesTextView"
+                    <LinearLayout
+                        android:id="@+id/chartsContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Strategies"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChart4"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginBottom="16dp" />
+                        <!-- Strategies Header -->
+                        <TextView
+                            android:id="@+id/strategiesTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="Strategies"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
-                    <!-- Actions Header -->
-                    <TextView
-                        android:id="@+id/actionsTextView"
-                        android:layout_width="match_parent"
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChart4"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Actions Header -->
+                        <TextView
+                            android:id="@+id/actionsTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="Actions"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChart5"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp" />
+                    </LinearLayout>
+
+                    <ProgressBar
+                        android:id="@+id/loadingIndicator"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Actions"
-                        android:textColor="@android:color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChart5"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp" />
-                </LinearLayout>
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@android:color/white"
+                        android:visibility="gone" />
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

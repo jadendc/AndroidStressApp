@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,6 +25,7 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -61,6 +63,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private lateinit var triggersTextView: TextView
     private lateinit var feelingsTextView: TextView
     private lateinit var navigationView: NavigationView
+    private lateinit var loadingIndicator: ProgressBar
+    private lateinit var chartsContainer: View
 
     // ViewModel using the by viewModels() delegate
     private val dashboardViewModel: DashboardViewModel by viewModels()
@@ -120,10 +124,32 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         triggersTextView = findViewById(R.id.triggersTextView)
         feelingsTextView = findViewById(R.id.textView16)
         navigationView = findViewById(R.id.nav_view)
+        loadingIndicator = findViewById(R.id.loadingIndicator)
+        chartsContainer = findViewById(R.id.chartsContainer)
+
+        // Setup chart defaults
+        setupChartDefaults()
 
         // Setup toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Dashboard"
+    }
+
+    /**
+     * Setup default settings for charts
+     */
+    private fun setupChartDefaults() {
+        // Bar chart defaults
+        barChart.setNoDataText("Loading data...")
+        barChart.setNoDataTextColor(Color.WHITE)
+        barChart.setPinchZoom(false)
+        barChart.setScaleEnabled(false)
+        barChart.description.isEnabled = false
+
+        // Pie chart defaults
+        pieChart.setNoDataText("Loading data...")
+        pieChart.setNoDataTextColor(Color.WHITE)
+        pieChart.description.isEnabled = false
     }
 
     /**
@@ -300,7 +326,13 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         // Observe loading state
         dashboardViewModel.isLoading.observe(this, Observer { isLoading ->
-            // You could show a progress indicator here
+            if (isLoading) {
+                loadingIndicator.visibility = View.VISIBLE
+                chartsContainer.alpha = 0.3f
+            } else {
+                loadingIndicator.visibility = View.GONE
+                chartsContainer.alpha = 1.0f
+            }
         })
 
         // Observe error messages
@@ -315,7 +347,15 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     /**
      * Setup bar chart with data
      */
-    private fun setupBarChart(entries: List<com.github.mikephil.charting.data.BarEntry>, dates: List<String>) {
+    private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
+        // If we have no data, show a custom message
+        if (entries.isEmpty() || entries.all { it.y == 0f }) {
+            barChart.setNoDataText("No control data recorded in this period")
+            barChart.setNoDataTextColor(Color.WHITE)
+            barChart.invalidate()
+            return
+        }
+
         val barDataSet = BarDataSet(entries, "In Control")
         barDataSet.color = Color.parseColor("#77dd77")
         val barData = BarData(barDataSet)
@@ -347,7 +387,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         if (dates.size <= 14) {
             xAxis.labelCount = dates.size
         } else {
-            // For larger date ranges, show fewer labels to avoid overcrowding
             xAxis.labelCount = 7
         }
 
@@ -369,6 +408,14 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         val entries = mutableListOf<PieEntry>()
         moodCounts.forEach { (mood, count) ->
             if (count > 0) entries.add(PieEntry(count.toFloat(), mood))
+        }
+
+        // If no data, show a custom message
+        if (entries.isEmpty()) {
+            pieChart.setNoDataText("No mood data recorded in this period")
+            pieChart.setNoDataTextColor(Color.WHITE)
+            pieChart.invalidate()
+            return
         }
 
         val pastelColors = listOf(
