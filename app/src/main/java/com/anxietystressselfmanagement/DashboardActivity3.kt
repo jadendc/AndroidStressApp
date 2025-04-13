@@ -321,7 +321,7 @@ class DashboardActivity3 : AppCompatActivity() {
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
-        legend.textColor = Color.BLACK
+        legend.textColor = Color.WHITE
         legend.textSize = 16f
         legend.isWordWrapEnabled = true
         legend.maxSizePercent = 0.4f

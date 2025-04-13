@@ -328,7 +328,7 @@ class DashboardActivity2 : AppCompatActivity() {
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
-        legend.textColor = Color.BLACK
+        legend.textColor = Color.WHITE
         legend.textSize = 16f
 
         // Update title with date range
