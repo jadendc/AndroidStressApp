@@ -2,10 +2,11 @@ package com.anxietystressselfmanagement
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.CalendarView
-import android.widget.ImageView
+import androidx.appcompat.widget.Toolbar
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
@@ -13,9 +14,11 @@ class CalendarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
 
+        // Setup toolbar with back button
+        setupToolbar()
+
         val continueButton: Button = findViewById(R.id.continueButton)
         val calendarView = findViewById<CalendarView>(R.id.calendarView)
-        val backButton: ImageView = findViewById(R.id.backButton)
 
         // Initialize default date to current date
         val calendar = Calendar.getInstance()
@@ -37,12 +40,30 @@ class CalendarActivity : AppCompatActivity() {
             intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
         }
+    }
 
-        // Set click listener for the back button
-        backButton.setOnClickListener {
+    /**
+     * Setup toolbar with back button
+     */
+    private fun setupToolbar() {
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.title = "Calendar"
+    }
+
+    /**
+     * Handle back button press in the toolbar
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            // Navigate back to HomeActivity
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
+            return true
         }
+        return super.onOptionsItemSelected(item)
     }
 }
