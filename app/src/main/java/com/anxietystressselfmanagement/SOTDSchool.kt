@@ -55,7 +55,6 @@ class SOTDSchool : AppCompatActivity() {
         val toggleExams = findViewById<ToggleButton>(R.id.button6)
         val toggleOrganization = findViewById<ToggleButton>(R.id.button7)
 
-        // Add all toggle buttons to a list for easier management
         allToggleButtons = listOf(
             toggleFinancial, toggleBullying, toggleGrades,
             toggleHomework, toggleExams, toggleOrganization

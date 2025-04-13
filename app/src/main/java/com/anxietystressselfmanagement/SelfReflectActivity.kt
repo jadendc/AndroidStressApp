@@ -189,7 +189,7 @@ class SelfReflectActivity : BaseActivity() {
                     startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                 }
-                // Add other menu item handling as needed
+                // PLACEHOLDER
             }
 
             // Close the drawer

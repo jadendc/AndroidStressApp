@@ -56,7 +56,6 @@ class SOTDSocial : AppCompatActivity() {
         val togglePandemic = findViewById<ToggleButton>(R.id.button9)
         val toggleSportsPerformance = findViewById<ToggleButton>(R.id.button10)
 
-        // Add all toggle buttons to a list for easier management
         allToggleButtons = listOf(
             toggleSocialMedia, toggleTraffic, toggleIsolation,
             toggleFriendDispute, togglePandemic, toggleSportsPerformance

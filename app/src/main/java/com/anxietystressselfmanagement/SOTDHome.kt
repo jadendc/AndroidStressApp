@@ -59,7 +59,6 @@ class SOTDHome : AppCompatActivity() {
         val toggleDomestic = findViewById<ToggleButton>(R.id.button9)
         val toggleSickness = findViewById<ToggleButton>(R.id.button10)
 
-        // Add all toggle buttons to a list for easier management
         allToggleButtons = listOf(
             togglePartner, toggleFamily, toggleInLaws,
             toggleFinancial, toggleDomestic, toggleSickness

@@ -85,7 +85,7 @@ class SOTD : AppCompatActivity() {
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(selectedDate)  // Use selectedDate
+                .document(selectedDate)
                 .set(selectedSOTDData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected selected", Toast.LENGTH_SHORT).show()

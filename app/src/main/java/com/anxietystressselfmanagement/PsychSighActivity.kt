@@ -168,7 +168,6 @@ class PsychSighActivity : AppCompatActivity() {
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(scaleDownLeftX, scaleDownLeftY, scaleDownRightX, scaleDownRightY)
 
-        // Use the mutable variable instead of directly modifying the parameter
         mutableDuration += 500 // Example adjustment
         animatorSet.duration = mutableDuration
         animatorSet.start()

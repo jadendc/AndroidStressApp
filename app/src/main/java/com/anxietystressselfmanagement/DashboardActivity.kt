@@ -206,16 +206,13 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
 
-        // Make sure the initial text is visible
         rangeSpinner.text = dashboardViewModel.dateRange.value?.first ?: "Last 7 Days"
 
-        // Add dropdown icon if missing
         if (rangeSpinner.icon == null) {
             rangeSpinner.setIconResource(R.drawable.ic_calendar)
             rangeSpinner.iconGravity = MaterialButton.ICON_GRAVITY_START
         }
 
-        // Use AlertDialog instead of PopupMenu for better styling control
         rangeSpinner.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select Date Range")
@@ -351,7 +348,6 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
      * Setup bar chart with data
      */
     private fun setupBarChart(entries: List<BarEntry>, dates: List<String>) {
-        // If we have no data, show a custom message
         if (entries.isEmpty() || entries.all { it.y == 0f }) {
             barChart.setNoDataText("No control data recorded in this period")
             barChart.setNoDataTextColor(Color.WHITE)

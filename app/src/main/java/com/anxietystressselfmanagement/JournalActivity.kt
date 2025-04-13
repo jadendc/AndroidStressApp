@@ -113,7 +113,7 @@ class JournalActivity : AppCompatActivity() {
             .document(userId) // Save under the specific user's document
             .collection("dailyLogs") // Sub-collection for daily logs
             .document(formattedDate) // Use the current date as the document ID
-            .set(updateData, SetOptions.merge()) // Add a new document for each entry
+            .set(updateData, SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Journal entry saved successfully!", Toast.LENGTH_SHORT).show()
                 journalInput.text.clear() // Clear the input field after saving

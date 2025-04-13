@@ -18,7 +18,7 @@ class AwarenessActivity : AppCompatActivity() {
     private lateinit var mindButton: Button
     private lateinit var feelingsButton: Button
     private lateinit var behaviorButton: Button
-    private var selectedDate: String = "" // Add this field to store the selected date
+    private var selectedDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

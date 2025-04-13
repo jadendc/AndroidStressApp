@@ -56,7 +56,6 @@ class SOTDWork : AppCompatActivity() {
         val toggleTimeManagement = findViewById<ToggleButton>(R.id.button9)
         val toggleWorkCulture = findViewById<ToggleButton>(R.id.button10)
 
-        // Add all toggle buttons to a list for easier management
         allToggleButtons = listOf(
             toggleColleagues, toggleBoss, toggleEmployees,
             toggleWorkload, toggleTimeManagement, toggleWorkCulture
@@ -166,7 +165,7 @@ class SOTDWork : AppCompatActivity() {
                     db.collection("users")
                         .document(userId)
                         .collection("dailyLogs")
-                        .document(selectedDate) // Use selectedDate here too
+                        .document(selectedDate)
                         .set(stressorData, SetOptions.merge())
                         .addOnSuccessListener {
                             Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()

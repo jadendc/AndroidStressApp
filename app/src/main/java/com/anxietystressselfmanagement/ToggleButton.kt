@@ -18,7 +18,6 @@ class ToggleButton : AppCompatActivity() {
         val toggleMeditation: ToggleButton = findViewById(R.id.toggleMeditation)
         val toggleBirds: ToggleButton = findViewById(R.id.toggleBirds)
 
-        // Add all toggle buttons to a list for easier handling
         val toggleButtons = listOf(toggleRain, toggleWaves, toggleFire, toggleForest, toggleMeditation, toggleBirds)
 
         // Set click listeners for each toggle button
