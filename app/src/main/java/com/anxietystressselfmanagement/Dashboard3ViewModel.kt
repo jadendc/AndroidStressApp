@@ -272,7 +272,7 @@ class Dashboard3ViewModel : ViewModel() {
                         selectedSymptoms.add(selectedSymptom)
                     }
                 } catch (e: Exception) {
-                    // Log error but continue processing other dates
+
                 }
 
                 tempCalendar.add(Calendar.DAY_OF_YEAR, -1)

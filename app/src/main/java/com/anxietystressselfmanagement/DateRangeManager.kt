@@ -85,12 +85,10 @@ object DateRangeManager {
     fun getDateRangeDisplayText(context: Context): String {
         val rangeType = getRangeType(context)
 
-        // For predefined ranges, we can just use the range type
         if (rangeType != "Custom Range") {
             return "Date Range: $rangeType"
         }
 
-        // For custom range, format the dates
         val startDate = getStartDate(context)
         val endDate = getEndDate(context)
         val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
