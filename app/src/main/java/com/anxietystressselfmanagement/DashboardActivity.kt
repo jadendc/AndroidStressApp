@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
@@ -35,6 +36,9 @@ import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.view.ContextThemeWrapper
 
 /**
  * Modern implementation of DashboardActivity using MVVM architecture pattern
@@ -168,7 +172,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     /**
-     * Setup the range selection dropdown
+     * Setup the range selection dropdown using AlertDialog
      */
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
@@ -182,39 +186,32 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             rangeSpinner.iconGravity = MaterialButton.ICON_GRAVITY_START
         }
 
-        // Setup popup menu for range selection
+        // Use AlertDialog instead of PopupMenu for better styling control
         rangeSpinner.setOnClickListener {
-            val popupMenu = androidx.appcompat.widget.PopupMenu(this, rangeSpinner)
+            AlertDialog.Builder(this)
+                .setTitle("Select Date Range")
+                .setItems(ranges) { dialog, which ->
+                    val selectedRange = ranges[which]
+                    rangeSpinner.text = selectedRange
 
-            // Add items to menu
-            ranges.forEachIndexed { index, item ->
-                popupMenu.menu.add(0, index, index, item)
-            }
+                    // Show/hide custom date range inputs
+                    if (selectedRange == "Custom Range") {
+                        dateRangeLayout.visibility = View.VISIBLE
+                    } else {
+                        dateRangeLayout.visibility = View.GONE
 
-            // Set click listener
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                val selectedRange = ranges[menuItem.itemId]
-                rangeSpinner.text = selectedRange
+                        // Reset date range based on selection and fetch data
+                        when (selectedRange) {
+                            "Last 7 Days" -> dashboardViewModel.setDateRange(7)
+                            "Last 14 Days" -> dashboardViewModel.setDateRange(14)
+                            "Last 30 Days" -> dashboardViewModel.setDateRange(30)
+                        }
 
-                // Show/hide custom date range inputs
-                if (selectedRange == "Custom Range") {
-                    dateRangeLayout.visibility = View.VISIBLE
-                } else {
-                    dateRangeLayout.visibility = View.GONE
-
-                    // Reset date range based on selection and fetch data
-                    when (selectedRange) {
-                        "Last 7 Days" -> dashboardViewModel.setDateRange(7)
-                        "Last 14 Days" -> dashboardViewModel.setDateRange(14)
-                        "Last 30 Days" -> dashboardViewModel.setDateRange(30)
+                        dashboardViewModel.fetchDataForCurrentRange(this)
                     }
-
-                    dashboardViewModel.fetchDataForCurrentRange(this)
                 }
-                true
-            }
-
-            popupMenu.show()
+                .create()
+                .show()
         }
     }
 
