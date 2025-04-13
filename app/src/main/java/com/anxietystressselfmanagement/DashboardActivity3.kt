@@ -365,7 +365,7 @@ class DashboardActivity3 : AppCompatActivity() {
         dataSet.colors = pastelColors
         dataSet.setValueFormatter(PercentFormatter(chart))
         dataSet.setDrawValues(true)
-        dataSet.valueTextColor = Color.BLACK
+        dataSet.valueTextColor = Color.DKGRAY
         dataSet.valueTextSize = 16f
 
         val data = PieData(dataSet)

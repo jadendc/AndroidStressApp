@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -142,6 +143,8 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         // Bar chart defaults
         barChart.setNoDataText("Loading data...")
         barChart.setNoDataTextColor(Color.WHITE)
+        barChart.legend.textColor = Color.WHITE
+        barChart.legend.textColor = Color.WHITE
         barChart.setPinchZoom(false)
         barChart.setScaleEnabled(false)
         barChart.description.isEnabled = false
@@ -383,6 +386,17 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         leftAxis.granularity = 1f
         barChart.axisRight.isEnabled = false
 
+        xAxis.textColor = Color.WHITE
+        leftAxis.textColor = Color.WHITE
+
+        barDataSet.valueTextColor = Color.WHITE
+        barDataSet.valueTextSize = 12f
+
+        xAxis.axisLineColor = Color.WHITE
+        leftAxis.axisLineColor = Color.WHITE
+
+        leftAxis.gridColor = Color.parseColor("#50FFFFFF")
+
         // Adjust label count based on number of dates
         if (dates.size <= 14) {
             xAxis.labelCount = dates.size
@@ -430,8 +444,9 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         dataSet.colors = pastelColors
         dataSet.setValueFormatter(PercentFormatter(pieChart))
         dataSet.setDrawValues(true)
-        dataSet.valueTextColor = Color.BLACK
-        dataSet.valueTextSize = 16f
+        dataSet.valueTextColor = Color.DKGRAY
+        dataSet.valueTextSize = 14f
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
 
         val data = PieData(dataSet)
 
