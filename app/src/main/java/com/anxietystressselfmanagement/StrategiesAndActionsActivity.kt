@@ -1,9 +1,12 @@
 package com.anxietystressselfmanagement
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -19,13 +22,19 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
     private lateinit var continueButton: Button
     private lateinit var backButton: ImageView
     private val firestore = FirebaseFirestore.getInstance()
-    private var selectedDate: String = "" // Store selected date
+    private var selectedDate: String = ""
 
-    // Custom options for strategy and action
-    private var customStrategy: String? = null
-    private var customAction: String? = null
+    private val fullStrategyOptions = mutableListOf<String>()
+    private val fullActionOptions = mutableListOf<String>()
+    private val shortenedStrategyOptions = mutableListOf<String>()
+    private val shortenedActionOptions = mutableListOf<String>()
 
-    // Define shortened labels for strategies and actions
+    private var currentCustomStrategy: String? = null
+    private var currentCustomAction: String? = null
+
+    private lateinit var originalFullStrategyOptions: List<String>
+    private lateinit var originalFullActionOptions: List<String>
+
     private val strategyShortenedLabels = mapOf(
         "Breathing: Deep, slow breaths to calm the mind" to "Breathing",
         "Time Management: Plan and prioritize tasks" to "Time Management",
@@ -48,7 +57,6 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         "Custom..." to "Custom..."
     )
 
-    // Define prompt texts for easier validation
     private val strategyPrompt = "Select one..."
     private val actionPrompt = "Select one..."
 
@@ -56,7 +64,6 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.strategies_and_actions_activity)
 
-        // Get selected date from intent
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateFormat.format(Date())
@@ -67,41 +74,12 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         continueButton = findViewById(R.id.continueButton)
         backButton = findViewById(R.id.backButton)
 
-        // List of full descriptions for strategies and actions
-        val strategyOptions = listOf(strategyPrompt) + listOf(
-            "Breathing: Deep, slow breaths to calm the mind",
-            "Time Management: Plan and prioritize tasks",
-            "Movement: Walk, stretch, or exercise",
-            "Digital Detox: Limit screen time",
-            "Social Connection: Talk to friends or family",
-            "Gratitude: Focus on positive",
-            "Relaxation: Meditate or listen to music",
-            "Custom..."
-        )
-
-        val actionOptions = listOf(actionPrompt) + listOf(
-            "5-min deep breathing in the morning",
-            "Plan tasks using a list or app",
-            "10-min walk or stretch after lunch",
-            "No screens 1 hour before bed",
-            "Call or message a friend",
-            "Write 3 things you're grateful for",
-            "Listen to relaxing music or meditation",
-            "Custom..."
-        )
-
-        // Map full descriptions to shortened labels
-        val shortenedStrategyOptions = strategyOptions.map { strategyShortenedLabels[it] ?: it }
-        val shortenedActionOptions = actionOptions.map { actionShortenedLabels[it] ?: it }
-
-        // Pass both options to the setupSpinner method
-        setupSpinner(strategySpinner, shortenedStrategyOptions, strategyOptions)
-        setupSpinner(actionSpinner, shortenedActionOptions, actionOptions)
+        setupOptions() // Initialize options lists
+        setupSpinners() // Setup spinners with adapters and listeners
 
         backButton.setOnClickListener {
-            // We don't know which awareness option they chose, so let's go back to the main AwarenessActivity
             val intent = Intent(this, AwarenessActivity::class.java)
-            intent.putExtra("selectedDate", selectedDate) // Pass date back
+            intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
             finish()
         }
@@ -113,26 +91,124 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSpinner(spinner: Spinner, shortenedOptions: List<String>,
-                             fullOptions: List<String>) {
-        val adapter = ArrayAdapter(this, R.layout.spinner_dropdown_item, shortenedOptions)
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        spinner.adapter = adapter
+    private fun setupOptions() {
+        originalFullStrategyOptions = listOf(strategyPrompt) + listOf(
+            "Breathing: Deep, slow breaths to calm the mind",
+            "Time Management: Plan and prioritize tasks",
+            "Movement: Walk, stretch, or exercise",
+            "Digital Detox: Limit screen time",
+            "Social Connection: Talk to friends or family",
+            "Gratitude: Focus on positive",
+            "Relaxation: Meditate or listen to music",
+            "Custom..."
+        )
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                // Check if "Custom..." is selected
-                if (position > 0 && fullOptions[position] == "Custom...") {
-                    showCustomInputDialog(spinner === strategySpinner)
-                } else if (position > 0) {
-                    // Show full description when an item is selected (but not custom)
-                    val fullDescription = fullOptions[position]
-                    Toast.makeText(this@StrategiesAndActionsActivity, fullDescription,
-                        Toast.LENGTH_LONG).show()
+        originalFullActionOptions = listOf(actionPrompt) + listOf(
+            "5-min deep breathing in the morning",
+            "Plan tasks using a list or app",
+            "10-min walk or stretch after lunch",
+            "No screens 1 hour before bed",
+            "Call or message a friend",
+            "Write 3 things you're grateful for",
+            "Listen to relaxing music or meditation",
+            "Custom..."
+        )
+
+        shortenedStrategyOptions.clear()
+        shortenedStrategyOptions.addAll(originalFullStrategyOptions.map { strategyShortenedLabels[it] ?: it })
+
+        shortenedActionOptions.clear()
+        shortenedActionOptions.addAll(originalFullActionOptions.map { actionShortenedLabels[it] ?: it })
+
+        fullStrategyOptions.clear()
+        fullStrategyOptions.addAll(originalFullStrategyOptions)
+
+        fullActionOptions.clear()
+        fullActionOptions.addAll(originalFullActionOptions)
+    }
+
+    private fun setupSpinners() {
+        val strategyAdapter = CustomSpinnerAdapter(
+            this,
+            R.layout.spinner_item_selected,
+            R.layout.spinner_dropdown_item,
+            shortenedStrategyOptions
+        ) {
+            if (isCustomStrategySelected()) currentCustomStrategy else null
+        }
+        strategySpinner.adapter = strategyAdapter
+
+        val actionAdapter = CustomSpinnerAdapter(
+            this,
+            R.layout.spinner_item_selected,
+            R.layout.spinner_dropdown_item,
+            shortenedActionOptions
+        ) {
+            if (isCustomActionSelected()) currentCustomAction else null
+        }
+        actionSpinner.adapter = actionAdapter
+
+        strategySpinner.onItemSelectedListener = createItemSelectedListener(
+            isStrategy = true,
+            adapter = strategyAdapter,
+            originalFullOptions = originalFullStrategyOptions,
+            shortenedOptions = shortenedStrategyOptions
+        )
+
+        actionSpinner.onItemSelectedListener = createItemSelectedListener(
+            isStrategy = false,
+            adapter = actionAdapter,
+            originalFullOptions = originalFullActionOptions,
+            shortenedOptions = shortenedActionOptions
+        )
+    }
+
+    private fun createItemSelectedListener(
+        isStrategy: Boolean,
+        adapter: CustomSpinnerAdapter,
+        originalFullOptions: List<String>,
+        shortenedOptions: List<String>
+    ): AdapterView.OnItemSelectedListener {
+        return object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedShortenedItem = shortenedOptions[position]
+
+                // Check if "Custom..." is selected based on the shortened label
+                if (selectedShortenedItem == strategyShortenedLabels["Custom..."]) {
+                    showCustomInputDialog(isStrategy)
+                } else {
+
+                    if (isStrategy) {
+                        if (currentCustomStrategy != null) {
+                            currentCustomStrategy = null
+                            adapter.notifyDataSetChanged()
+                        }
+                    } else {
+                        if (currentCustomAction != null) {
+                            currentCustomAction = null
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+
+                    if (position > 0 && selectedShortenedItem != strategyShortenedLabels["Custom..."]) {
+                        val fullDescription = originalFullOptions[position]
+                        Toast.makeText(
+                            this@StrategiesAndActionsActivity,
+                            fullDescription,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                if (isStrategy) {
+                    currentCustomStrategy = null
+                } else {
+                    currentCustomAction = null
+                }
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -141,6 +217,10 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
         val inflater = layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_custom_input, null)
         val editText = dialogView.findViewById<EditText>(R.id.customInputEditText)
+        val spinner = if (isStrategy) strategySpinner else actionSpinner
+        val adapter = spinner.adapter as CustomSpinnerAdapter
+
+        editText.setText(if (isStrategy) currentCustomStrategy else currentCustomAction)
 
         builder.setView(dialogView)
             .setTitle(if (isStrategy) "Enter Custom Strategy" else "Enter Custom Action")
@@ -148,34 +228,50 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
                 val customText = editText.text.toString().trim()
                 if (customText.isNotEmpty()) {
                     if (isStrategy) {
-                        customStrategy = customText
+                        currentCustomStrategy = customText
+
+                        val customPosition = shortenedStrategyOptions.indexOf(strategyShortenedLabels["Custom..."])
+                        if (spinner.selectedItemPosition != customPosition) {
+                            spinner.setSelection(customPosition, false)
+                        }
                     } else {
-                        customAction = customText
+                        currentCustomAction = customText
+                        val customPosition = shortenedActionOptions.indexOf(actionShortenedLabels["Custom..."])
+                        if (spinner.selectedItemPosition != customPosition) {
+                            spinner.setSelection(customPosition, false)
+                        }
                     }
-                    // Show confirmation
-                    Toast.makeText(this, "Custom ${if (isStrategy) "strategy" else "action"} saved",
-                        Toast.LENGTH_SHORT).show()
+                    adapter.notifyDataSetChanged()
+
+                    Toast.makeText(
+                        this,
+                        "Custom ${if (isStrategy) "strategy" else "action"} saved: $customText",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
                 } else {
-                    // If empty, revert to first position (prompt)
                     if (isStrategy) {
-                        strategySpinner.setSelection(0)
+                        currentCustomStrategy = null
                     } else {
-                        actionSpinner.setSelection(0)
+                        currentCustomAction = null
                     }
-                    Toast.makeText(this, "Custom text cannot be empty",
-                        Toast.LENGTH_SHORT).show()
+                    spinner.setSelection(0)
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(this, "Custom text cannot be empty", Toast.LENGTH_SHORT).show()
                 }
+                dialog.dismiss() // Dismiss dialog
             }
             .setNegativeButton("Cancel") { dialog, _ ->
-                // Revert to prompt position on cancel
-                if (isStrategy) {
-                    strategySpinner.setSelection(0)
-                } else {
-                    actionSpinner.setSelection(0)
+
+                val previousCustomText = if (isStrategy) currentCustomStrategy else currentCustomAction
+                if (previousCustomText == null) {
+                    spinner.setSelection(0)
                 }
+                adapter.notifyDataSetChanged()
+
                 dialog.cancel()
             }
-            .setCancelable(false) // Prevent dismissing by clicking outside
+            .setCancelable(false)
 
         val dialog = builder.create()
         dialog.show()
@@ -184,58 +280,64 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
     private fun validateSelections(): Boolean {
         val strategyPosition = strategySpinner.selectedItemPosition
         val actionPosition = actionSpinner.selectedItemPosition
+        val isStrategyPrompt = strategyPosition == 0
+        val isActionPrompt = actionPosition == 0
 
-        // Check if either spinner is still at the first position (prompt text)
-        if (strategyPosition == 0 || actionPosition == 0) {
-            // Show more specific error message
+        val isStrategyCustomInvalid = isCustomStrategySelected() && currentCustomStrategy.isNullOrBlank()
+        val isActionCustomInvalid = isCustomActionSelected() && currentCustomAction.isNullOrBlank()
+
+
+        if (isStrategyPrompt || isActionPrompt || isStrategyCustomInvalid || isActionCustomInvalid) {
             val message = when {
-                strategyPosition == 0 && actionPosition == 0 -> "Please select both a strategy and an action"
-                strategyPosition == 0 -> "Please select a strategy"
-                else -> "Please select an action"
+                isStrategyPrompt && isActionPrompt -> "Please select both a strategy and an action"
+                isStrategyPrompt -> "Please select a strategy"
+                isActionPrompt -> "Please select an action"
+                isStrategyCustomInvalid -> "Please enter or re-select a valid custom strategy"
+                isActionCustomInvalid -> "Please enter or re-select a valid custom action"
+                else -> "Please complete your selections" // Fallback
             }
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             return false
         }
-
         return true
     }
 
-    private fun saveStrategiesAndActions() {
-        // Get the selected strategy and action
-        val strategyPosition = strategySpinner.selectedItemPosition
-        val actionPosition = actionSpinner.selectedItemPosition
+    private fun isCustomStrategySelected(): Boolean {
+        val pos = strategySpinner.selectedItemPosition
+        return pos >= 0 && pos < shortenedStrategyOptions.size &&
+                shortenedStrategyOptions[pos] == strategyShortenedLabels["Custom..."]
+    }
 
-        // Get the appropriate text for strategy and action
-        val strategyText = if (strategySpinner.selectedItem.toString() == "Custom..." && customStrategy != null) {
-            customStrategy!!
+    private fun isCustomActionSelected(): Boolean {
+        val pos = actionSpinner.selectedItemPosition
+        return pos >= 0 && pos < shortenedActionOptions.size &&
+                shortenedActionOptions[pos] == actionShortenedLabels["Custom..."]
+    }
+
+    private fun saveStrategiesAndActions() {
+        // Determine the text to save
+        val strategyToSave: String
+        if (isCustomStrategySelected() && !currentCustomStrategy.isNullOrBlank()) {
+            strategyToSave = currentCustomStrategy!!
         } else {
-            val strategyFullOptions = listOf(strategyPrompt) + listOf(
-                "Breathing: Deep, slow breaths to calm the mind",
-                "Time Management: Plan and prioritize tasks",
-                "Movement: Walk, stretch, or exercise",
-                "Digital Detox: Limit screen time",
-                "Social Connection: Talk to friends or family",
-                "Gratitude: Focus on positive",
-                "Relaxation: Meditate or listen to music",
-                "Custom..."
-            )
-            strategyFullOptions[strategyPosition]
+            val position = strategySpinner.selectedItemPosition
+            strategyToSave = if (position >= 0 && position < originalFullStrategyOptions.size) {
+                originalFullStrategyOptions[position]
+            } else {
+                "Error: Invalid Strategy"
+            }
         }
 
-        val actionText = if (actionSpinner.selectedItem.toString() == "Custom..." && customAction != null) {
-            customAction!!
+        val actionToSave: String
+        if (isCustomActionSelected() && !currentCustomAction.isNullOrBlank()) {
+            actionToSave = currentCustomAction!!
         } else {
-            val actionFullOptions = listOf(actionPrompt) + listOf(
-                "5-min deep breathing in the morning",
-                "Plan tasks using a list or app",
-                "10-min walk or stretch after lunch",
-                "No screens 1 hour before bed",
-                "Call or message a friend",
-                "Write 3 things you're grateful for",
-                "Listen to relaxing music or meditation",
-                "Custom..."
-            )
-            actionFullOptions[actionPosition]
+            val position = actionSpinner.selectedItemPosition
+            actionToSave = if (position >= 0 && position < originalFullActionOptions.size) {
+                originalFullActionOptions[position]
+            } else {
+                "Error: Invalid Action"
+            }
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -243,29 +345,57 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
             Toast.makeText(this, "User not logged in!", Toast.LENGTH_SHORT).show()
             return
         }
-
         val userId = currentUser.uid
-
         val logData = mapOf(
-            "7strategies" to strategyText,
-            "7actions" to actionText
+            "7strategies" to strategyToSave,
+            "7actions" to actionToSave
         )
 
         firestore.collection("users")
             .document(userId)
             .collection("dailyLogs")
-            .document(selectedDate) // Use selectedDate instead of today
+            .document(selectedDate)
             .set(logData, SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(this, "Saved successfully!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, DashboardActivity::class.java)
-                intent.putExtra("selectedDate", selectedDate) // Pass date to dashboard
+                intent.putExtra("selectedDate", selectedDate)
                 startActivity(intent)
                 finish()
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Failed to save: ${e.message}",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+}
+
+class CustomSpinnerAdapter(
+    context: Context,
+    private val selectedItemLayoutRes: Int, // Layout for the closed spinner view
+    private val dropdownLayoutRes: Int,   // Layout for items in the dropdown list
+    private val items: List<String>,      // The list of items to display (shortened labels)
+    private val getCustomText: () -> String?
+) : ArrayAdapter<String>(context, selectedItemLayoutRes, items) {
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val view = convertView ?: LayoutInflater.from(context).inflate(selectedItemLayoutRes, parent, false)
+        val textView = view.findViewById<TextView>(android.R.id.text1)
+
+        val customText = getCustomText()
+
+        if (customText != null) {
+            textView.text = customText
+        } else {
+            textView.text = getItem(position)
+        }
+        return view
+    }
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+
+        val view = convertView ?: LayoutInflater.from(context).inflate(dropdownLayoutRes, parent, false)
+        val textView = view.findViewById<TextView>(android.R.id.text1)
+        textView.text = getItem(position)
+        return view
     }
 }
