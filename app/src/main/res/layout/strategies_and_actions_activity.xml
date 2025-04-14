@@ -83,13 +83,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
-    <!-- Strategy Spinner with proper positioning -->
+    <!-- Strategy Spinner with updated label -->
     <TextView
         android:id="@+id/strategyLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Strategy"
+        android:text="Stress Management Strategies"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/strategySpinner"
@@ -110,13 +110,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/strategyLabel" />
 
-    <!-- Action Spinner with proper positioning -->
+    <!-- Action Spinner with updated label -->
     <TextView
         android:id="@+id/actionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Action"
+        android:text="Stress Management Actions"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/actionSpinner"
