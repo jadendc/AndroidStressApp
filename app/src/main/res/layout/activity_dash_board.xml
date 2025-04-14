@@ -171,24 +171,7 @@
                             android:orientation="vertical"
                             android:padding="16dp">
 
-                            <!-- In Control Header -->
-                            <TextView
-                                android:id="@+id/triggersTextView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:text="In Control"
-                                android:textColor="@android:color/white"
-                                android:textSize="24sp"
-                                android:textStyle="bold" />
-
-                            <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/barChart"
-                                android:layout_width="match_parent"
-                                android:layout_height="200dp"
-                                android:layout_marginBottom="16dp" />
-
-                            <!-- Feelings Header -->
+                            <!-- Feelings Header - Now FIRST -->
                             <TextView
                                 android:id="@+id/textView16"
                                 android:layout_width="match_parent"
@@ -199,8 +182,27 @@
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
 
+                            <!-- Pie Chart - Now FIRST -->
                             <com.github.mikephil.charting.charts.PieChart
                                 android:id="@+id/pieChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- In Control Header - Now SECOND -->
+                            <TextView
+                                android:id="@+id/triggersTextView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:text="In Control"
+                                android:textColor="@android:color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <!-- Bar Chart - Now SECOND -->
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/barChart"
                                 android:layout_width="match_parent"
                                 android:layout_height="200dp" />
 

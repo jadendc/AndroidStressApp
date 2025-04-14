@@ -203,13 +203,13 @@ class DashboardViewModel : ViewModel() {
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-            // Map to count moods
+            // Updated mood labels to match what's used in MoodActivity
             val moodCounts = mutableMapOf(
                 "Very Happy" to 0,
                 "Happy" to 0,
-                "Indifferent" to 0,
+                "Neutral" to 0,
                 "Sad" to 0,
-                "Angry" to 0
+                "Very Sad" to 0
             )
 
             val tempCalendar = Calendar.getInstance()
@@ -228,11 +228,11 @@ class DashboardViewModel : ViewModel() {
 
                     when (mood) {
                         "😁" -> moodCounts["Very Happy"] = moodCounts["Very Happy"]!! + 1
-                        "Excited" -> moodCounts["Very Happy"] = moodCounts["Very Happy"]!! + 1 // old specs used "Excited"
+                        "Excited" -> moodCounts["Very Happy"] = moodCounts["Very Happy"]!! + 1
                         "😊" -> moodCounts["Happy"] = moodCounts["Happy"]!! + 1
-                        "😐" -> moodCounts["Indifferent"] = moodCounts["Indifferent"]!! + 1
+                        "😐" -> moodCounts["Neutral"] = moodCounts["Neutral"]!! + 1
                         "😔" -> moodCounts["Sad"] = moodCounts["Sad"]!! + 1
-                        "😢" -> moodCounts["Angry"] = moodCounts["Angry"]!! + 1
+                        "😢" -> moodCounts["Very Sad"] = moodCounts["Very Sad"]!! + 1
                     }
                 } catch (e: Exception) {
                     // Log error but continue processing other dates
