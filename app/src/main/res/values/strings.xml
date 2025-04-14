@@ -82,4 +82,5 @@
     <string name="enable_daily_reminders">Enable Daily Reminders</string>
     <string name="notification_settings">Notification Settings</string>
     <string name="select_a_strategy_and_action">Select a strategy and action</string>
+    <string name="what_are_the_signs">What are the signs?</string>
 </resources>
