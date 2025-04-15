@@ -16,10 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +30,7 @@ import java.util.*
 /**
  * Modern implementation of DashboardActivity2 using MVVM architecture pattern
  * with ViewModels, LiveData, and Material Design components.
+ * Includes interactive pie charts that open the DetailActivity when clicked.
  */
 class DashboardActivity2 : AppCompatActivity() {
 
@@ -129,13 +133,18 @@ class DashboardActivity2 : AppCompatActivity() {
      * Setup default settings for charts
      */
     private fun setupChartDefaults() {
-        pieChart2.setNoDataText("Loading data...")
-        pieChart2.setNoDataTextColor(Color.WHITE)
-        pieChart2.description.isEnabled = false
-
-        pieChart3.setNoDataText("Loading data...")
-        pieChart3.setNoDataTextColor(Color.WHITE)
-        pieChart3.description.isEnabled = false
+        Log.d(TAG, "Setting up chart defaults")
+        listOf(pieChart2, pieChart3).forEach { chart ->
+            chart.setNoDataText("Select a date range") // Changed from "Loading data..."
+            chart.setNoDataTextColor(Color.WHITE)
+            chart.description.isEnabled = false
+            chart.setDrawHoleEnabled(false)
+            chart.setDrawEntryLabels(false)
+            chart.legend.textColor = Color.WHITE
+            chart.legend.textSize = 14f // Reverted if needed, or keep 16f from D3 style
+            chart.setUsePercentValues(true)
+            chart.isRotationEnabled = true
+        }
     }
 
     /**
@@ -346,68 +355,158 @@ class DashboardActivity2 : AppCompatActivity() {
         })
     }
 
-    /**
-     * Setup pie chart with data
-     */
-    private fun setupPieChart(chart: PieChart, dataCounts: Map<String, Int>, label: String) {
-        val entries = mutableListOf<PieEntry>()
-        dataCounts.forEach { (item, count) ->
-            if (count > 0) entries.add(PieEntry(count.toFloat(), item))
+    private fun updateChartTitle(label: String, startCal: Calendar?, endCal: Calendar?) {
+        val titleView = when (label) {
+            "Triggers" -> triggersTextView
+            "Signs" -> signsTextView
+            else -> {
+                Log.w(TAG, "Unknown label '$label' for updating chart title.")
+                null
+            }
         }
 
+        if (titleView == null) return
+
+        var titleText = label
+        if (startCal != null && endCal != null) {
+            try {
+                val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+                val startStr = dateFormat.format(startCal.time)
+                val endStr = dateFormat.format(endCal.time)
+
+                if (startCal.get(Calendar.YEAR) == endCal.get(Calendar.YEAR) &&
+                    startCal.get(Calendar.DAY_OF_YEAR) == endCal.get(Calendar.DAY_OF_YEAR)) {
+                    titleText = "$label ($startStr)"
+                } else {
+                    titleText = "$label ($startStr - $endStr)"
+                }
+                Log.d(TAG, "Updating chart title for '$label' to '$titleText'")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error formatting date range for title '$label': ${e.message}")
+                // Keep default title if formatting fails
+            }
+        } else {
+            Log.d(TAG, "Updating chart title for '$label' to default '$label' (no date range)")
+        }
+        titleView.text = titleText
+    }
+
+    private fun setupPieChart(chart: PieChart, dataCounts: Map<String, Int>, label: String) {
+        Log.d(TAG, "Setting up chart: $label with data size: ${dataCounts.size}")
+        val entries = mutableListOf<PieEntry>()
+        var totalCount = 0
+        dataCounts.forEach { (item, count) ->
+            if (count > 0 && item.isNotBlank()) {
+                entries.add(PieEntry(count.toFloat(), item))
+                totalCount += count
+            } else {
+                Log.w(TAG, "Invalid entry skipped for chart '$label': Item='$item', Count=$count")
+            }
+        }
+        Log.d(TAG, "Valid entries for chart '$label': ${entries.size}, Total items: $totalCount")
+
         if (entries.isEmpty()) {
+            Log.d(TAG, "No valid entries for chart: $label. Displaying 'No data'.")
             chart.setNoDataText("No $label data recorded in this period")
             chart.setNoDataTextColor(Color.WHITE)
+            chart.data = null
+            chart.setOnChartValueSelectedListener(null) // Ensure listener is null if no data
             chart.invalidate()
+            updateChartTitle(label, dashboard2ViewModel.dateRange.value?.second, dashboard2ViewModel.dateRange.value?.third)
             return
         }
 
+        // Using colors from DashboardActivity3 as per previous request
         val pastelColors = listOf(
-            Color.parseColor("#c2c2f0"), // Pastel Purple
-            Color.parseColor("#ffeb99"), // Pastel Yellow
-            Color.parseColor("#fdfd96"), // Lighter Yellow
-            Color.parseColor("#ffb3b3"), // Pastel Red
-            Color.parseColor("#f7a9a9")  // Darker Pastel Red
+            Color.parseColor("#F4B6C2"),
+            Color.parseColor("#A6E1D9"),
+            Color.parseColor("#F6D1C1"),
+            Color.parseColor("#E3A7D4"),
+            Color.parseColor("#C8D8A9")
         )
 
         val dataSet = PieDataSet(entries, "")
-        dataSet.colors = pastelColors
+        dataSet.colors = entries.indices.map { pastelColors[it % pastelColors.size] }
         dataSet.setValueFormatter(PercentFormatter(chart))
         dataSet.setDrawValues(true)
         dataSet.valueTextColor = Color.DKGRAY
-        dataSet.valueTextSize = 16f
+        dataSet.valueTextSize = 16f // Match DashboardActivity3
+        // Added selection shift from your last version
+        dataSet.selectionShift = 10f
 
         val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter(chart))
+        data.setValueTextSize(16f)
+        data.setValueTextColor(Color.DKGRAY)
 
         chart.data = data
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.setDrawHoleEnabled(false)
         chart.setDrawEntryLabels(false)
-        chart.invalidate()
+        chart.isRotationEnabled = true
+        chart.isHighlightPerTapEnabled = true // Keep highlight on tap enabled
+        chart.highlightValues(null)
 
-        // Setup legend
+        // Added offset to give legend space on the right
+        chart.setExtraOffsets(5f, 5f, 30f, 5f)
+
         val legend = chart.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
         legend.textColor = Color.WHITE
-        legend.textSize = 16f
+        legend.textSize = 16f // Match DashboardActivity3
+        legend.isWordWrapEnabled = true // Match DashboardActivity3
+        legend.maxSizePercent = 0.4f // Match DashboardActivity3
+        legend.form = Legend.LegendForm.SQUARE
+        legend.formSize = 10f
+        legend.xEntrySpace = 10f
+        legend.yEntrySpace = 5f
 
-        // Update title with date range
-        dashboard2ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
-            val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
-            val startDate = dateFormat.format(startCal.time)
-            val endDate = dateFormat.format(endCal.time)
+        // *** Add listener logic back here ***
+        chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                // Check if the entry is a PieEntry (it should be)
+                if (e is PieEntry) {
+                    val selectedCategory = e.label
+                    if (selectedCategory.isNullOrBlank()) {
+                        Log.w(TAG, "Selected pie slice has null or blank label for chart '$label'.")
+                        return
+                    }
 
-            // Find and update the appropriate title TextView
-            val titleView = when (label) {
-                "Triggers" -> triggersTextView
-                else -> signsTextView
+                    // Determine type based on the 'label' parameter passed to setupPieChart
+                    val chartType = if (label == "Triggers") "Trigger" else "Sign"
+
+                    Log.d(TAG, "Selected: $selectedCategory from chart: $chartType")
+
+                    dashboard2ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+                        val intent = Intent(this@DashboardActivity2, DetailActivity::class.java).apply {
+                            putExtra(DetailActivity.EXTRA_CATEGORY, selectedCategory)
+                            putExtra(DetailActivity.EXTRA_TYPE, chartType)
+                            putExtra(DetailActivity.EXTRA_START_DATE, startCal.timeInMillis)
+                            putExtra(DetailActivity.EXTRA_END_DATE, endCal.timeInMillis)
+                        }
+                        startActivity(intent)
+                    } ?: run {
+                        Log.e(TAG, "Cannot navigate: Date range is null in ViewModel.")
+                        Toast.makeText(this@DashboardActivity2, "Error: Date range not available.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.w(TAG, "Selected entry is not a PieEntry: ${e?.javaClass?.simpleName}")
+                }
             }
-            titleView.text = "$label ($startDate - $endDate)"
-        }
+
+            override fun onNothingSelected() {
+                Log.d(TAG, "Chart '$label' value selection cleared.")
+                // Optional: Deselect visually if needed, e.g., chart.highlightValues(null)
+            }
+        })
+
+         chart.animateY(1000)
+
+        chart.invalidate() // Refresh chart with new settings
     }
 
     /**
