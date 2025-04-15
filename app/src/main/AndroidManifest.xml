@@ -189,6 +189,15 @@
             android:name=".ExercisesActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" /> <!-- Meta-data inside the application -->
+        <activity
+            android:name=".DetailActivity"
+            android:exported="false"
+            android:label="Details"
+            android:parentActivityName=".DashboardActivity2" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity2" />
+        </activity>
         <receiver
             android:name=".NotificationReceiver"
             android:exported="false">
