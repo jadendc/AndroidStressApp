@@ -180,8 +180,27 @@
                 app:iconGravity="textStart"
                 app:iconTint="#FFFFFF"
                 app:rippleColor="#1AFFFFFF" />
-
         </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDeleteData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#B71C1C"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Delete My Data"
+            android:textColor="#FFFFFF"
+            app:cornerRadius="8dp"
+            app:elevation="2dp"
+            app:icon="@android:drawable/ic_delete"
+            app:iconGravity="textStart"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="@+id/buttonContainer"
+            app:layout_constraintStart_toStartOf="@+id/buttonContainer"
+            app:layout_constraintTop_toBottomOf="@+id/buttonContainer"
+            app:rippleColor="#1AFFFFFF" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

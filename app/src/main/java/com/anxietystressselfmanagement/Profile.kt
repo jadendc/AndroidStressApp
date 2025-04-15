@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -32,6 +33,7 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private lateinit var nameInputLayout: TextInputLayout
     private lateinit var btnSave: MaterialButton
     private lateinit var btnBack: MaterialButton
+    private lateinit var btnDeleteData: MaterialButton
     private lateinit var navigationView: NavigationView
 
     // ViewModel
@@ -76,6 +78,7 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         nameInputLayout = findViewById(R.id.nameInputLayout)
         btnSave = findViewById(R.id.btnSave)
         btnBack = findViewById(R.id.btnBack)
+        btnDeleteData = findViewById(R.id.btnDeleteData)
 
         // Setup toolbar
         setSupportActionBar(toolbar)
@@ -150,6 +153,28 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+
+        // Delete data button click listener
+        btnDeleteData.setOnClickListener {
+            showDeleteConfirmationDialog()
+        }
+    }
+
+    /**
+     * Show confirmation dialog before deleting user data
+     * This follows modern Material Design alert dialog pattern
+     */
+    private fun showDeleteConfirmationDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete All My Data")
+            .setMessage("This will permanently delete ALL your personal data, including logs, preferences, and profile information. You will have to sign back in after. This action cannot be undone.")
+            .setPositiveButton("Delete Everything") { _, _ ->
+                // Call ViewModel to handle deletion
+                profileViewModel.deleteUserData()
+            }
+            .setNegativeButton("Cancel", null)  // Null listener automatically dismisses
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     /**
@@ -190,6 +215,37 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 profileViewModel.clearMessages() // Clear message after showing
             } else {
                 nameInputLayout.error = null
+            }
+        }
+
+        // Observe deletion state
+        profileViewModel.isDeleting.observe(this) { isDeleting ->
+            btnDeleteData.isEnabled = !isDeleting
+            btnDeleteData.text = if (isDeleting) "Deleting..." else "Delete My Data"
+        }
+
+        // Observe deletion success
+        profileViewModel.deleteSuccess.observe(this) { message ->
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                profileViewModel.clearAllMessages()
+
+                // Log out user after successful deletion
+                FirebaseAuth.getInstance().signOut()
+
+                // Return to login/main screen
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
+        }
+
+        // Observe deletion errors
+        profileViewModel.deleteError.observe(this) { message ->
+            if (!message.isNullOrEmpty()) {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                profileViewModel.clearAllMessages()
             }
         }
     }

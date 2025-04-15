@@ -22,6 +22,9 @@ class ProfileViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     private val _successMessage = MutableLiveData<String>()
     private val _errorMessage = MutableLiveData<String>()
+    private val _isDeleting = MutableLiveData<Boolean>()
+    private val _deleteSuccess = MutableLiveData<String>()
+    private val _deleteError = MutableLiveData<String>()
 
     // Public LiveData - exposed to observers
     val userEmail: LiveData<String?> = _userEmail
@@ -29,6 +32,9 @@ class ProfileViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
     val successMessage: LiveData<String> = _successMessage
     val errorMessage: LiveData<String> = _errorMessage
+    val isDeleting: LiveData<Boolean> = _isDeleting
+    val deleteSuccess: LiveData<String> = _deleteSuccess
+    val deleteError: LiveData<String> = _deleteError
 
     /**
      * Load user data from Firestore
@@ -89,10 +95,73 @@ class ProfileViewModel : ViewModel() {
     }
 
     /**
+     * Delete all user data from Firestore
+     * This performs a cascading delete of all user-related collections
+     */
+    fun deleteUserData() {
+        val userId = auth.currentUser?.uid
+
+        if (userId == null) {
+            _deleteError.value = "User not authenticated"
+            return
+        }
+
+        _isDeleting.value = true
+
+        // Reference to the user document
+        val userRef = firestore.collection("users").document(userId)
+
+        // 1. First, get all dailyLogs documents
+        userRef.collection("dailyLogs").get()
+            .addOnSuccessListener { logsSnapshot ->
+                // Create batch for efficient deletes
+                val batch = firestore.batch()
+
+                // Add all daily logs to batch delete
+                for (document in logsSnapshot.documents) {
+                    batch.delete(document.reference)
+                }
+
+                // 2. Execute the batch delete
+                batch.commit()
+                    .addOnSuccessListener {
+                        // 3. Delete the user document itself
+                        userRef.delete()
+                            .addOnSuccessListener {
+                                _deleteSuccess.value = "Your data has been completely deleted"
+                                _isDeleting.value = false
+                            }
+                            .addOnFailureListener { e ->
+                                _deleteError.value = "Error deleting user profile: ${e.message}"
+                                _isDeleting.value = false
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        _deleteError.value = "Error deleting logs: ${e.message}"
+                        _isDeleting.value = false
+                    }
+            }
+            .addOnFailureListener { e ->
+                _deleteError.value = "Error retrieving data to delete: ${e.message}"
+                _isDeleting.value = false
+            }
+    }
+
+    /**
      * Clear any one-time messages to prevent showing them again on configuration changes
      */
     fun clearMessages() {
         _successMessage.value = ""
         _errorMessage.value = ""
+    }
+
+    /**
+     * Clear all messages including deletion-related ones
+     */
+    fun clearAllMessages() {
+        _successMessage.value = ""
+        _errorMessage.value = ""
+        _deleteSuccess.value = ""
+        _deleteError.value = ""
     }
 }
