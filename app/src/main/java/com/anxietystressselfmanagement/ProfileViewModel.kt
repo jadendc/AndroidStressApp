@@ -1,22 +1,18 @@
 package com.anxietystressselfmanagement
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
-/**
- * ViewModel for Profile screen that handles business logic and data operations
- * Uses LiveData for reactive UI updates and MVVM architecture pattern
- */
 class ProfileViewModel : ViewModel() {
 
-    // Private Firebase instances
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
 
-    // MutableLiveData - internal
     private val _userEmail = MutableLiveData<String?>()
     private val _userName = MutableLiveData<String?>()
     private val _isLoading = MutableLiveData<Boolean>()
@@ -26,7 +22,6 @@ class ProfileViewModel : ViewModel() {
     private val _deleteSuccess = MutableLiveData<String>()
     private val _deleteError = MutableLiveData<String>()
 
-    // Public LiveData - exposed to observers
     val userEmail: LiveData<String?> = _userEmail
     val userName: LiveData<String?> = _userName
     val isLoading: LiveData<Boolean> = _isLoading
@@ -36,40 +31,43 @@ class ProfileViewModel : ViewModel() {
     val deleteSuccess: LiveData<String> = _deleteSuccess
     val deleteError: LiveData<String> = _deleteError
 
-    /**
-     * Load user data from Firestore
-     */
     fun loadUserData() {
         val userId = auth.currentUser?.uid
         val email = auth.currentUser?.email
 
-        // Set user email
         _userEmail.value = email
 
-        // If user is authenticated, fetch their data
         if (userId != null) {
+            _userName.value = null
             _isLoading.value = true
 
             firestore.collection("users").document(userId).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
-                        // Load and set user's name
                         val firstName = document.getString("first name")
-                        _userName.value = firstName
+                        if (_userName.value != firstName) {
+                            _userName.value = firstName
+                        }
+                    } else {
+                        if (_userName.value != null) {
+                            _userName.value = null
+                        }
                     }
                     _isLoading.value = false
                 }
                 .addOnFailureListener { exception ->
                     _errorMessage.value = "Failed to load profile: ${exception.message}"
                     _isLoading.value = false
+                    if (_userName.value != null) {
+                        _userName.value = null
+                    }
                 }
+        } else {
+            _userEmail.value = "Not logged in"
+            _userName.value = null
         }
     }
 
-    /**
-     * Update user's name in Firestore
-     * @param newName The new name to save
-     */
     fun updateUserName(newName: String) {
         val userId = auth.currentUser?.uid
 
@@ -79,10 +77,13 @@ class ProfileViewModel : ViewModel() {
 
             val userUpdates = mapOf("first name" to newName)
 
-            firestore.collection("users").document(userId).update(userUpdates)
+            firestore.collection("users").document(userId)
+                .set(userUpdates, SetOptions.merge())
                 .addOnSuccessListener {
                     _successMessage.value = "Profile updated successfully"
-                    _userName.value = newName
+                    if (_userName.value != newName) {
+                        _userName.value = newName
+                    }
                     _isLoading.value = false
                 }
                 .addOnFailureListener { exception ->
@@ -94,10 +95,6 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Delete all user data from Firestore
-     * This performs a cascading delete of all user-related collections
-     */
     fun deleteUserData() {
         val userId = auth.currentUser?.uid
 
@@ -107,60 +104,49 @@ class ProfileViewModel : ViewModel() {
         }
 
         _isDeleting.value = true
+        _deleteError.value = ""
 
-        // Reference to the user document
         val userRef = firestore.collection("users").document(userId)
 
-        // 1. First, get all dailyLogs documents
         userRef.collection("dailyLogs").get()
             .addOnSuccessListener { logsSnapshot ->
-                // Create batch for efficient deletes
-                val batch = firestore.batch()
-
-                // Add all daily logs to batch delete
-                for (document in logsSnapshot.documents) {
-                    batch.delete(document.reference)
+                if (logsSnapshot.isEmpty) {
+                    // No logs to delete, operation is trivially successful
+                    _deleteSuccess.value = "No associated data (logs) found to delete."
+                    _isDeleting.value = false
+                    return@addOnSuccessListener
                 }
 
-                // 2. Execute the batch delete
+                val batch = firestore.batch()
+                logsSnapshot.documents.forEach { batch.delete(it.reference) }
+
                 batch.commit()
                     .addOnSuccessListener {
-                        // 3. Delete the user document itself
-                        userRef.delete()
-                            .addOnSuccessListener {
-                                _deleteSuccess.value = "Your data has been completely deleted"
-                                _isDeleting.value = false
-                            }
-                            .addOnFailureListener { e ->
-                                _deleteError.value = "Error deleting user profile: ${e.message}"
-                                _isDeleting.value = false
-                            }
+                        // *** Main document (userRef) is NOT deleted ***
+                        _deleteSuccess.value = "Associated data (logs) deleted successfully."
+                        // User profile remains, no need to clear local state like name/email
+                        _isDeleting.value = false
                     }
                     .addOnFailureListener { e ->
-                        _deleteError.value = "Error deleting logs: ${e.message}"
+                        _deleteError.value = "Error deleting associated data: ${e.message}"
                         _isDeleting.value = false
                     }
             }
             .addOnFailureListener { e ->
-                _deleteError.value = "Error retrieving data to delete: ${e.message}"
+                // Failure to query logs is an error itself
+                Log.w("ProfileViewModel", "Could not query dailyLogs: ${e.message}")
+                _deleteError.value = "Error accessing associated data to delete: ${e.message}"
                 _isDeleting.value = false
             }
     }
 
-    /**
-     * Clear any one-time messages to prevent showing them again on configuration changes
-     */
     fun clearMessages() {
         _successMessage.value = ""
         _errorMessage.value = ""
     }
 
-    /**
-     * Clear all messages including deletion-related ones
-     */
     fun clearAllMessages() {
-        _successMessage.value = ""
-        _errorMessage.value = ""
+        clearMessages()
         _deleteSuccess.value = ""
         _deleteError.value = ""
     }
