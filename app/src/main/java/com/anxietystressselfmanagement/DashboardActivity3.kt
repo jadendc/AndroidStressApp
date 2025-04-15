@@ -5,6 +5,7 @@ import android.content.Intent
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -377,14 +378,18 @@ class DashboardActivity3 : AppCompatActivity() {
         // Conditional Value Drawing
         if (entries.size <= 10) {
             dataSet.setDrawValues(true)
-            dataSet.valueTextSize = 12f
+            dataSet.valueTextSize = 14f
             dataSet.valueTextColor = Color.DKGRAY
+            dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
         } else {
             dataSet.setDrawValues(false)
         }
         dataSet.sliceSpace = 1f
 
         val data = PieData(dataSet)
+        data.setValueTextSize(14f)
+        data.setValueTextColor(Color.DKGRAY)
+
         chart.data = data
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
@@ -405,6 +410,9 @@ class DashboardActivity3 : AppCompatActivity() {
         legend.setDrawInside(false)
         legend.yOffset = 5f
         legend.xOffset = 0f
+
+        // Add animation
+        chart.animateY(1000)
 
         chart.invalidate() // Refresh chart drawing
 

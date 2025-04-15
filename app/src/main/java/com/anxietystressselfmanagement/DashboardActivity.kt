@@ -407,6 +407,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             val endDate = dateFormat.format(endCal.time)
             triggersTextView.text = "In Control ($startDate - $endDate)"
         }
+        barChart.animateY(1000)
 
         barChart.invalidate()
     }
@@ -451,6 +452,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         pieChart.description.isEnabled = false
         pieChart.setDrawHoleEnabled(false)
         pieChart.setDrawEntryLabels(false)
+        pieChart.animateY(1000)
         pieChart.invalidate()
 
         // Setup legend

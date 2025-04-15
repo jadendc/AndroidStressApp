@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -430,13 +431,13 @@ class DashboardActivity2 : AppCompatActivity() {
         dataSet.setValueFormatter(PercentFormatter(chart))
         dataSet.setDrawValues(true)
         dataSet.valueTextColor = Color.DKGRAY
-        dataSet.valueTextSize = 16f // Match DashboardActivity3
-        // Added selection shift from your last version
+        dataSet.valueTextSize = 14f
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD)
         dataSet.selectionShift = 10f
 
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(chart))
-        data.setValueTextSize(16f)
+        data.setValueTextSize(14f)
         data.setValueTextColor(Color.DKGRAY)
 
         chart.data = data
@@ -457,9 +458,9 @@ class DashboardActivity2 : AppCompatActivity() {
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.setDrawInside(false)
         legend.textColor = Color.WHITE
-        legend.textSize = 16f // Match DashboardActivity3
-        legend.isWordWrapEnabled = true // Match DashboardActivity3
-        legend.maxSizePercent = 0.4f // Match DashboardActivity3
+        legend.textSize = 16f
+        legend.isWordWrapEnabled = true
+        legend.maxSizePercent = 0.4f
         legend.form = Legend.LegendForm.SQUARE
         legend.formSize = 10f
         legend.xEntrySpace = 10f
@@ -500,11 +501,10 @@ class DashboardActivity2 : AppCompatActivity() {
 
             override fun onNothingSelected() {
                 Log.d(TAG, "Chart '$label' value selection cleared.")
-                // Optional: Deselect visually if needed, e.g., chart.highlightValues(null)
             }
         })
 
-         chart.animateY(1000)
+        chart.animateY(1000)  // Added animation
 
         chart.invalidate() // Refresh chart with new settings
     }
