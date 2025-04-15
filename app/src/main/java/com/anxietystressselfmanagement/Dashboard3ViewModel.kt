@@ -46,6 +46,29 @@ class Dashboard3ViewModel : ViewModel() {
     val errorMessage: LiveData<String> = _errorMessage
     val dateRange: LiveData<Triple<String, Calendar, Calendar>> = _dateRange
 
+    // Mapping dictionaries - same as in StrategiesAndActionsActivity
+    private val strategyShortenedLabels = mapOf(
+        "Breathing: Deep, slow breaths to calm the mind" to "Breathing",
+        "Time Management: Plan and prioritize tasks" to "Time Management",
+        "Movement: Walk, stretch, or exercise" to "Movement",
+        "Digital Detox: Limit screen time" to "Digital Detox",
+        "Social Connection: Talk to friends or family" to "Social Connection",
+        "Gratitude: Focus on positive" to "Gratitude",
+        "Relaxation: Meditate or listen to music" to "Relaxation",
+        "Custom..." to "Custom..."
+    )
+
+    private val actionShortenedLabels = mapOf(
+        "5-min deep breathing in the morning" to "5-min Breathing",
+        "Plan tasks using a list or app" to "Plan Tasks",
+        "10-min walk or stretch after lunch" to "10-min Walk",
+        "No screens 1 hour before bed" to "No Screens",
+        "Call or message a friend" to "Call Friend",
+        "Write 3 things you're grateful for" to "Gratitude Writing",
+        "Listen to relaxing music or meditation" to "Relax Music",
+        "Custom..." to "Custom..."
+    )
+
     /**
      * Initialize with default date range
      */
@@ -137,6 +160,36 @@ class Dashboard3ViewModel : ViewModel() {
     }
 
     /**
+     * Convert full strategy text to shortened version
+     */
+    private fun getShortenedStrategy(fullStrategy: String): String {
+        // Check if it's a custom strategy (not in our mapping)
+        return strategyShortenedLabels[fullStrategy] ?:
+        // If it's not in the map but starts with "Custom:", extract the custom text
+        if (fullStrategy.startsWith("Custom: ")) {
+            fullStrategy.substring(8) // Skip "Custom: " prefix
+        } else {
+            // Return first 15 chars + "..." for any other unmapped strategy
+            if (fullStrategy.length > 15) "${fullStrategy.take(15)}..." else fullStrategy
+        }
+    }
+
+    /**
+     * Convert full action text to shortened version
+     */
+    private fun getShortenedAction(fullAction: String): String {
+        // Check if it's a custom action (not in our mapping)
+        return actionShortenedLabels[fullAction] ?:
+        // If it's not in the map but starts with "Custom:", extract the custom text
+        if (fullAction.startsWith("Custom: ")) {
+            fullAction.substring(8) // Skip "Custom: " prefix
+        } else {
+            // Return first 15 chars + "..." for any other unmapped action
+            if (fullAction.length > 15) "${fullAction.take(15)}..." else fullAction
+        }
+    }
+
+    /**
      * Fetch strategies data asynchronously
      * @return Map of strategy names to counts
      */
@@ -166,7 +219,9 @@ class Dashboard3ViewModel : ViewModel() {
 
                     val strategy = document.getString("7strategies") ?: ""
                     if (strategy.isNotEmpty()) {
-                        strategyCounts[strategy] = strategyCounts.getOrDefault(strategy, 0) + 1
+                        // Convert to shortened version before adding to counts
+                        val shortenedStrategy = getShortenedStrategy(strategy)
+                        strategyCounts[shortenedStrategy] = strategyCounts.getOrDefault(shortenedStrategy, 0) + 1
                     }
                 } catch (e: Exception) {
                     // Log error but continue processing other dates
@@ -208,7 +263,9 @@ class Dashboard3ViewModel : ViewModel() {
 
                     val action = document.getString("7actions") ?: ""
                     if (action.isNotEmpty()) {
-                        actionCounts[action] = actionCounts.getOrDefault(action, 0) + 1
+                        // Convert to shortened version before adding to counts
+                        val shortenedAction = getShortenedAction(action)
+                        actionCounts[shortenedAction] = actionCounts.getOrDefault(shortenedAction, 0) + 1
                     }
                 } catch (e: Exception) {
                     // Log error but continue processing other dates
@@ -265,14 +322,19 @@ class Dashboard3ViewModel : ViewModel() {
                         .get()
                         .await()
 
+                    // Need to match against full strategy text
                     val strategies = document.getString("7strategies") ?: ""
+
+                    // Find the full strategy text that corresponds to this shortened category
+                    val fullStrategy = strategyShortenedLabels.entries.find { it.value == category }?.key ?: category
+
                     val selectedSymptom = document.getString("selectedSymptom") ?: ""
 
-                    if (strategies == category && selectedSymptom.isNotEmpty()) {
+                    if (strategies == fullStrategy && selectedSymptom.isNotEmpty()) {
                         selectedSymptoms.add(selectedSymptom)
                     }
                 } catch (e: Exception) {
-
+                    // Continue with next date
                 }
 
                 tempCalendar.add(Calendar.DAY_OF_YEAR, -1)
