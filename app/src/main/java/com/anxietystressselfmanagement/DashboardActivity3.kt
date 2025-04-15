@@ -1,5 +1,7 @@
 package com.anxietystressselfmanagement
 
+// Import Intent
+import android.content.Intent
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.graphics.Color
@@ -27,6 +29,7 @@ class DashboardActivity3 : AppCompatActivity() {
 
     private val TAG = "DashboardActivity3"
 
+    // --- UI Components ---
     private lateinit var pieChart4: PieChart
     private lateinit var pieChart5: PieChart
     private lateinit var rangeSpinner: MaterialButton
@@ -39,15 +42,17 @@ class DashboardActivity3 : AppCompatActivity() {
     private lateinit var actionsTextView: TextView
     private var loadingIndicator: ProgressBar? = null
     private var chartsContainer: View? = null
+    // Add the new button variable
+    private lateinit var viewDetailsButton: MaterialButton
+    // --- End UI Components ---
 
     private val dashboard3ViewModel: Dashboard3ViewModel by viewModels()
 
     private var isInitialLoad = true
 
-    // Prioritized Pastel Colors
+    // --- Color Definitions ---
     private val pastelColors: List<Int> by lazy {
         listOf(
-            // 10 base pastel colors
             "#F4B6C2", "#A6E1D9", "#F6D1C1", "#E3A7D4", "#C8D8A9",
             "#A7C7E7", "#FFFACD", "#C3B1E1", "#FFDAC1", "#B2F0B2"
         ).mapNotNull { hexString ->
@@ -56,7 +61,6 @@ class DashboardActivity3 : AppCompatActivity() {
         }
     }
 
-    // Extensive list (Fallback colors, ~40) - same as before
     private val extensiveColors: List<Int> by lazy {
         listOf(
             "#FF6F61", "#6B5B95", "#88B04B", "#F7CAC9", "#92A8D1", "#955251", "#B565A7", "#009B77",
@@ -72,31 +76,33 @@ class DashboardActivity3 : AppCompatActivity() {
 
     private val prioritizedColors: List<Int> by lazy {
         val combined = mutableListOf<Int>()
-        combined.addAll(pastelColors) // Add the 10 pastels first
-        // Add extensive colors only if they aren't already in the pastel list
+        combined.addAll(pastelColors)
         combined.addAll(extensiveColors.filter { it !in pastelColors })
-        if (combined.isEmpty()) { // Fallback if all parsing failed
+        if (combined.isEmpty()) {
             Log.e(TAG, "CRITICAL: prioritizedColors list is empty! Using default gray.")
             combined.add(Color.GRAY)
         }
-        combined // Return the final combined list
+        combined
     }
+    // --- End Color Definitions ---
 
 
+    // --- Activity Lifecycle Methods ---
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dash_board3)
 
-        initializeViews()
+        // Initialization order is important
+        initializeViews() // Find all views first
         setupToolbar()
-        setupButtonListeners()
+        setupButtonListeners() // Setup listeners after views are found
         setupRangeSpinner()
         observeViewModel()
 
-        // Check combined list (optional logging)
         Log.d(TAG, "Prioritized colors loaded. Count: ${prioritizedColors.size}")
-        if (prioritizedColors.size <= 10) {
-            Log.w(TAG, "Warning: Prioritized colors list only contains pastels. Extensive colors might have failed parsing or were duplicates.")
+        if (prioritizedColors.isEmpty()) {
+            Log.e(TAG, "CRITICAL: prioritizedColors list is empty after parsing! Check hex codes.")
+            Toast.makeText(this, "Error loading chart colors", Toast.LENGTH_LONG).show()
         }
 
         dashboard3ViewModel.loadSavedDateRange(this)
@@ -106,33 +112,45 @@ class DashboardActivity3 : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (isInitialLoad) return
+        // Reloading saved range might trigger data fetch via observer if range didn't change
+        // Or call fetch explicitly if needed: dashboard3ViewModel.fetchDataForCurrentRange(this)
         dashboard3ViewModel.loadSavedDateRange(this)
     }
+    // --- End Activity Lifecycle Methods ---
 
+
+    // --- View Initialization and Setup ---
     private fun initializeViews() {
         try {
+            // Charts
             pieChart4 = findViewById(R.id.pieChart4)
             pieChart5 = findViewById(R.id.pieChart5)
+            // Date Range Components
             rangeSpinner = findViewById(R.id.rangeSpinner)
             startDateButton = findViewById(R.id.startDateButton)
             endDateButton = findViewById(R.id.endDateButton)
             applyButton = findViewById(R.id.applyRangeButton)
             dateRangeLayout = findViewById(R.id.dateRangeLayout)
+            // Toolbar and Titles
             toolbar = findViewById(R.id.toolbar)
             strategiesTextView = findViewById(R.id.strategiesTextView)
             actionsTextView = findViewById(R.id.actionsTextView)
+            // New Details Button
+            viewDetailsButton = findViewById(R.id.viewDetailsButton) // Initialize the new button
 
-            try {
-                loadingIndicator = findViewById(R.id.loadingIndicator)
-            } catch (e: Exception) { Log.e(TAG, "Error finding loadingIndicator: ${e.message}") }
-            try {
-                chartsContainer = findViewById(R.id.chartsContainer)
-            } catch (e: Exception) { Log.e(TAG, "Error finding chartsContainer: ${e.message}") }
+            // Optional Components (Loading/Container)
+            try { loadingIndicator = findViewById(R.id.loadingIndicator) }
+            catch (e: Exception) { Log.e(TAG, "Error finding loadingIndicator: ${e.message}") }
+            try { chartsContainer = findViewById(R.id.chartsContainer) }
+            catch (e: Exception) { Log.e(TAG, "Error finding chartsContainer: ${e.message}") }
 
             setupChartDefaults()
+
         } catch (e: Exception) {
             Log.e(TAG, "FATAL: Error during initializeViews: ${e.message}", e)
             Toast.makeText(this, "Fatal error initializing dashboard layout.", Toast.LENGTH_LONG).show()
+            // Consider finishing the activity if core components fail
+            // finish()
         }
     }
 
@@ -154,16 +172,20 @@ class DashboardActivity3 : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
         if (item.itemId == android.R.id.home) {
-            finish()
+            finish() // Navigate back to previous activity
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun setupButtonListeners() {
+        // Date Picker Buttons
         startDateButton.setOnClickListener { showDatePicker(true) }
         endDateButton.setOnClickListener { showDatePicker(false) }
+
+        // Apply Custom Range Button
         applyButton.setOnClickListener {
             val (isValid, errorMessage) = dashboard3ViewModel.validateDateRange()
             if (isValid) {
@@ -172,55 +194,92 @@ class DashboardActivity3 : AppCompatActivity() {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
+
+        // --- Add Listener for the New Details Button ---
+        viewDetailsButton.setOnClickListener {
+            dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
+                // Ensure Calendars are not null before getting timeInMillis
+                if (startCal != null && endCal != null) {
+                    val startMillis = startCal.timeInMillis
+                    val endMillis = endCal.timeInMillis
+
+                    // Use the helper function from StrategyActionDetailActivity to create intent
+                    val intent = StrategyActionDetailActivity.newIntent(this, startMillis, endMillis)
+                    startActivity(intent)
+                } else {
+                    Log.e(TAG, "Cannot create details intent: Start or End Calendar is null.")
+                    Toast.makeText(this, "Cannot determine date range for details.", Toast.LENGTH_SHORT).show()
+                }
+            } ?: run {
+                // Handle case where dateRange LiveData itself is null
+                Log.e(TAG, "Cannot create details intent: dateRange LiveData is null.")
+                Toast.makeText(this, "Cannot determine date range for details.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        // --- End Details Button Listener ---
     }
 
     private fun setupRangeSpinner() {
         val ranges = arrayOf("Last 7 Days", "Last 14 Days", "Last 30 Days", "Custom Range")
-        rangeSpinner.text = dashboard3ViewModel.dateRange.value?.first ?: "Last 7 Days"
+        // Set initial text based on ViewModel's current state if available
+        dashboard3ViewModel.dateRange.value?.let { rangeSpinner.text = it.first }
+
         if (rangeSpinner.icon == null) {
             rangeSpinner.setIconResource(R.drawable.ic_calendar)
             rangeSpinner.iconGravity = MaterialButton.ICON_GRAVITY_START
         }
+
         rangeSpinner.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Select Date Range")
                 .setItems(ranges) { _, which ->
                     val selectedRange = ranges[which]
-                    rangeSpinner.text = selectedRange
+                    rangeSpinner.text = selectedRange // Update button text immediately
+
                     if (selectedRange == "Custom Range") {
                         dateRangeLayout.visibility = View.VISIBLE
+                        // Dates should be set via date picker and apply button
                     } else {
                         dateRangeLayout.visibility = View.GONE
+                        // Set range in ViewModel, which will trigger observer to fetch data
                         when (selectedRange) {
                             "Last 7 Days" -> dashboard3ViewModel.setDateRange(7)
                             "Last 14 Days" -> dashboard3ViewModel.setDateRange(14)
                             "Last 30 Days" -> dashboard3ViewModel.setDateRange(30)
                         }
-                        dashboard3ViewModel.fetchDataForCurrentRange(this)
+                        // Data fetch now happens via the dateRange observer
                     }
                 }
                 .create()
                 .show()
         }
     }
+    // --- End View Initialization and Setup ---
 
+
+    // --- Date Handling ---
     private fun showDatePicker(isStartDate: Boolean) {
         dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
-            val calendar = if (isStartDate) startCal else endCal
+            // Use non-null start/end calendar for picker default, fallback if needed
+            val calendar = (if (isStartDate) startCal else endCal) ?: Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
+
             DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
                 val newCalendar = Calendar.getInstance()
                 newCalendar.set(selectedYear, selectedMonth, selectedDay)
+
+                // Get current non-null calendars for setting the range
+                val currentStartCal = Calendar.getInstance().apply { time = startCal?.time ?: Date() }
+                val currentEndCal = Calendar.getInstance().apply { time = endCal?.time ?: Date() }
+
                 if (isStartDate) {
-                    val currentEndCal = Calendar.getInstance().apply { time = endCal.time }
                     dashboard3ViewModel.setCustomDateRange(newCalendar, currentEndCal)
                 } else {
-                    val currentStartCal = Calendar.getInstance().apply { time = startCal.time }
                     dashboard3ViewModel.setCustomDateRange(currentStartCal, newCalendar)
                 }
-                updateDateButtonText()
+                // updateDateButtonText() // Observer will handle button text updates
             }, year, month, day).show()
         }
     }
@@ -228,16 +287,19 @@ class DashboardActivity3 : AppCompatActivity() {
     private fun updateDateButtonText() {
         dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
             val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-            startCal?.time?.let { startDateButton.text = dateFormat.format(it) }
-            endCal?.time?.let { endDateButton.text = dateFormat.format(it) }
+            // Check for null before formatting
+            startCal?.time?.let { startDateButton.text = dateFormat.format(it) } ?: Log.w(TAG, "Start Calendar is null in updateDateButtonText")
+            endCal?.time?.let { endDateButton.text = dateFormat.format(it) } ?: Log.w(TAG, "End Calendar is null in updateDateButtonText")
         }
     }
+    // --- End Date Handling ---
 
 
+    // --- ViewModel Observation ---
     private fun observeViewModel() {
         dashboard3ViewModel.dateRange.observe(this, Observer { rangeInfo ->
             rangeInfo ?: return@Observer
-            val (rangeType, startCal, endCal) = rangeInfo
+            val (rangeType, _, _) = rangeInfo // Only need type here directly
             when (rangeType) {
                 "Last 7 Days", "Last 14 Days", "Last 30 Days" -> {
                     rangeSpinner.text = rangeType
@@ -248,8 +310,9 @@ class DashboardActivity3 : AppCompatActivity() {
                     dateRangeLayout.visibility = View.VISIBLE
                 }
             }
-            updateDateButtonText() // Update buttons whenever range changes
+            updateDateButtonText() // Update button text whenever range changes
             if (!isInitialLoad) {
+                // Trigger data fetch only after initial load is complete
                 dashboard3ViewModel.fetchDataForCurrentRange(this)
             }
         })
@@ -284,19 +347,16 @@ class DashboardActivity3 : AppCompatActivity() {
             }
         })
     }
+    // --- End ViewModel Observation ---
 
 
-    /**
-     * Setup pie chart with data
-     */
+    // --- Chart Setup ---
     private fun setupPieChart(chart: PieChart, dataCounts: Map<String, Int>, label: String) {
         if (prioritizedColors.isEmpty()) {
             Log.e(TAG, "Cannot setup chart: prioritizedColors list is empty.")
-            chart.setNoDataText("Chart color configuration error.")
+            chart.setNoDataText("Chart color config error.")
             chart.setNoDataTextColor(Color.RED)
-            chart.data = null
-            chart.invalidate()
-            return
+            chart.data = null; chart.invalidate(); return
         }
 
         val entries = mutableListOf<PieEntry>()
@@ -305,17 +365,16 @@ class DashboardActivity3 : AppCompatActivity() {
         }
 
         if (entries.isEmpty()) {
-            chart.setNoDataText("No $label data recorded in this period")
+            chart.setNoDataText("No $label data recorded") // Shorter text
             chart.setNoDataTextColor(Color.WHITE)
-            chart.data = null
-            chart.invalidate()
-            return
+            chart.data = null; chart.invalidate(); return
         }
 
         val dataSet = PieDataSet(entries, "")
         dataSet.colors = prioritizedColors
-
         dataSet.setValueFormatter(PercentFormatter(chart))
+
+        // Conditional Value Drawing
         if (entries.size <= 10) {
             dataSet.setDrawValues(true)
             dataSet.valueTextSize = 12f
@@ -330,9 +389,9 @@ class DashboardActivity3 : AppCompatActivity() {
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.setDrawHoleEnabled(false)
-        chart.setDrawEntryLabels(false)
+        chart.setDrawEntryLabels(false) // Keep labels off slices
 
-        // Legend Configuration
+        // Legend Configuration (Horizontal Bottom for both)
         val legend = chart.legend
         legend.textColor = Color.WHITE
         legend.isWordWrapEnabled = true
@@ -347,13 +406,13 @@ class DashboardActivity3 : AppCompatActivity() {
         legend.yOffset = 5f
         legend.xOffset = 0f
 
-        chart.invalidate()
+        chart.invalidate() // Refresh chart drawing
 
         // Update Title
         dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
             startCal?.time?.let { startTime ->
                 endCal?.time?.let { endTime ->
-                    val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+                    val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault()) // Short format for title
                     val startDate = dateFormat.format(startTime)
                     val endDate = dateFormat.format(endTime)
                     val titleView = if (label == "Strategies") strategiesTextView else actionsTextView

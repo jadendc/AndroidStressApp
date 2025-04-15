@@ -211,6 +211,20 @@
                 </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/viewDetailsButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="View Entry Details"
+                android:textColor="@android:color/white"
+                app:icon="@android:drawable/ic_menu_info_details"
+                app:iconTint="@android:color/white"
+                app:layout_constraintEnd_toEndOf="@id/chartsCard"
+                app:layout_constraintStart_toStartOf="@id/chartsCard"
+                app:layout_constraintTop_toBottomOf="@id/chartsCard" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

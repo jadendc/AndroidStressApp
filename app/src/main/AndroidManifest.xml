@@ -185,6 +185,13 @@
             android:name=".InControlActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar"/>
+        <activity android:name=".StrategyActionDetailActivity"
+            android:label="Strategy/Action Log"
+            android:parentActivityName=".DashboardActivity3">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity3" />
+        </activity>
         <activity
             android:name=".ExercisesActivity"
             android:exported="false"
