@@ -453,16 +453,23 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         pieChart.setDrawHoleEnabled(false)
         pieChart.setDrawEntryLabels(false)
         pieChart.animateY(1000)
-        pieChart.invalidate()
 
-        // Setup legend
+        // UPDATED LEGEND CONFIGURATION - Changed from vertical right to horizontal bottom
         val legend = pieChart.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        legend.orientation = Legend.LegendOrientation.VERTICAL
-        legend.setDrawInside(false)
         legend.textColor = Color.WHITE
-        legend.textSize = 16f
+        legend.isWordWrapEnabled = true
+        legend.formSize = 8f
+        legend.textSize = 12f
+        legend.xEntrySpace = 6f
+        legend.yEntrySpace = 2f
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.setDrawInside(false)
+        legend.yOffset = 5f
+        legend.xOffset = 0f
+
+        pieChart.invalidate()
 
         // Update feelings title to include date range
         dashboardViewModel.dateRange.value?.let { (_, startCal, endCal) ->

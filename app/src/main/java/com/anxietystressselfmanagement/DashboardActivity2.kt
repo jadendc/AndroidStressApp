@@ -449,24 +449,22 @@ class DashboardActivity2 : AppCompatActivity() {
         chart.isHighlightPerTapEnabled = true // Keep highlight on tap enabled
         chart.highlightValues(null)
 
-        // Added offset to give legend space on the right
-        chart.setExtraOffsets(5f, 5f, 30f, 5f)
-
+        // UPDATED LEGEND CONFIGURATION - Changed from right side to bottom
         val legend = chart.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        legend.orientation = Legend.LegendOrientation.VERTICAL
-        legend.setDrawInside(false)
         legend.textColor = Color.WHITE
-        legend.textSize = 16f
         legend.isWordWrapEnabled = true
-        legend.maxSizePercent = 0.4f
-        legend.form = Legend.LegendForm.SQUARE
-        legend.formSize = 10f
-        legend.xEntrySpace = 10f
-        legend.yEntrySpace = 5f
+        legend.formSize = 8f
+        legend.textSize = 12f
+        legend.xEntrySpace = 6f
+        legend.yEntrySpace = 2f
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.setDrawInside(false)
+        legend.yOffset = 5f
+        legend.xOffset = 0f
 
-        // *** Add listener logic back here ***
+        // Add listener logic
         chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 // Check if the entry is a PieEntry (it should be)
