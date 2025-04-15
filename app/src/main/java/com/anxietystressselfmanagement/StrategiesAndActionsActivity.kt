@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import CustomSpinnerAdapter
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -366,36 +367,5 @@ class StrategiesAndActionsActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-}
-
-class CustomSpinnerAdapter(
-    context: Context,
-    private val selectedItemLayoutRes: Int, // Layout for the closed spinner view
-    private val dropdownLayoutRes: Int,   // Layout for items in the dropdown list
-    private val items: List<String>,      // The list of items to display (shortened labels)
-    private val getCustomText: () -> String?
-) : ArrayAdapter<String>(context, selectedItemLayoutRes, items) {
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(selectedItemLayoutRes, parent, false)
-        val textView = view.findViewById<TextView>(android.R.id.text1)
-
-        val customText = getCustomText()
-
-        if (customText != null) {
-            textView.text = customText
-        } else {
-            textView.text = getItem(position)
-        }
-        return view
-    }
-
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-
-        val view = convertView ?: LayoutInflater.from(context).inflate(dropdownLayoutRes, parent, false)
-        val textView = view.findViewById<TextView>(android.R.id.text1)
-        textView.text = getItem(position)
-        return view
     }
 }
