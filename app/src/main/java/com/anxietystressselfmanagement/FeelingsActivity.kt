@@ -44,7 +44,6 @@ class FeelingsActivity : AppCompatActivity() {
             finish()
         }
 
-        // Add "Custom..." option to the list
         val feelingOptions = listOf("This may look like... ") +
                 listOf("Alienation", "Apathy", "Depression", "Fear",
                     "Irritability", "Loss of confidence", "Custom...")

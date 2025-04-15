@@ -45,7 +45,6 @@ class BodyActivity : AppCompatActivity() {
             finish()
         }
 
-        // Add "Custom..." option to the list
         val bodyOptions = listOf("This may look like... ") +
                 listOf("Difficulty breathing", "Fatigue", "Headaches", "High Blood Pressure",
                     "Palpitations", "Skin irritations", "Custom...")

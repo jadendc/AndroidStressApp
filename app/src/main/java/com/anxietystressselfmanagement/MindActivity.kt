@@ -44,7 +44,6 @@ class MindActivity : AppCompatActivity() {
             finish()
         }
 
-        // Add "Custom..." option to the list
         val mindOptions = listOf("This may look like... ") +
                 listOf("Difficulty concentrating", "Impaired judgement", "Indecision",
                     "Muddled thinking", "Negativity", "Worrying", "Custom...")

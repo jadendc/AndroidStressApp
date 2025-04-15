@@ -44,7 +44,6 @@ class BehaviorActivity : AppCompatActivity() {
             finish()
         }
 
-        // Add "Custom..." option to the list
         val behaviorOptions = listOf("This may look like... ") +
                 listOf("Accident prone", "Insomnia", "Loss of appetite", "Loss of sex drive",
                     "More addiction", "Restlessness", "Custom...")
