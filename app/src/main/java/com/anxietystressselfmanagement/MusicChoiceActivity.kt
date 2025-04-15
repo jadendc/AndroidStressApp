@@ -98,7 +98,7 @@ class MusicChoiceActivity : AppCompatActivity() {
                 "FocusActivity" -> Intent(this, FocusActivity::class.java)
                 "SleepActivity" -> Intent(this, SleepActivity::class.java)
                 "DestressActivity" -> Intent(this, DestressActivity::class.java)
-                else -> Intent(this, DashboardActivity::class.java)
+                else -> Intent(this, HomeActivity::class.java)
             }
             intent.putExtra("previousActivity", previousActivity) // Pass the activity back
             startActivity(intent)
