@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -185,8 +186,8 @@ class Dashboard2ViewModel : ViewModel() {
         }
 
     /**
-     * Fetch signs data asynchronously
-     * @return Map of sign names to counts
+     * Fetch signs data asynchronously by checking for the presence of specific symptom fields.
+     * @return Map of sign category names ("Body", "Mind", etc.) to counts
      */
     private suspend fun fetchSignsDataAsync(): Map<String, Int> =
         withContext(Dispatchers.IO) {
@@ -195,6 +196,7 @@ class Dashboard2ViewModel : ViewModel() {
             // Calculate days in range
             val diffInMillis = endCalendar.timeInMillis - startCalendar.timeInMillis
             val daysInRange = (diffInMillis / (1000 * 60 * 60 * 24)).toInt() + 1
+            // Limit processing to avoid excessive reads, adjust if needed
             val daysToProcess = min(daysInRange, 90)
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -208,8 +210,9 @@ class Dashboard2ViewModel : ViewModel() {
             )
 
             val tempCalendar = Calendar.getInstance()
-            tempCalendar.time = endCalendar.time
+            tempCalendar.time = endCalendar.time // Start from the end date
 
+            // Loop backwards through the date range
             for (i in 0 until daysToProcess) {
                 val dateKey = dateFormat.format(tempCalendar.time)
 
@@ -219,17 +222,36 @@ class Dashboard2ViewModel : ViewModel() {
                         .get()
                         .await()
 
-                    document.getString("signsOption")?.let { sign ->
-                        signCounts[sign] = signCounts.getOrDefault(sign, 0) + 1
+                    // Check for the *existence* of each specific symptom field
+                    // If a document exists and contains the field, it means the user logged
+                    // something for that category on that day.
+                    if (document.exists()) {
+                        if (document.contains("bodySymptom")) {
+                            signCounts["Body"] = signCounts.getOrDefault("Body", 0) + 1
+                        }
+                        if (document.contains("mindSymptom")) {
+                            signCounts["Mind"] = signCounts.getOrDefault("Mind", 0) + 1
+                        }
+                        if (document.contains("feelingSymptom")) {
+                            signCounts["Feelings"] = signCounts.getOrDefault("Feelings", 0) + 1
+                        }
+                        if (document.contains("behaviorSymptom")) {
+                            signCounts["Behavior"] = signCounts.getOrDefault("Behavior", 0) + 1
+                        }
                     }
+
                 } catch (e: Exception) {
                     // Log error but continue processing other dates
+                    Log.e("Dashboard2ViewModel", "Error fetching document for date $dateKey: ${e.message}")
                 }
 
+                // Move to the previous day
                 tempCalendar.add(Calendar.DAY_OF_YEAR, -1)
             }
 
-            signCounts
+            // Filter out categories with zero count before returning, if desired (optional)
+            // signCounts.filter { it.value > 0 }
+            signCounts // Return the map including zeros
         }
 
     /**

@@ -81,6 +81,6 @@
     <string name="use_default_time_12_00_pm">Use Default Time (12:00 PM)</string>
     <string name="enable_daily_reminders">Enable Daily Reminders</string>
     <string name="notification_settings">Notification Settings</string>
-    <string name="select_a_strategy_and_action">Select a strategy and action</string>
+    <string name="select_a_strategy_and_action">Select a Strategy and Action</string>
     <string name="what_are_the_signs">What are the signs?</string>
 </resources>

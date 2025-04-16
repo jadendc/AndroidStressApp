@@ -5,8 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -20,14 +18,13 @@ class MindActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private var selectedMind: String? = null
-    private var selectedDate: String = "" // Store selected date
-    private var currentCustomMind: String? = null // Store custom text
+    private var selectedDate: String = ""
+    private var currentCustomMind: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mind)
 
-        // Get selected date from intent
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateFormat.format(Date())
@@ -38,17 +35,13 @@ class MindActivity : AppCompatActivity() {
         val continueButton: Button = findViewById(R.id.continueMindButton)
 
         backButton.setOnClickListener {
-            val intent = Intent(this, AwarenessActivity::class.java)
-            intent.putExtra("selectedDate", selectedDate) // Pass date back
-            startActivity(intent)
-            finish()
+            navigateToAwareness()
         }
 
         val mindOptions = listOf("This may look like... ") +
                 listOf("Difficulty concentrating", "Impaired judgement", "Indecision",
                     "Muddled thinking", "Negativity", "Worrying", "Custom...")
 
-        // Use custom adapter
         val adapter = CustomSpinnerAdapter(
             this,
             R.layout.spinner_dropdown_item,
@@ -59,9 +52,8 @@ class MindActivity : AppCompatActivity() {
         mindSpinner.adapter = adapter
 
         mindSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
                 if (position == mindOptions.size - 1) {
-                    // "Custom..." option selected
                     showCustomInputDialog(adapter)
                 } else {
                     selectedMind = if (position != 0) mindOptions[position] else null
@@ -76,11 +68,11 @@ class MindActivity : AppCompatActivity() {
         }
 
         continueButton.setOnClickListener {
-            if (selectedMind != null || currentCustomMind != null) {
-                val mindToSave = currentCustomMind ?: selectedMind!!
+            val mindToSave = currentCustomMind ?: selectedMind
+            if (mindToSave != null) {
                 saveSelectionToFirestore(mindToSave)
             } else {
-                Toast.makeText(this, "Please select a mind symptom", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select or enter a mind symptom", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -105,9 +97,10 @@ class MindActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Custom text cannot be empty", Toast.LENGTH_SHORT).show()
                 }
+                dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
-                if (currentCustomMind == null) {
+                if (currentCustomMind == null && selectedMind == null) {
                     val spinner: Spinner = findViewById(R.id.mindSpinner)
                     spinner.setSelection(0)
                 }
@@ -124,7 +117,7 @@ class MindActivity : AppCompatActivity() {
         if (currentUser != null) {
             val userId = currentUser.uid
 
-            val selectedData = mapOf("selectedSymptom" to selected)
+            val selectedData = mapOf("mindSymptom" to selected) // Use specific key
 
             db.collection("users")
                 .document(userId)
@@ -133,14 +126,21 @@ class MindActivity : AppCompatActivity() {
                 .set(selectedData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, StrategiesAndActionsActivity::class.java)
-                    intent.putExtra("selectedDate", selectedDate)
-                    startActivity(intent)
-                    finish()
+                    navigateToAwareness() // Go back to AwarenessActivity
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToAwareness() {
+        val intent = Intent(this, AwarenessActivity::class.java)
+        intent.putExtra("selectedDate", selectedDate)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP // Optional
+        startActivity(intent)
+        finish()
     }
 }

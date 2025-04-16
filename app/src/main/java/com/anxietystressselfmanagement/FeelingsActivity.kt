@@ -5,8 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -20,14 +18,13 @@ class FeelingsActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private var selectedFeeling: String? = null
-    private var selectedDate: String = "" // Store selected date
-    private var currentCustomFeeling: String? = null // Store custom text
+    private var selectedDate: String = ""
+    private var currentCustomFeeling: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feelings)
 
-        // Get selected date from intent
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateFormat.format(Date())
@@ -38,17 +35,13 @@ class FeelingsActivity : AppCompatActivity() {
         val continueButton: Button = findViewById(R.id.continueFeelingsButton)
 
         backButton.setOnClickListener {
-            val intent = Intent(this, AwarenessActivity::class.java)
-            intent.putExtra("selectedDate", selectedDate) // Pass date back
-            startActivity(intent)
-            finish()
+            navigateToAwareness()
         }
 
         val feelingOptions = listOf("This may look like... ") +
                 listOf("Alienation", "Apathy", "Depression", "Fear",
                     "Irritability", "Loss of confidence", "Custom...")
 
-        // Use custom adapter
         val adapter = CustomSpinnerAdapter(
             this,
             R.layout.spinner_dropdown_item,
@@ -59,9 +52,8 @@ class FeelingsActivity : AppCompatActivity() {
         feelingsSpinner.adapter = adapter
 
         feelingsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
                 if (position == feelingOptions.size - 1) {
-                    // "Custom..." option selected
                     showCustomInputDialog(adapter)
                 } else {
                     selectedFeeling = if (position != 0) feelingOptions[position] else null
@@ -76,11 +68,11 @@ class FeelingsActivity : AppCompatActivity() {
         }
 
         continueButton.setOnClickListener {
-            if (selectedFeeling != null || currentCustomFeeling != null) {
-                val feelingToSave = currentCustomFeeling ?: selectedFeeling!!
+            val feelingToSave = currentCustomFeeling ?: selectedFeeling
+            if (feelingToSave != null) {
                 saveSelectionToFirestore(feelingToSave)
             } else {
-                Toast.makeText(this, "Please select a feeling symptom", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select or enter a feeling symptom", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -105,9 +97,10 @@ class FeelingsActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Custom text cannot be empty", Toast.LENGTH_SHORT).show()
                 }
+                dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
-                if (currentCustomFeeling == null) {
+                if (currentCustomFeeling == null && selectedFeeling == null) {
                     val spinner: Spinner = findViewById(R.id.feelingsSpinner)
                     spinner.setSelection(0)
                 }
@@ -124,7 +117,7 @@ class FeelingsActivity : AppCompatActivity() {
         if (currentUser != null) {
             val userId = currentUser.uid
 
-            val selectedData = mapOf("selectedSymptom" to selected)
+            val selectedData = mapOf("feelingSymptom" to selected) // Use specific key
 
             db.collection("users")
                 .document(userId)
@@ -133,14 +126,21 @@ class FeelingsActivity : AppCompatActivity() {
                 .set(selectedData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, StrategiesAndActionsActivity::class.java)
-                    intent.putExtra("selectedDate", selectedDate)
-                    startActivity(intent)
-                    finish()
+                    navigateToAwareness() // Go back to AwarenessActivity
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToAwareness() {
+        val intent = Intent(this, AwarenessActivity::class.java)
+        intent.putExtra("selectedDate", selectedDate)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP // Optional
+        startActivity(intent)
+        finish()
     }
 }

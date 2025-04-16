@@ -1,5 +1,6 @@
 package com.anxietystressselfmanagement
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
@@ -7,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +18,7 @@ class AwarenessActivity : AppCompatActivity() {
     private lateinit var mindButton: Button
     private lateinit var feelingsButton: Button
     private lateinit var behaviorButton: Button
+    private lateinit var continueAwarenessButton: Button
     private var selectedDate: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +27,7 @@ class AwarenessActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_awareness)
 
-        // Get selected date from intent
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
-            // Fallback to today if no date provided
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateFormat.format(Date())
         }
@@ -37,64 +36,88 @@ class AwarenessActivity : AppCompatActivity() {
         mindButton = findViewById(R.id.mindButton)
         feelingsButton = findViewById(R.id.feelingButton)
         behaviorButton = findViewById(R.id.behaviorButton)
+        continueAwarenessButton = findViewById(R.id.continueAwarenessButton)
 
-        // Set click listeners to track the selected option and navigate
         bodyButton.setOnClickListener {
-            saveAndNavigate("Body")
+            navigateToCategory(BodyActivity::class.java)
         }
         mindButton.setOnClickListener {
-            saveAndNavigate("Mind")
+            navigateToCategory(MindActivity::class.java)
         }
         feelingsButton.setOnClickListener {
-            saveAndNavigate("Feelings")
+            navigateToCategory(FeelingsActivity::class.java)
         }
         behaviorButton.setOnClickListener {
-            saveAndNavigate("Behavior")
+            navigateToCategory(BehaviorActivity::class.java)
+        }
+
+        continueAwarenessButton.setOnClickListener {
+            checkSymptomsAndProceed()
         }
 
         val backButton: ImageView = findViewById(R.id.backButton)
         backButton.setOnClickListener {
             val intent = Intent(this, SOTD::class.java)
-            intent.putExtra("selectedDate", selectedDate) // Pass date back
+            intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
             finish()
         }
     }
 
-    private fun saveAndNavigate(selected: String) {
+    private fun navigateToCategory(activityClass: Class<*>) {
+        val intent = Intent(this, activityClass)
+        intent.putExtra("selectedDate", selectedDate)
+        startActivity(intent)
+    }
+
+    private fun checkSymptomsAndProceed() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val userId = currentUser.uid
-
-            val selectedOptionData: MutableMap<String, Any?> = hashMapOf(
-                "signsOption" to selected
-            )
-
             firestore.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(selectedDate) // Use selectedDate instead of today
-                .set(selectedOptionData, SetOptions.merge())
-                .addOnSuccessListener {
-                    Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
+                .document(selectedDate)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val hasBody = document.contains("bodySymptom")
+                        val hasMind = document.contains("mindSymptom")
+                        val hasFeelings = document.contains("feelingSymptom")
+                        val hasBehavior = document.contains("behaviorSymptom")
 
-                    // Navigate to the appropriate activity based on the selected option
-                    val nextActivity = when (selected) {
-                        "Body" -> BodyActivity::class.java
-                        "Mind" -> MindActivity::class.java
-                        "Feelings" -> FeelingsActivity::class.java
-                        "Behavior" -> BehaviorActivity::class.java
-                        else -> throw IllegalArgumentException("Unknown option: $selected")
+                        if (hasBody || hasMind || hasFeelings || hasBehavior) {
+                            navigateToStrategies()
+                        } else {
+                            showWarningDialog()
+                        }
+                    } else {
+                        showWarningDialog()
                     }
-
-                    val intent = Intent(this, nextActivity)
-                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
-                    startActivity(intent)
-                    finish()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to save selected option: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error checking data: ${e.message}", Toast.LENGTH_SHORT).show()
+                    showWarningDialog() // Show warning on error too, as we can't confirm data
                 }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showWarningDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Incomplete Entry")
+            .setMessage("Please enter at least one sign (Body, Mind, Feelings, or Behavior) before continuing.")
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun navigateToStrategies() {
+        val intent = Intent(this, StrategiesAndActionsActivity::class.java)
+        intent.putExtra("selectedDate", selectedDate)
+        startActivity(intent)
+        finish() // Finish AwarenessActivity when proceeding
     }
 }

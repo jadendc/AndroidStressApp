@@ -2,12 +2,9 @@ package com.anxietystressselfmanagement
 
 import CustomSpinnerAdapter
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -21,14 +18,13 @@ class BodyActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
     private var selectedSymptom: String? = null
-    private var selectedDate: String = "" // Store selected date
-    private var currentCustomSymptom: String? = null // Store custom text
+    private var selectedDate: String = ""
+    private var currentCustomSymptom: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_body)
 
-        // Get selected date from intent
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             dateFormat.format(Date())
@@ -39,17 +35,13 @@ class BodyActivity : AppCompatActivity() {
         val continueButton: Button = findViewById(R.id.continueBodyButton)
 
         backButton.setOnClickListener {
-            val intent = Intent(this, AwarenessActivity::class.java)
-            intent.putExtra("selectedDate", selectedDate) // Pass date back
-            startActivity(intent)
-            finish()
+            navigateToAwareness()
         }
 
         val bodyOptions = listOf("This may look like... ") +
                 listOf("Difficulty breathing", "Fatigue", "Headaches", "High Blood Pressure",
                     "Palpitations", "Skin irritations", "Custom...")
 
-        // Use custom adapter instead of standard ArrayAdapter
         val adapter = CustomSpinnerAdapter(
             this,
             R.layout.spinner_dropdown_item,
@@ -60,9 +52,8 @@ class BodyActivity : AppCompatActivity() {
         bodySpinner.adapter = adapter
 
         bodySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
                 if (position == bodyOptions.size - 1) {
-                    // "Custom..." option selected
                     showCustomInputDialog(adapter)
                 } else {
                     selectedSymptom = if (position != 0) bodyOptions[position] else null
@@ -77,16 +68,15 @@ class BodyActivity : AppCompatActivity() {
         }
 
         continueButton.setOnClickListener {
-            if (selectedSymptom != null || currentCustomSymptom != null) {
-                val symptomToSave = currentCustomSymptom ?: selectedSymptom!!
+            val symptomToSave = currentCustomSymptom ?: selectedSymptom
+            if (symptomToSave != null) {
                 saveSelectionToFirestore(symptomToSave)
             } else {
-                Toast.makeText(this, "Please select a body symptom", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please select or enter a body symptom", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // Show dialog for custom input
     private fun showCustomInputDialog(adapter: CustomSpinnerAdapter) {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
@@ -107,10 +97,10 @@ class BodyActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this, "Custom text cannot be empty", Toast.LENGTH_SHORT).show()
                 }
+                dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
-                if (currentCustomSymptom == null) {
-                    // If no previous custom text, reset selection
+                if (currentCustomSymptom == null && selectedSymptom == null) {
                     val spinner: Spinner = findViewById(R.id.bodySpinner)
                     spinner.setSelection(0)
                 }
@@ -127,24 +117,30 @@ class BodyActivity : AppCompatActivity() {
         if (currentUser != null) {
             val userId = currentUser.uid
 
-            val selectedData = mapOf("selectedSymptom" to selected)
+            val selectedData = mapOf("bodySymptom" to selected) // Use specific key
 
             db.collection("users")
                 .document(userId)
                 .collection("dailyLogs")
-                .document(selectedDate) // Use selectedDate instead of today
+                .document(selectedDate)
                 .set(selectedData, SetOptions.merge())
                 .addOnSuccessListener {
                     Toast.makeText(this, "$selected saved", Toast.LENGTH_SHORT).show()
-                    // Go to StrategiesAndActionsActivity
-                    val intent = Intent(this, StrategiesAndActionsActivity::class.java)
-                    intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
-                    startActivity(intent)
-                    finish()
+                    navigateToAwareness() // Go back to AwarenessActivity
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to save: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun navigateToAwareness() {
+        val intent = Intent(this, AwarenessActivity::class.java)
+        intent.putExtra("selectedDate", selectedDate)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP // Optional: Clear stack above Awareness
+        startActivity(intent)
+        finish() // Finish this activity
     }
 }
