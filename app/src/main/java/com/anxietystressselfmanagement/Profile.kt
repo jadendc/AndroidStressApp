@@ -99,9 +99,7 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
                     // Navigate back to SettingActivity
-                    val intent = Intent(this@ProfileActivity, SettingActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    navigateToActivity(SettingActivity::class.java, finishCurrent = true)
                 }
             }
         })
@@ -141,10 +139,6 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 nameInputLayout.error = null
             }
 
-            // Show loading indicator
-            btnSave.isEnabled = false
-            btnSave.text = "Saving..."
-
             // Update profile in ViewModel
             profileViewModel.updateUserName(newName)
         }
@@ -161,14 +155,14 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     }
 
     /**
-     * Show confirmation dialog before deleting user data
-     * This follows modern Material Design alert dialog pattern
+     * Show confirmation dialog before deleting user's associated data (logs).
+     * This follows modern Material Design alert dialog pattern.
      */
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Delete All My Data")
-            .setMessage("This will permanently delete ALL your personal data, including logs, preferences, and profile information. You will have to sign back in after. This action cannot be undone.")
-            .setPositiveButton("Delete Everything") { _, _ ->
+            .setTitle("Delete Associated Data") // Updated title
+            .setMessage("This will permanently delete ALL your associated log data (daily entries, symptoms, triggers, etc.). Your profile information (name, email) will remain. This action cannot be undone.") // Updated message
+            .setPositiveButton("Delete Data") { _, _ -> // Updated button text
                 // Call ViewModel to handle deletion
                 profileViewModel.deleteUserData()
             }
@@ -176,6 +170,25 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
+
+    /**
+     * Shows a dialog asking the user if they want to sign out after data deletion.
+     */
+    private fun showSignOutPromptDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Data Deleted")
+            .setMessage("Associated log data deleted successfully. Do you want to sign out now?")
+            .setPositiveButton("Sign Out") { dialog, _ ->
+                logoutUser() // Call the existing logout function
+                dialog.dismiss()
+            }
+            .setNegativeButton("Stay Signed In") { dialog, _ ->
+                dialog.dismiss() // Just close the dialog
+            }
+            .setCancelable(false) // Force a choice
+            .show()
+    }
+
 
     /**
      * Observe LiveData from ViewModel to update UI accordingly
@@ -188,33 +201,31 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         // Observe user name
         profileViewModel.userName.observe(this) { name ->
-            if (!name.isNullOrEmpty() && etName.text.toString() != name) {
-                etName.setText(name)
+            // Only update if different to prevent cursor jumps
+            if (etName.text.toString() != name) {
+                etName.setText(name ?: "")
             }
         }
 
-        // Observe loading state
+        // Observe loading state for save button
         profileViewModel.isLoading.observe(this) { isLoading ->
             btnSave.isEnabled = !isLoading
             btnSave.text = if (isLoading) "Saving..." else "Save Changes"
         }
 
-        // Observe success message
+        // Observe success message for save operation
         profileViewModel.successMessage.observe(this) { message ->
             if (!message.isNullOrEmpty()) {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                profileViewModel.clearMessages() // Clear message after showing
+                profileViewModel.clearMessages()
             }
         }
 
-        // Observe error message
         profileViewModel.errorMessage.observe(this) { message ->
             if (!message.isNullOrEmpty()) {
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                nameInputLayout.error = message
-                profileViewModel.clearMessages() // Clear message after showing
+                profileViewModel.clearMessages()
             } else {
-                nameInputLayout.error = null
             }
         }
 
@@ -222,22 +233,18 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         profileViewModel.isDeleting.observe(this) { isDeleting ->
             btnDeleteData.isEnabled = !isDeleting
             btnDeleteData.text = if (isDeleting) "Deleting..." else "Delete My Data"
+            // Optionally disable other buttons during deletion
+            btnSave.isEnabled = !isDeleting
+            btnBack.isEnabled = !isDeleting
         }
 
         // Observe deletion success
         profileViewModel.deleteSuccess.observe(this) { message ->
             if (!message.isNullOrEmpty()) {
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-                profileViewModel.clearAllMessages()
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show() // Show success toast
+                profileViewModel.clearAllMessages() // Clear the message in ViewModel
 
-                // Log out user after successful deletion
-                FirebaseAuth.getInstance().signOut()
-
-                // Return to login/main screen
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
+                showSignOutPromptDialog()
             }
         }
 
@@ -254,34 +261,49 @@ class ProfileActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
      * Handle navigation item selection
      */
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var navigateToClass: Class<*>? = null
         when (item.itemId) {
-            R.id.nav_dashboard -> navigateToActivity(DashboardActivity::class.java)
-            R.id.nav_settings -> navigateToActivity(SettingActivity::class.java)
-            R.id.nav_home -> navigateToActivity(HomeActivity::class.java)
-            R.id.nav_membership -> navigateToActivity(MembershipActivity::class.java)
-            R.id.nav_about -> navigateToActivity(AboutActivity::class.java)
+            R.id.nav_dashboard -> navigateToClass = DashboardActivity::class.java
+            R.id.nav_settings -> navigateToClass = SettingActivity::class.java
+            R.id.nav_home -> navigateToClass = HomeActivity::class.java
+            R.id.nav_membership -> navigateToClass = MembershipActivity::class.java
+            R.id.nav_about -> navigateToClass = AboutActivity::class.java
             R.id.nav_logout -> logoutUser()
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+
+        // Perform navigation after drawer closes smoothly
+        navigateToClass?.let {
+            // Use postDelayed or Handler if needed for smoother transition after drawer closes
+            navigateToActivity(it)
+        }
+
+        return true // Return true even if logoutUser was called directly
     }
 
     /**
-     * Navigate to another activity with clean back stack
+     * Navigate to another activity, optionally finishing the current one.
+     * Clears task by default for main navigation items.
      */
-    private fun navigateToActivity(cls: Class<*>) {
+    private fun navigateToActivity(cls: Class<*>, finishCurrent: Boolean = false, clearTask: Boolean = false) {
         val intent = Intent(this, cls)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        if (clearTask) {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
         startActivity(intent)
-        finish()
+        if (finishCurrent) {
+            finish()
+        }
     }
+
 
     /**
      * Log out user and navigate to login screen
      */
     private fun logoutUser() {
         FirebaseAuth.getInstance().signOut()
-        navigateToActivity(MainActivity::class.java)
+        // Use navigateToActivity to go to MainActivity and clear the task stack
+        navigateToActivity(MainActivity::class.java, finishCurrent = true, clearTask = true)
     }
 }
