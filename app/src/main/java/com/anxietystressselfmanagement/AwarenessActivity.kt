@@ -60,7 +60,7 @@ class AwarenessActivity : AppCompatActivity() {
             val intent = Intent(this, SOTD::class.java)
             intent.putExtra("selectedDate", selectedDate)
             startActivity(intent)
-            finish()
+            finish() // Finish AwarenessActivity when going back
         }
     }
 
@@ -80,44 +80,59 @@ class AwarenessActivity : AppCompatActivity() {
                 .document(selectedDate)
                 .get()
                 .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        val hasBody = document.contains("bodySymptom")
-                        val hasMind = document.contains("mindSymptom")
-                        val hasFeelings = document.contains("feelingSymptom")
-                        val hasBehavior = document.contains("behaviorSymptom")
+                    val dataExists = document != null && document.exists()
+                    var hasAnySymptom = false
+                    if (dataExists) {
+                        hasAnySymptom = document.contains("bodySymptom") ||
+                                document.contains("mindSymptom") ||
+                                document.contains("feelingSymptom") ||
+                                document.contains("behaviorSymptom")
+                    }
 
-                        if (hasBody || hasMind || hasFeelings || hasBehavior) {
-                            navigateToStrategies()
-                        } else {
-                            showWarningDialog()
-                        }
+                    if (hasAnySymptom) {
+                        // If symptoms exist, navigate directly
+                        navigateToStrategies()
                     } else {
+                        // If no symptoms (or document doesn't exist), show the warning dialog
                         showWarningDialog()
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error checking data: ${e.message}", Toast.LENGTH_SHORT).show()
-                    showWarningDialog() // Show warning on error too, as we can't confirm data
+                    Toast.makeText(this, "Could not verify entries: ${e.message}", Toast.LENGTH_SHORT).show()
+                    showWarningDialog()
                 }
         } else {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
 
+    /**
+     * Shows a warning dialog if no signs are entered, allowing the user to proceed or cancel.
+     */
     private fun showWarningDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Incomplete Entry")
-            .setMessage("Please enter at least one sign (Body, Mind, Feelings, or Behavior) before continuing.")
-            .setPositiveButton("OK") { dialog, _ ->
+            .setTitle("No Signs Entered") // Updated Title slightly
+            .setMessage("You haven't entered any signs (Body, Mind, Feelings, or Behavior) for this date. Do you want to continue without entering any signs?") // Updated Message
+            .setPositiveButton("Continue Anyway") { dialog, _ ->
+                // User chose to continue despite the warning
+                navigateToStrategies()
                 dialog.dismiss()
             }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                // User chose to cancel, stay on this screen
+                dialog.dismiss()
+            }
+            .setCancelable(true) // Allow dismissing by tapping outside
             .show()
     }
 
+    /**
+     * Navigates to the StrategiesAndActionsActivity.
+     */
     private fun navigateToStrategies() {
         val intent = Intent(this, StrategiesAndActionsActivity::class.java)
         intent.putExtra("selectedDate", selectedDate)
         startActivity(intent)
-        finish() // Finish AwarenessActivity when proceeding
+        finish()
     }
 }
