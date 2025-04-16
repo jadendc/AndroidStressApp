@@ -17,5 +17,12 @@
     <color name="hint_text_color">#80FFFFFF</color>
     <color name="success_color">#4CAF50</color>
     <color name="error_color">#F44336</color>
+    <!-- Mood screen colors -->
+    <color name="mood_very_sad">#F08080</color>      <!-- Light Red -->
+    <color name="mood_sad">#FFCC99</color>           <!-- Light Orange -->
+    <color name="mood_neutral">#FFFF99</color>       <!-- Light Yellow -->
+    <color name="mood_happy">#CCFFCC</color>         <!-- Light Green -->
+    <!-- Light Green (little bit darker) -->
+    <color name="mood_very_happy">#90EE90</color>
 
 </resources>
