@@ -33,10 +33,12 @@
 
     <TextView
         android:id="@+id/titleText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:text="How are you feeling today?"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -46,8 +48,8 @@
         android:shadowRadius="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImage" />
-
+        app:layout_constraintTop_toBottomOf="@+id/logoImage"
+        tools:text="How were you feeling on Apr 16, 2025?" />
     <androidx.cardview.widget.CardView
         android:id="@+id/moodCardView"
         android:layout_width="0dp"
@@ -70,82 +72,82 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/verySadButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Very Sad 😢"
-                android:textSize="18sp"
-                android:textAlignment="center"
                 android:gravity="center"
-                app:cornerRadius="20dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#000000"
-                app:strokeWidth="1dp"
+                android:text="Very Sad 😢"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:backgroundTint="#F08080" />  <!-- Light Red -->
+                android:textSize="18sp"
+                app:backgroundTint="#F08080"
+                app:cornerRadius="20dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sadButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Sad 😔"
-                android:textSize="18sp"
-                android:textAlignment="center"
                 android:gravity="center"
-                app:cornerRadius="20dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#000000"
-                app:strokeWidth="1dp"
+                android:text="Sad 😔"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:backgroundTint="#FFCC99" />  <!-- Light Orange -->
+                android:textSize="18sp"
+                app:backgroundTint="#FFCC99"
+                app:cornerRadius="20dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/neutralButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Neutral 😐"
-                android:textSize="18sp"
-                android:textAlignment="center"
                 android:gravity="center"
-                app:cornerRadius="20dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#000000"
-                app:strokeWidth="1dp"
+                android:text="Neutral 😐"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:backgroundTint="#FFFF99" />  <!-- Light Yellow -->
+                android:textSize="18sp"
+                app:backgroundTint="#FFFF99"
+                app:cornerRadius="20dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/happyButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Happy 😊"
-                android:textSize="18sp"
-                android:textAlignment="center"
                 android:gravity="center"
-                app:cornerRadius="20dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#000000"
-                app:strokeWidth="1dp"
+                android:text="Happy 😊"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:backgroundTint="#CCFFCC" />  <!-- Light Green -->
+                android:textSize="18sp"
+                app:backgroundTint="#CCFFCC"
+                app:cornerRadius="20dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="1dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/veryHappyButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Very Happy 😁"
-                android:textSize="18sp"
-                android:textAlignment="center"
                 android:gravity="center"
-                app:cornerRadius="20dp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#000000"
-                app:strokeWidth="1dp"
+                android:text="Very Happy 😁"
+                android:textAlignment="center"
                 android:textColor="#000000"
-                app:backgroundTint="#90EE90" />  <!-- Light Green (Slightly Darker) -->
+                android:textSize="18sp"
+                app:backgroundTint="#90EE90"
+                app:cornerRadius="20dp"
+                app:strokeColor="#000000"
+                app:strokeWidth="1dp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -157,12 +159,12 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:text="Continue"
-        android:textSize="18sp"
-        android:enabled="false"
-        app:cornerRadius="20dp"
         android:backgroundTint="#232D31"
+        android:enabled="false"
+        android:text="@string/continue_button"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

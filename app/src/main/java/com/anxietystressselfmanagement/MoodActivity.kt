@@ -2,11 +2,15 @@ package com.anxietystressselfmanagement
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView // Import TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -20,31 +24,26 @@ class MoodActivity : AppCompatActivity() {
     private lateinit var veryHappyButton: MaterialButton
     private lateinit var continueButton: MaterialButton
     private lateinit var backButton: ImageView
+    private lateinit var titleTextView: TextView // Declare TextView for the title
 
     private lateinit var viewModel: MoodViewModel
     private var selectedDate: String = ""
     private val moodButtons = mutableListOf<MaterialButton>()
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()) // Reusable format
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mood)
 
-        // Get selected date from intent or use today's date
         selectedDate = intent.getStringExtra("selectedDate") ?: run {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            dateFormat.format(Date())
+            inputDateFormat.format(Date())
         }
 
-        // Initialize ViewModel
         viewModel = ViewModelProvider(this)[MoodViewModel::class.java]
 
-        // Initialize views
         initializeViews()
-
-        // Set up observers
+        updateTitleText() // Set the title dynamically
         setupObservers()
-
-        // Set up listeners
         setupClickListeners()
     }
 
@@ -56,8 +55,8 @@ class MoodActivity : AppCompatActivity() {
         veryHappyButton = findViewById(R.id.veryHappyButton)
         continueButton = findViewById(R.id.continueButton)
         backButton = findViewById(R.id.backButton)
+        titleTextView = findViewById(R.id.titleText) // Initialize the TextView
 
-        // Add all mood buttons to the list for easier management
         moodButtons.apply {
             add(verySadButton)
             add(sadButton)
@@ -67,65 +66,84 @@ class MoodActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateTitleText() {
+        val todayDateString = inputDateFormat.format(Date())
+        val isToday = selectedDate == todayDateString
+
+        if (isToday) {
+            // Use a string resource for better practice
+            titleTextView.text = getString(R.string.mood_prompt_today)
+        } else {
+            // Format the past date for display
+            val outputFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault())
+            try {
+                val dateObject = inputDateFormat.parse(selectedDate)
+                // Use ?.let for null safety on dateObject
+                val formattedDisplayDate = dateObject?.let { outputFormat.format(it) } ?: selectedDate // Fallback to original string if parsing fails or returns null
+                // Use a formatted string resource
+                titleTextView.text = getString(R.string.mood_prompt_past, formattedDisplayDate)
+            } catch (e: ParseException) {
+                Log.e("MoodActivity", "Error parsing date: $selectedDate", e)
+                // Fallback in case of parsing error
+                titleTextView.text = getString(R.string.mood_prompt_past, selectedDate)
+            }
+        }
+    }
+
     private fun setupObservers() {
-        // Observe selected mood
         viewModel.selectedMood.observe(this) { mood ->
             updateSelectedMoodUI(mood)
         }
 
-        // Observe save state
         viewModel.saveState.observe(this) { state ->
             when (state) {
                 is MoodViewModel.SaveState.Loading -> {
                     continueButton.isEnabled = false
-                    continueButton.text = "Saving..."
+                    continueButton.text = getString(R.string.saving) // Use string resource
                 }
                 is MoodViewModel.SaveState.Success -> {
-                    Toast.makeText(this, "Mood saved successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.mood_saved_success), Toast.LENGTH_SHORT).show() // Use string resource
                     navigateToInControlActivity()
                 }
                 is MoodViewModel.SaveState.Error -> {
                     continueButton.isEnabled = true
-                    continueButton.text = "Continue"
-                    Toast.makeText(this, "Error: ${state.message}", Toast.LENGTH_LONG).show()
+                    continueButton.text = getString(R.string.continue_button) // Use string resource
+                    // Use a formatted string resource for the error
+                    Toast.makeText(this, getString(R.string.save_error, state.message), Toast.LENGTH_LONG).show()
                 }
-                else -> {
-                    continueButton.isEnabled = true
-                    continueButton.text = "Continue"
+                else -> { // Includes Idle state
+                    continueButton.isEnabled = viewModel.selectedMood.value ?: 0 > 0 // Enable only if a mood is selected
+                    continueButton.text = getString(R.string.continue_button) // Use string resource
                 }
             }
         }
     }
 
     private fun setupClickListeners() {
-        // Mood selection buttons
         verySadButton.setOnClickListener { viewModel.selectMood(1) }
         sadButton.setOnClickListener { viewModel.selectMood(2) }
         neutralButton.setOnClickListener { viewModel.selectMood(3) }
         happyButton.setOnClickListener { viewModel.selectMood(4) }
         veryHappyButton.setOnClickListener { viewModel.selectMood(5) }
 
-        // Continue button
         continueButton.setOnClickListener {
             viewModel.saveMood(selectedDate)
         }
 
-        // Back button
         backButton.setOnClickListener {
             navigateToCalendar()
         }
     }
 
     private fun updateSelectedMoodUI(mood: Int) {
-        // Reset all buttons to their default states
         resetButtonStates()
 
-        // Highlight the selected button if any
         if (mood > 0 && mood <= moodButtons.size) {
             moodButtons[mood - 1].alpha = 0.6f
             moodButtons[mood - 1].strokeWidth = 4
             continueButton.isEnabled = true
         } else {
+            // Disable continue button if no mood is selected
             continueButton.isEnabled = false
         }
     }

@@ -1,13 +1,16 @@
 package com.anxietystressselfmanagement
 
+import android.app.Application // Import Application
+import androidx.lifecycle.AndroidViewModel // Change to AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+// Remove androidx.lifecycle.ViewModel import
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
-class MoodViewModel : ViewModel() {
+// Change ViewModel to AndroidViewModel to access application context for strings
+class MoodViewModel(application: Application) : AndroidViewModel(application) {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
@@ -25,17 +28,23 @@ class MoodViewModel : ViewModel() {
 
     fun selectMood(mood: Int) {
         _selectedMood.value = mood
+        // Reset save state to Idle if user changes mood after an error/success
+        if (_saveState.value is SaveState.Error || _saveState.value is SaveState.Success) {
+            _saveState.value = SaveState.Idle
+        }
     }
 
     fun saveMood(selectedDate: String) {
         val currentUser = auth.currentUser ?: run {
-            _saveState.value = SaveState.Error("User not signed in")
+            // Access string resource via application context
+            _saveState.value = SaveState.Error(getApplication<Application>().getString(R.string.user_not_signed_in_error))
             return
         }
 
         val mood = _selectedMood.value ?: 0
         if (mood <= 0) {
-            _saveState.value = SaveState.Error("Please select a mood first")
+            // Access string resource via application context
+            _saveState.value = SaveState.Error(getApplication<Application>().getString(R.string.select_mood_error))
             return
         }
 
@@ -52,19 +61,21 @@ class MoodViewModel : ViewModel() {
             .set(moodData, SetOptions.merge())
             .addOnSuccessListener {
                 _saveState.value = SaveState.Success
+                _selectedMood.value = 0 // Optionally reset mood after successful save
             }
             .addOnFailureListener { e ->
-                _saveState.value = SaveState.Error(e.message ?: "Unknown error")
+                // Access string resource via application context, provide default if message is null
+                _saveState.value = SaveState.Error(e.message ?: getApplication<Application>().getString(R.string.unknown_error))
             }
     }
 
     private fun getMoodEmoji(mood: Int): String {
         return when (mood) {
-            1 -> "😢"  // Very sad
-            2 -> "😔"  // Sad
-            3 -> "😐"  // Neutral
-            4 -> "😊"  // Happy
-            5 -> "😁"  // Very happy
+            1 -> "😢"
+            2 -> "😔"
+            3 -> "😐"
+            4 -> "😊"
+            5 -> "😁"
             else -> ""
         }
     }
