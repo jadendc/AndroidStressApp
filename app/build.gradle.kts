@@ -14,7 +14,7 @@ android {
         applicationId = "com.anxietystressselfmanagement"
         minSdk = 26
         targetSdk = 34
-        versionCode = 15
+        versionCode = 20
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
