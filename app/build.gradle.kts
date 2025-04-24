@@ -13,7 +13,8 @@ android {
     defaultConfig {
         applicationId = "com.anxietystressselfmanagement"
         minSdk = 26
-        versionCode = 6
+        targetSdk = 34
+        versionCode = 15
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
