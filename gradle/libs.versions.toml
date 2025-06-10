@@ -1,6 +1,9 @@
 [versions]
-compose = "1.6.7"
-activityCompose= "1.9.0"
+compose = "1.6.5"
+activity-compose = "1.8.2"
+material3 = "1.2.1"
+bom = "2024.04.01"
+kotlinCompilerExtension = "1.5.11"
 desugar_jdk_libs = "2.1.5"
 firebaseAuth = "23.2.1"
 firebaseAuthVersion = "23.2.1"
@@ -36,6 +39,7 @@ firebaseVertexai = "16.5.0"
 workRuntime = "2.10.1"
 lifecycle = "2.9.1"
 coroutines = "1.7.3"
+composeMaterialCore = "1.4.1"
 
 [libraries]
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
@@ -87,13 +91,19 @@ play-services-base = { module = "com.google.android.gms:play-services-base", ver
 play-services-base-v1820 = { module = "com.google.android.gms:play-services-base", version.ref = "playServicesBaseVersion" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+
+[bundles]
+compose = [
+    "compose-ui",
+    "compose-ui-tooling-preview",
+    "compose-material3",
+    "activity-compose"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
