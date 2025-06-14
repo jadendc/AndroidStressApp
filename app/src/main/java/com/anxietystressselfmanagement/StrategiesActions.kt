@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +42,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,17 +76,33 @@ class StrategiesActions : AppCompatActivity() {
 
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(top = 15.dp)
             ) {
-                SimpleDropdownMenu(
+                Image(
+                    painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo Picture",
+                    modifier = Modifier.width(120.dp)
+                )
+
+                Text(
+                    text = "Select Strategies and Actions",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White
+                )
+
+                InputDropdownMenu(
                     modifier = Modifier
                         .wrapContentWidth(Alignment.CenterHorizontally),
+                    label = "Stress Management Strategies",
                     title = "Random thing",
                     options = listOf("one", "two", "three")
                 )
-                SimpleDropdownMenu(
+                InputDropdownMenu(
                     modifier = Modifier
                         .wrapContentWidth(Alignment.CenterHorizontally),
+                    label = "Stress Management Actions",
                     title = "Random thing",
                     options = listOf("one", "two", "three")
                 )
@@ -93,14 +112,15 @@ class StrategiesActions : AppCompatActivity() {
 
     @SuppressLint("ResourceAsColor")
     @Composable
-    fun SimpleDropdownMenu(
+    fun InputDropdownMenu(
         modifier: Modifier,
+        label: String,
         title: String,
         options: List<String>,
     ) {
         var expanded by remember { mutableStateOf(false) }
         var selectedOption by remember { mutableStateOf("Select one...") }
-        var cardWidth by remember { mutableStateOf(0) }
+        var cardWidth by remember { mutableIntStateOf(0) }
 
         Box (
             modifier = Modifier
@@ -108,25 +128,34 @@ class StrategiesActions : AppCompatActivity() {
                 .wrapContentWidth()
                 .padding(16.dp)
         ) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        cardWidth = coordinates.size.width
+            Column {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 4.dp)
+                )
+
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { coordinates ->
+                            cardWidth = coordinates.size.width
+                        }
+                        .clickable { expanded = true },
+                    shape = RectangleShape,
+                    colors = CardDefaults.cardColors(
+                        containerColor = colorResource(id = R.color.button_grey)
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = selectedOption,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White
+                        )
                     }
-                    .clickable { expanded = true },
-                shape = RectangleShape,
-                colors = CardDefaults.cardColors(
-                    containerColor = colorResource(id = R.color.button_grey)
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = selectedOption,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White
-                    )
                 }
             }
 
