@@ -3,7 +3,8 @@ package com.anxietystressselfmanagement
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -28,8 +29,9 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,27 +49,44 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.serialization.Serializable
 import kotlin.math.exp
+
+@Serializable
+data class ActionDescriptions(
+    val action: String,
+    val details: String
+)
+
+typealias ActionMap = Map<String, List<ActionDescriptions>>
 
 class StrategiesActions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val selectedDate = intent.getStringExtra("selectDate")
-
         setContent {
-            MyComposeScreen()
+            MainView()
         }
-    }
-
-    @Composable
-    fun MyComposeScreen() {
-        Text(text = "Hello from Compose!")
     }
 
     @Preview(showBackground = true)
     @Composable
     fun MainView() {
+
+        val context = LocalContext.current
+        var jsonContent by remember { mutableStateOf<String?>(null) }
+
+        LaunchedEffect(Unit) {
+            val inputStream = context.resources.openRawResource(R.raw.strategies_actions)
+            jsonContent = inputStream.bufferedReader().use { it.readText() }
+        }
+
+        val parsedMap: Map<String, List<ActionDescriptions>>? = jsonContent?.let {
+            Json.decodeFromString(it)
+        }
+
+        val categories = parsedMap?.keys?.toList() ?: emptyList()
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,7 +116,7 @@ class StrategiesActions : AppCompatActivity() {
                         .wrapContentWidth(Alignment.CenterHorizontally),
                     label = "Stress Management Strategies",
                     title = "Random thing",
-                    options = listOf("one", "two", "three")
+                    options = categories
                 )
                 InputDropdownMenu(
                     modifier = Modifier

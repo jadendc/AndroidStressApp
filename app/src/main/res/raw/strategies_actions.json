@@ -1,0 +1,52 @@
+{
+  "Physical": [
+    {"action": "Deep Breathing", "details": "Slow, deep breaths to activate the parasympathetic nervous system"},
+    {"action": "Progressive Muscle Relaxation", "details": "Tensing and relaxing different muscle groups"},
+    {"action": "Walking or Light Exercise", "details": "Physical activity to reduce anxiety and stress"},
+    {"action": "Stretching", "details": "Gentle stretches to release physical tension"},
+    {"action": "Cold Water Technique", "details": "Splash cold water on face to activate diving reflex"}
+  ],
+  "Mental": [
+    {"action": "Meditation", "details": "Focused attention to clear the mind"},
+    {"action": "Grounding Techniques", "details": "Using senses to reconnect with the present moment"},
+    {"action": "Thought Challenging", "details": "Questioning and reframing negative thoughts"},
+    {"action": "Visualization", "details": "Using mental imagery to promote relaxation"},
+    {"action": "Mindfulness Practice", "details": "Non-judgmental awareness of the present moment"}
+  ],
+  "Social": [
+    {
+      "action": "Talk to a Friend", "details": "Sharing feelings with someone you trust"},
+    {
+      "action": "Join a Support Group", "details": "Connect with others experiencing similar challenges"},
+    {
+      "action": "Ask for Help", "details": "Reaching out when you need assistance"},
+    {
+      "action": "Volunteer", "details": "Helping others to shift focus from personal concerns"},
+    {
+      "action": "Spend Time with Pets", "details": "Animal companionship to reduce stress"}
+  ],
+  "Emotional": [
+    {
+      "action": "Journaling", "details": "Writing down thoughts and feelings"},
+    {
+      "action": "Self-Compassion", "details": "Treating yourself with kindness and understanding"},
+    {
+      "action": "Emotional Release", "details": "Safe expression of emotions like crying or laughing"},
+    {
+      "action": "Gratitude Practice", "details": "Focusing on things you're thankful for"},
+    {
+      "action": "Positive Affirmations", "details": "Repeating encouraging statements to yourself"}
+  ],
+  "Creative": [
+    {
+      "action": "Art Therapy", "details": "Drawing or painting to express emotions"},
+    {
+      "action": "Music Therapy", "details": "Listening to or creating music"},
+    {
+      "action": "Dance or Movement", "details": "Expressing emotions through physical movement"},
+    {
+      "action": "Creative Writing", "details": "Writing stories or poetry to process feelings"},
+    {
+      "action": "Crafting", "details": "Engaging in hands-on creative activities"}
+  ]
+}

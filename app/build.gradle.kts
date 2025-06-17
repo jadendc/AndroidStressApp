@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.0" // ✅ Required for Kotlin 2.0+
     id("com.google.gms.google-services")
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 android {
@@ -89,6 +90,8 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(platform("androidx.compose:compose-bom:2024.04.01")) // Add BOM manually
     implementation(libs.bundles.compose)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 
     // Optional tools:
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.5")
