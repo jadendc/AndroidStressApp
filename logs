@@ -1,0 +1,41 @@
+data class CopingStrategyLog(
+    val userId: String = "",
+    val strategyType: String = "emotional",
+    val strategyName: String = "Journaling",
+    val notes: String = "",
+    val timestamp: Long = System.currentTimeMillis()
+)
+
+fun logEmotionalStrategy(notes: String) {
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+    val log = CopingStrategyLog(
+        userId = userId,
+        strategyName = "Journaling",  // or allow user input
+        notes = notes
+    )
+
+    val db = FirebaseFirestore.getInstance()
+    db.collection("copingLogs")
+        .add(log)
+        .addOnSuccessListener {
+            Log.d("EmotionalLog", "Log added successfully")
+        }
+        .addOnFailureListener { e ->
+            Log.e("EmotionalLog", "Error adding log", e)
+        }
+}
+
+fun getEmotionalLogsForUser(userId: String, callback: (List<CopingStrategyLog>) -> Unit) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("copingLogs")
+        .whereEqualTo("userId", userId)
+        .whereEqualTo("strategyType", "emotional")
+        .get()
+        .addOnSuccessListener { result ->
+            val logs = result.toObjects(CopingStrategyLog::class.java)
+            callback(logs)
+        }
+        .addOnFailureListener { e ->
+            Log.e("FetchLogs", "Error fetching logs", e)
+        }
+}
