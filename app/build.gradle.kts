@@ -91,6 +91,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.04.01")) // Add BOM manually
     implementation(libs.bundles.compose)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
 
     // Optional tools:

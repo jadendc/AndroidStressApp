@@ -1,37 +1,36 @@
 package com.anxietystressselfmanagement
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.serialization.decodeFromString
+import android.widget.Toast
 import kotlinx.serialization.json.Json
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,47 +44,47 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import kotlinx.serialization.Serializable
-import kotlin.math.exp
+import com.anxietystressselfmanagement.model.ActionDescription
+import com.anxietystressselfmanagement.model.StrategyAction
+import com.anxietystressselfmanagement.viewmodel.StrategyViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-@Serializable
-data class ActionDescriptions(
-    val action: String,
-    val details: String
-)
-
-typealias ActionMap = Map<String, List<ActionDescriptions>>
+typealias ActionMap = Map<String, List<ActionDescription>>
 
 class StrategiesActions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val selectedDate = intent.getStringExtra("selectedDate")
+            ?: SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
         setContent {
-            MainView()
+            MainView(selectedDate)
         }
     }
 
-    @Preview(showBackground = true)
+    companion object {
+        fun newIntent(context: Context, selectedDate: String): Intent {
+            return Intent(context, StrategiesActions::class.java).apply {
+                putExtra("selectedDate", selectedDate)
+            }
+        }
+    }
+
     @Composable
-    fun MainView() {
+    fun MainView(selectedDate: String, viewModel: StrategyViewModel = viewModel()) {
 
         val context = LocalContext.current
-        var jsonContent by remember { mutableStateOf<String?>(null) }
-
-        LaunchedEffect(Unit) {
-            val inputStream = context.resources.openRawResource(R.raw.strategies_actions)
-            jsonContent = inputStream.bufferedReader().use { it.readText() }
-        }
-
-        val parsedMap: Map<String, List<ActionDescriptions>>? = jsonContent?.let {
-            Json.decodeFromString(it)
-        }
-
-        val categories = parsedMap?.keys?.toList() ?: emptyList()
+        val selectedStrategy = viewModel.selectedStrategy
+        val selectedAction = viewModel.selectedAction
+        val strategies = viewModel.strategies
+        val actions = viewModel.actions
 
         Box(
             modifier = Modifier
@@ -111,34 +110,69 @@ class StrategiesActions : AppCompatActivity() {
                     color = Color.White
                 )
 
-                InputDropdownMenu(
-                    modifier = Modifier
-                        .wrapContentWidth(Alignment.CenterHorizontally),
+                DropdownSelector(
                     label = "Stress Management Strategies",
-                    title = "Random thing",
-                    options = categories
+                    options = strategies,
+                    selectedOption  = selectedStrategy,
+                    onOptionSelected  = {
+                        viewModel.selectedStrategy = it
+                        viewModel.selectedAction = null
+                    }
                 )
-                InputDropdownMenu(
-                    modifier = Modifier
-                        .wrapContentWidth(Alignment.CenterHorizontally),
+                DropdownSelector(
                     label = "Stress Management Actions",
-                    title = "Random thing",
-                    options = listOf("one", "two", "three")
+                    options = actions,
+                    selectedOption  = selectedAction,
+                    onOptionSelected  = {
+                        viewModel.selectedAction = it
+                    },
+                    enabled = selectedStrategy != null
                 )
+
+                Button(
+                    onClick = {
+                        val data = StrategyAction(
+                            selectedStrategy.toString(),
+                            selectedAction.toString()
+                        )
+                        viewModel.saveStrategyAndAction(
+                            data,
+                            selectedDate,
+                            onSuccess = {
+                                Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(context, DashboardActivity::class.java)
+                                intent.putExtra("selectedDate", selectedDate)
+                                context.startActivity(intent)
+                                if (context is Activity) context.finish()
+                            },
+                            onFailure = {
+                                Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        colorResource(id = R.color.button_grey)
+                    ),
+                    shape = RectangleShape,
+                    modifier = Modifier.padding(top = 14.dp)
+                ) {
+                    Text("CONTINUE")
+                }
+
             }
         }
     }
 
     @SuppressLint("ResourceAsColor")
     @Composable
-    fun InputDropdownMenu(
-        modifier: Modifier,
+    fun DropdownSelector(
         label: String,
-        title: String,
         options: List<String>,
+        selectedOption : String?,
+        onOptionSelected : (String) -> Unit,
+        enabled: Boolean = true
     ) {
         var expanded by remember { mutableStateOf(false) }
-        var selectedOption by remember { mutableStateOf("Select one...") }
         var cardWidth by remember { mutableIntStateOf(0) }
 
         Box (
@@ -161,16 +195,18 @@ class StrategiesActions : AppCompatActivity() {
                         .onGloballyPositioned { coordinates ->
                             cardWidth = coordinates.size.width
                         }
-                        .clickable { expanded = true },
+                        .clickable (enabled = enabled){
+                            expanded = true
+                        },
                     shape = RectangleShape,
                     colors = CardDefaults.cardColors(
-                        containerColor = colorResource(id = R.color.button_grey)
+                        containerColor = colorResource(id = R.color.button_grey).copy(alpha = if (enabled) 1f else 0.6f)
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = selectedOption,
+                            text = selectedOption ?: "Select one...",
                             style = MaterialTheme.typography.bodyLarge,
                             color = Color.White
                         )
@@ -178,21 +214,23 @@ class StrategiesActions : AppCompatActivity() {
                 }
             }
 
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier
-                    .width(with(LocalDensity.current) {cardWidth.toDp() })
-                    .background(colorResource(id = R.color.button_grey))
-            ) {
-                options.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option, color = Color.White) },
-                        onClick = {
-                            selectedOption = option
-                            expanded = false
-                        }
-                    )
+            if (enabled) {
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier
+                        .width(with(LocalDensity.current) {cardWidth.toDp() })
+                        .background(colorResource(id = R.color.button_grey))
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option, color = Color.White) },
+                            onClick = {
+                                onOptionSelected(option)
+                                expanded = false
+                            }
+                        )
+                    }
                 }
             }
         }

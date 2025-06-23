@@ -130,7 +130,7 @@ class AwarenessActivity : AppCompatActivity() {
      * Navigates to the StrategiesAndActionsActivity.
      */
     private fun navigateToStrategies() {
-        val intent = Intent(this, StrategiesAndActionsActivity::class.java)
+        val intent = Intent(this, StrategiesActions::class.java)
         intent.putExtra("selectedDate", selectedDate)
         startActivity(intent)
         finish()

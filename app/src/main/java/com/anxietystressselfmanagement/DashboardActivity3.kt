@@ -196,25 +196,23 @@ class DashboardActivity3 : AppCompatActivity() {
             }
         }
 
-        // --- Add Listener for the New Details Button ---
+        // View Details Button
         viewDetailsButton.setOnClickListener {
-            dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
-                // Ensure Calendars are not null before getting timeInMillis
-                if (startCal != null && endCal != null) {
-                    val startMillis = startCal.timeInMillis
-                    val endMillis = endCal.timeInMillis
+            dashboard3ViewModel.dateRange.value?.let { (_, startCal, _) ->
+                if (startCal != null) {
+                    // Convert startCal to formatted date string
+                    val selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(startCal.time)
 
-                    // Use the helper function from StrategyActionDetailActivity to create intent
-                    val intent = StrategyActionDetailActivity.newIntent(this, startMillis, endMillis)
+                    // Launch StrategiesActions activity
+                    val intent = StrategiesActions.newIntent(this, selectedDate)
                     startActivity(intent)
                 } else {
-                    Log.e(TAG, "Cannot create details intent: Start or End Calendar is null.")
-                    Toast.makeText(this, "Cannot determine date range for details.", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, "Start calendar is null.")
+                    Toast.makeText(this, "Cannot determine selected date.", Toast.LENGTH_SHORT).show()
                 }
             } ?: run {
-                // Handle case where dateRange LiveData itself is null
-                Log.e(TAG, "Cannot create details intent: dateRange LiveData is null.")
-                Toast.makeText(this, "Cannot determine date range for details.", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "dateRange LiveData is null.")
+                Toast.makeText(this, "Cannot determine date range.", Toast.LENGTH_SHORT).show()
             }
         }
         // --- End Details Button Listener ---
