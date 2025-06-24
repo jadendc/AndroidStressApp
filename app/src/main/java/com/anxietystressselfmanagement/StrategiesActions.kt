@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import kotlinx.serialization.json.Json
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -55,9 +56,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-typealias ActionMap = Map<String, List<ActionDescription>>
-
-class StrategiesActions : AppCompatActivity() {
+class StrategiesActions : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +68,14 @@ class StrategiesActions : AppCompatActivity() {
         }
     }
 
+    /**
+     * Creates an Intent to launch the StrategiesActions activity
+     * and attaches the selectedDate as an extra parameter.
+     *
+     * @param context The context used to start the activity
+     * @param selectedDate The date to pass to the activity (format: "yyyy-MM-dd")
+     * @return The configured Intent to start StrategiesActions
+     */
     companion object {
         fun newIntent(context: Context, selectedDate: String): Intent {
             return Intent(context, StrategiesActions::class.java).apply {
@@ -79,8 +86,6 @@ class StrategiesActions : AppCompatActivity() {
 
     @Composable
     fun MainView(selectedDate: String, viewModel: StrategyViewModel = viewModel()) {
-
-        val context = LocalContext.current
         val selectedStrategy = viewModel.selectedStrategy
         val selectedAction = viewModel.selectedAction
         val strategies = viewModel.strategies
@@ -128,37 +133,11 @@ class StrategiesActions : AppCompatActivity() {
                     },
                     enabled = selectedStrategy != null
                 )
-
-                Button(
-                    onClick = {
-                        val data = StrategyAction(
-                            selectedStrategy.toString(),
-                            selectedAction.toString()
-                        )
-                        viewModel.saveStrategyAndAction(
-                            data,
-                            selectedDate,
-                            onSuccess = {
-                                Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(context, DashboardActivity::class.java)
-                                intent.putExtra("selectedDate", selectedDate)
-                                context.startActivity(intent)
-                                if (context is Activity) context.finish()
-                            },
-                            onFailure = {
-                                Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
-                            }
-                        )
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        colorResource(id = R.color.button_grey)
-                    ),
-                    shape = RectangleShape,
-                    modifier = Modifier.padding(top = 14.dp)
-                ) {
-                    Text("CONTINUE")
-                }
-
+                ContinueButton(
+                    selectedStrategy = selectedStrategy.toString(),
+                    selectedAction = selectedAction.toString(),
+                    selectedDate = selectedDate
+                )
             }
         }
     }
@@ -200,7 +179,7 @@ class StrategiesActions : AppCompatActivity() {
                         },
                     shape = RectangleShape,
                     colors = CardDefaults.cardColors(
-                        containerColor = colorResource(id = R.color.button_grey).copy(alpha = if (enabled) 1f else 0.6f)
+                        containerColor = colorResource(id = R.color.button_grey)
                     ),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
@@ -233,6 +212,47 @@ class StrategiesActions : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    fun ContinueButton(
+        selectedStrategy: String,
+        selectedAction: String,
+        viewModel: StrategyViewModel = viewModel(),
+        selectedDate: String,
+
+    ) {
+        val context = LocalContext.current
+
+        Button(
+            onClick = {
+                val data = StrategyAction(
+                    selectedStrategy.toString(),
+                    selectedAction.toString()
+                )
+                viewModel.saveStrategyAndAction(
+                    data,
+                    selectedDate,
+                    onSuccess = {
+                        Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context, DashboardActivity::class.java)
+                        intent.putExtra("selectedDate", selectedDate)
+                        context.startActivity(intent)
+                        if (context is Activity) context.finish()
+                    },
+                    onFailure = {
+                        Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            },
+            colors = ButtonDefaults.buttonColors(
+                colorResource(id = R.color.button_grey)
+            ),
+            shape = RectangleShape,
+            modifier = Modifier.padding(top = 14.dp)
+        ) {
+            Text("CONTINUE")
         }
     }
 }
