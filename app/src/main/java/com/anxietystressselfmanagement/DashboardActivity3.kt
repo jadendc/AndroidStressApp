@@ -196,7 +196,7 @@ class DashboardActivity3 : AppCompatActivity() {
             }
         }
 
-        // --- Add Listener for the New Details Button ---
+        // View Details Button
         viewDetailsButton.setOnClickListener {
             dashboard3ViewModel.dateRange.value?.let { (_, startCal, endCal) ->
                 // Ensure Calendars are not null before getting timeInMillis
