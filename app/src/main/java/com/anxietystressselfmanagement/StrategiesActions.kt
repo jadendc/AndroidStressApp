@@ -19,14 +19,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.platform.LocalContext
@@ -68,28 +74,14 @@ class StrategiesActions : ComponentActivity() {
         }
     }
 
-    /**
-     * Creates an Intent to launch the StrategiesActions activity
-     * and attaches the selectedDate as an extra parameter.
-     *
-     * @param context The context used to start the activity
-     * @param selectedDate The date to pass to the activity (format: "yyyy-MM-dd")
-     * @return The configured Intent to start StrategiesActions
-     */
-    companion object {
-        fun newIntent(context: Context, selectedDate: String): Intent {
-            return Intent(context, StrategiesActions::class.java).apply {
-                putExtra("selectedDate", selectedDate)
-            }
-        }
-    }
-
+    @SuppressLint("ContextCastToActivity")
     @Composable
     fun MainView(selectedDate: String, viewModel: StrategyViewModel = viewModel()) {
         val selectedStrategy = viewModel.selectedStrategy
         val selectedAction = viewModel.selectedAction
         val strategies = viewModel.strategies
         val actions = viewModel.actions
+        val activity = LocalContext.current as? Activity
 
         Box(
             modifier = Modifier
@@ -98,6 +90,9 @@ class StrategiesActions : ComponentActivity() {
                 .background(colorResource(id = R.color.grey))
 
         ) {
+            BackButton {
+                activity?.finish()
+            }
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -254,5 +249,29 @@ class StrategiesActions : ComponentActivity() {
         ) {
             Text("CONTINUE")
         }
+    }
+
+    @Composable
+    fun BackButton(onBack: () -> Unit) {
+        Image(
+            painter = painterResource(id = R.drawable.backbutton),
+            contentDescription = "Back",
+            modifier = Modifier
+                .size(48.dp) // Set size as needed
+                .clickable(onClick = onBack)
+                .padding(8.dp)
+        )
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun CustomBackButtonPreview() {
+        BackButton(onBack = {})
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun MainViewPreview() {
+        MainView(selectedDate = "2025-06-23")
     }
 }
