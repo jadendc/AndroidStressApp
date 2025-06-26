@@ -11,6 +11,11 @@ import com.anxietystressselfmanagement.repository.StrategyRepository
 import com.anxietystressselfmanagement.model.ActionDescription
 import com.anxietystressselfmanagement.model.StrategyAction
 
+/**
+ * ViewModel for managing strategy and action selections.
+ * Holds the selected values and filtered action lists,
+ * and provides functionality to save data to a database.
+ */
 class StrategyViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = StrategyRepository
@@ -33,6 +38,7 @@ class StrategyViewModel(application: Application) : AndroidViewModel(application
         parsedMap = StrategyRepository.loadStrategies(context)
     }
 
+    // Call StrategyRepo to save strategies and actions selected
     fun saveStrategyAndAction(
         data: StrategyAction,
         date: String,

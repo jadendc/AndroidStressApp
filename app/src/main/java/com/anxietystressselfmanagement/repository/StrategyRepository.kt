@@ -23,6 +23,7 @@ object StrategyRepository {
         return Json.decodeFromString(json)
     }
 
+    // Saves strategies and actions to FirebaseDB
     fun saveStrategyAndAction(
         date: String,
         data: StrategyAction,
