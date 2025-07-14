@@ -55,9 +55,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import com.anxietystressselfmanagement.viewmodel.StrategiesActionViewModel
 import com.anxietystressselfmanagement.model.ActionDescription
 import com.anxietystressselfmanagement.model.StrategyAction
-import com.anxietystressselfmanagement.viewmodel.StrategyViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -76,7 +76,7 @@ class StrategiesActions : ComponentActivity() {
 
     @SuppressLint("ContextCastToActivity")
     @Composable
-    fun MainView(selectedDate: String, viewModel: StrategyViewModel = viewModel()) {
+    fun MainView(selectedDate: String, viewModel: StrategiesActionViewModel = viewModel()) {
         val selectedStrategy = viewModel.selectedStrategy
         val selectedAction = viewModel.selectedAction
         val strategies = viewModel.strategies
@@ -214,7 +214,7 @@ class StrategiesActions : ComponentActivity() {
     fun ContinueButton(
         selectedStrategy: String,
         selectedAction: String,
-        viewModel: StrategyViewModel = viewModel(),
+        viewModel: StrategiesActionViewModel = viewModel(),
         selectedDate: String,
 
     ) {
