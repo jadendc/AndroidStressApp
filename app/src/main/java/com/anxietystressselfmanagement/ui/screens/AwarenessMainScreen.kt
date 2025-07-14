@@ -88,7 +88,7 @@ fun AwarenessMainScreen(
 
             list.forEach { option ->
                 DefaultButton(
-                    label = option,
+                    label = viewModel.getIconFor(option) + option,
                     onClick = {
                         viewModel.selectedSign = option
                         val intent = Intent(activity, SymptomSelectionActivity::class.java)

@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import com.anxietystressselfmanagement.model.AwarenessSigns
 import com.anxietystressselfmanagement.model.StrategyAction
+import com.anxietystressselfmanagement.model.SymptomAndIcon
 import com.anxietystressselfmanagement.repository.AwarenessRepository
 import kotlin.collections.get
 
@@ -16,10 +17,14 @@ class AwarenessViewModel(application: Application) : AndroidViewModel(applicatio
 
     var selectedSign by mutableStateOf<String?>(null)
     var selectedOption by mutableStateOf<String?>(null)
-    var parsedMap by mutableStateOf<Map<String, List<String>>>(emptyMap())
+    var parsedMap by mutableStateOf<Map<String, SymptomAndIcon>>(emptyMap())
 
     val awarenessOptions: List<String>
-        get() = parsedMap[selectedSign.toString()]?.map { it } ?: emptyList()
+        get() = parsedMap[selectedSign]?.symptoms ?: emptyList()
+
+    fun getIconFor(sign: String?): String {
+        return parsedMap[sign]?.icon ?: ""
+    }
 
     init {
         loadData(application.applicationContext)

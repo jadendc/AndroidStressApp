@@ -7,6 +7,7 @@ import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.model.ActionDescription
 import com.anxietystressselfmanagement.model.AwarenessSigns
 import com.anxietystressselfmanagement.model.StrategyAction
+import com.anxietystressselfmanagement.model.SymptomAndIcon
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -19,7 +20,7 @@ object AwarenessRepository {
     private val auth = FirebaseAuth.getInstance()
 
     // Loads data from awareness_act.json
-    fun loadAwareness(context: Context): Map<String, List<String>> {
+    fun loadAwareness(context: Context): Map<String, SymptomAndIcon> {
         val inputStream = context.resources.openRawResource(R.raw.awareness_act)
         val json = inputStream.bufferedReader().use { it.readText() }
         return Json.decodeFromString(json)
