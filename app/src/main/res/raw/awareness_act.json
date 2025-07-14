@@ -1,0 +1,14 @@
+{
+  "Body": [
+    "Difficulty Breathing", "Fatigue", "Headaches", "High Blood Pressure", "Palpitations", "Skin irritation"
+  ],
+  "Mind": [
+    "Difficulty concentrating", "Impaired judgement", "Indecision", "Muddle thinking", "Negativity", "Worrying"
+  ],
+  "Feelings": [
+    "Alienation", "Apathy", "Depression", "Fear", "Irritability", "Loss of confidence"
+  ],
+  "Behavior": [
+    "Accident prone", "Insomnia", "Loss of appetite", "Loss of sex drive", "More addiction", "Restlessness"
+  ]
+}
