@@ -67,6 +67,10 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+            android:name=".ui.activities.StrategiesActionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".ui.activities.SymptomSelectionActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
