@@ -63,7 +63,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".ui.activities.StrategiesActionsActivity"
+            android:name=".StrategiesAndActionsActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -78,6 +78,9 @@
             android:name=".NotificationsActivity"
             android:exported="true"
             android:theme="@style/Theme.App.NoActionBar" />
+        <activity
+            android:name=".StrategiesActions"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
