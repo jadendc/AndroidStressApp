@@ -1,9 +1,19 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+
     <solid android:color="#f4c2c2" /> <!-- Light pink color -->
+
     <corners android:radius="16dp" /> <!-- Rounded edges -->
+
     <padding
         android:left="8dp"
         android:top="8dp"
         android:right="8dp"
         android:bottom="8dp" />
+
+    <stroke
+        android:width="1dp"
+        android:color="#DFA0A0" />     <!--slightly darker pink for soft border  -->
+
 </shape>
