@@ -2,6 +2,8 @@ package com.anxietystressselfmanagement.ui.screens
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +23,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.anxietystressselfmanagement.DashboardActivity
 import com.anxietystressselfmanagement.R
+import com.anxietystressselfmanagement.model.StrategyAction
 import com.anxietystressselfmanagement.ui.components.BackButton
-import com.anxietystressselfmanagement.ui.components.ContinueButton
+import com.anxietystressselfmanagement.ui.components.DefaultButton
 import com.anxietystressselfmanagement.ui.components.DropdownSelector
-import com.anxietystressselfmanagement.viewmodel.StrategyViewModel
+import com.anxietystressselfmanagement.viewmodel.StrategiesActionViewModel
 
 /**
  * Composable function that represents the full Strategies and Actions UI screen.
@@ -35,7 +39,7 @@ import com.anxietystressselfmanagement.viewmodel.StrategyViewModel
 @Composable
 fun StrategiesActionsScreen(
     selectedDate: String,
-    viewModel: StrategyViewModel = viewModel()
+    viewModel: StrategiesActionViewModel = viewModel()
 ) {
     val selectedStrategy = viewModel.selectedStrategy
     val selectedAction = viewModel.selectedAction
@@ -92,10 +96,25 @@ fun StrategiesActionsScreen(
             )
 
             // Continue button to save and navigate
-            ContinueButton(
-                selectedStrategy = selectedStrategy.orEmpty(),
-                selectedAction = selectedAction.orEmpty(),
-                selectedDate = selectedDate
+            DefaultButton(
+                label = "CONTINUE",
+                modifier = Modifier.padding(14.dp),
+                onClick = {
+                    viewModel.saveStrategyAndAction(
+                        data = StrategyAction(selectedStrategy.orEmpty(), selectedAction.orEmpty()),
+                        date = selectedDate,
+                        onSuccess = {
+                            Toast.makeText(activity, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(activity, DashboardActivity::class.java)
+                            intent.putExtra("selectedDate", selectedDate)
+                            activity?.startActivity(intent)
+                            if (activity is Activity) activity.finish()
+                        },
+                        onFailure = {
+                            Toast.makeText(activity, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                }
             )
         }
     }

@@ -2,7 +2,6 @@ package com.anxietystressselfmanagement.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,7 +15,7 @@ import com.anxietystressselfmanagement.model.StrategyAction
  * Holds the selected values and filtered action lists,
  * and provides functionality to save data to a database.
  */
-class StrategyViewModel(application: Application) : AndroidViewModel(application) {
+class StrategiesActionViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = StrategyRepository
 
@@ -35,7 +34,7 @@ class StrategyViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun loadData(context: Context) {
-        parsedMap = StrategyRepository.loadStrategies(context)
+        parsedMap = repository.loadStrategies(context)
     }
 
     // Call StrategyRepo to save strategies and actions selected

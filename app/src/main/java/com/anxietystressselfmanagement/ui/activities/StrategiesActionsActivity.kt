@@ -21,7 +21,7 @@ class StrategiesActionsActivity : ComponentActivity() {
         val selectedDate = intent.getStringExtra("selectedDate")
             ?: SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-        // Set the UI content using Jetpack Compose
+        // Set StrategiesActions screen
         setContent {
             StrategiesActionsScreen(selectedDate)
         }

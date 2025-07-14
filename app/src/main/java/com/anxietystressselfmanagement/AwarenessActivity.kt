@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anxietystressselfmanagement.ui.activities.StrategiesActionsActivity
+import com.anxietystressselfmanagement.viewmodel.AwarenessViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -128,7 +130,7 @@ class AwarenessActivity : AppCompatActivity() {
     }
 
     /**
-     * Navigates to the StrategiesAndActionsActivity.
+     * Navigates to the StrategiesActionsActivity.
      */
     private fun navigateToStrategies() {
         val intent = Intent(this, StrategiesActionsActivity::class.java)

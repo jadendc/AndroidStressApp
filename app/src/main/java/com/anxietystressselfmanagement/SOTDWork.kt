@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.appcompat.app.AppCompatActivity
+import com.anxietystressselfmanagement.ui.activities.AwarenessTempActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
@@ -156,7 +157,7 @@ class SOTDWork : AppCompatActivity() {
                 .update(stressorData)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Stressor saved successfully!", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AwarenessActivity::class.java)
+                    val intent = Intent(this, AwarenessTempActivity::class.java)
                     intent.putExtra("selectedDate", selectedDate) // Pass date to next activity
                     startActivity(intent)
                     finish()

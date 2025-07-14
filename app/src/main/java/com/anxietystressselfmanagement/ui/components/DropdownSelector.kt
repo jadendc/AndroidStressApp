@@ -31,7 +31,8 @@ import com.anxietystressselfmanagement.R
 
 @Composable
 fun DropdownSelector(
-    label: String,
+    label: String = "",
+    defaultBarMessage: String = "Select one...",
     options: List<String>,
     selectedOption : String?,
     onOptionSelected : (String) -> Unit,
@@ -71,7 +72,7 @@ fun DropdownSelector(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = selectedOption ?: "Select one...",
+                        text = selectedOption ?: defaultBarMessage,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.White
                     )
