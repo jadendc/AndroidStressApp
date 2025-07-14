@@ -9,4 +9,5 @@ import kotlinx.serialization.Serializable
 data class StrategyAction(
     val strategy: String,
     val action : String,
+    val rating: Int
 )

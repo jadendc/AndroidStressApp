@@ -2,65 +2,36 @@ package com.anxietystressselfmanagement
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import kotlinx.serialization.json.Json
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.anxietystressselfmanagement.model.ActionDescription
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.anxietystressselfmanagement.model.StrategyAction
 import com.anxietystressselfmanagement.viewmodel.StrategyViewModel
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class StrategiesActions : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,30 +47,35 @@ class StrategiesActions : ComponentActivity() {
 
     @SuppressLint("ContextCastToActivity")
     @Composable
-    fun MainView(selectedDate: String, viewModel: StrategyViewModel = viewModel()) {
+    fun MainView(selectedDate: String) {
+        val viewModel: StrategyViewModel = viewModel()
         val selectedStrategy = viewModel.selectedStrategy
         val selectedAction = viewModel.selectedAction
         val strategies = viewModel.strategies
         val actions = viewModel.actions
         val activity = LocalContext.current as? Activity
+        var rating by remember { mutableStateOf(0) }
+
+        val isButtonEnabled = !selectedStrategy.isNullOrBlank() && !selectedAction.isNullOrBlank() && rating > 0
+
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .background(colorResource(id = R.color.grey))
-
         ) {
             BackButton {
                 activity?.finish()
             }
+
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(top = 15.dp)
             ) {
                 Image(
-                    painterResource(id = R.drawable.logo),
+                    painter = painterResource(id = R.drawable.logo),
                     contentDescription = "Logo Picture",
                     modifier = Modifier.width(120.dp)
                 )
@@ -113,43 +89,68 @@ class StrategiesActions : ComponentActivity() {
                 DropdownSelector(
                     label = "Stress Management Strategies",
                     options = strategies,
-                    selectedOption  = selectedStrategy,
-                    onOptionSelected  = {
+                    selectedOption = selectedStrategy,
+                    onOptionSelected = {
                         viewModel.selectedStrategy = it
                         viewModel.selectedAction = null
                     }
                 )
+
                 DropdownSelector(
                     label = "Stress Management Actions",
                     options = actions,
-                    selectedOption  = selectedAction,
-                    onOptionSelected  = {
+                    selectedOption = selectedAction,
+                    onOptionSelected = {
                         viewModel.selectedAction = it
                     },
                     enabled = selectedStrategy != null
                 )
-                ContinueButton(
-                    selectedStrategy = selectedStrategy.toString(),
-                    selectedAction = selectedAction.toString(),
-                    selectedDate = selectedDate
+
+                StarRating(
+                    selectedRating = rating,
+                    onRatingSelected = { rating = it }
                 )
+
+                ContinueButton(
+                    selectedStrategy = selectedStrategy,
+                    selectedAction = selectedAction,
+                    selectedDate = selectedDate,
+                    rating = rating
+                )
+
+                if (!isButtonEnabled) {
+                    val message = when {
+                        selectedStrategy == null -> "Please select a strategy."
+                        selectedAction == null -> "Please select an action."
+                        rating == 0 -> "Please provide a rating."
+                        else -> ""
+                    }
+
+                    if (message.isNotEmpty()) {
+                        Text(
+                            text = message,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Red,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+                }
             }
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     @Composable
     fun DropdownSelector(
         label: String,
         options: List<String>,
-        selectedOption : String?,
-        onOptionSelected : (String) -> Unit,
+        selectedOption: String?,
+        onOptionSelected: (String) -> Unit,
         enabled: Boolean = true
     ) {
         var expanded by remember { mutableStateOf(false) }
         var cardWidth by remember { mutableIntStateOf(0) }
 
-        Box (
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()
@@ -169,7 +170,7 @@ class StrategiesActions : ComponentActivity() {
                         .onGloballyPositioned { coordinates ->
                             cardWidth = coordinates.size.width
                         }
-                        .clickable (enabled = enabled){
+                        .clickable(enabled = enabled) {
                             expanded = true
                         },
                     shape = RectangleShape,
@@ -193,7 +194,7 @@ class StrategiesActions : ComponentActivity() {
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                     modifier = Modifier
-                        .width(with(LocalDensity.current) {cardWidth.toDp() })
+                        .width(with(LocalDensity.current) { cardWidth.toDp() })
                         .background(colorResource(id = R.color.button_grey))
                 ) {
                     options.forEach { option ->
@@ -212,37 +213,48 @@ class StrategiesActions : ComponentActivity() {
 
     @Composable
     fun ContinueButton(
-        selectedStrategy: String,
-        selectedAction: String,
-        viewModel: StrategyViewModel = viewModel(),
+        selectedStrategy: String?,
+        selectedAction: String?,
+        rating: Int,
         selectedDate: String,
-
+        viewModel: StrategyViewModel = viewModel()
     ) {
         val context = LocalContext.current
+        val isEnabled = !selectedStrategy.isNullOrBlank() && !selectedAction.isNullOrBlank() && rating > 0
+
 
         Button(
             onClick = {
-                val data = StrategyAction(
-                    selectedStrategy.toString(),
-                    selectedAction.toString()
-                )
-                viewModel.saveStrategyAndAction(
-                    data,
-                    selectedDate,
-                    onSuccess = {
-                        Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(context, DashboardActivity::class.java)
-                        intent.putExtra("selectedDate", selectedDate)
-                        context.startActivity(intent)
-                        if (context is Activity) context.finish()
-                    },
-                    onFailure = {
-                        Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                when {
+                    selectedStrategy.isNullOrBlank() -> Toast.makeText(context, "Please select a strategy", Toast.LENGTH_SHORT).show()
+                    selectedAction.isNullOrBlank() -> Toast.makeText(context, "Please select an action", Toast.LENGTH_SHORT).show()
+                    rating == 0 -> Toast.makeText(context, "Please provide a rating", Toast.LENGTH_SHORT).show()
+                    else -> {
+                        val data = StrategyAction(
+                            selectedStrategy,
+                            selectedAction,
+                            rating
+                        )
+                        viewModel.saveStrategyAndAction(
+                            data,
+                            selectedDate,
+                            onSuccess = {
+                                Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(context, DashboardActivity::class.java)
+                                intent.putExtra("selectedDate", selectedDate)
+                                context.startActivity(intent)
+                                if (context is Activity) context.finish()
+                            },
+                            onFailure = {
+                                Toast.makeText(context, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        )
                     }
-                )
+                }
             },
+            enabled = isEnabled,
             colors = ButtonDefaults.buttonColors(
-                colorResource(id = R.color.button_grey)
+                containerColor = if (isEnabled) colorResource(id = R.color.button_grey) else Color.Gray
             ),
             shape = RectangleShape,
             modifier = Modifier.padding(top = 14.dp)
@@ -252,12 +264,44 @@ class StrategiesActions : ComponentActivity() {
     }
 
     @Composable
+    fun StarRating(
+        selectedRating: Int,
+        onRatingSelected: (Int) -> Unit
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Pick a rate of effectiveness",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                for (i in 1..5) {
+                    Icon(
+                        imageVector = if (i <= selectedRating) Icons.Filled.Star else Icons.Outlined.Star,
+                        contentDescription = "$i Star",
+                        modifier = Modifier
+                            .size(40.dp)
+                            .padding(4.dp)
+                            .clickable { onRatingSelected(i) },
+                        tint = if (i <= selectedRating) Color.Yellow else Color.Gray
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
     fun BackButton(onBack: () -> Unit) {
         Image(
             painter = painterResource(id = R.drawable.backbutton),
             contentDescription = "Back",
             modifier = Modifier
-                .size(48.dp) // Set size as needed
+                .size(48.dp)
                 .clickable(onClick = onBack)
                 .padding(8.dp)
         )
@@ -273,5 +317,11 @@ class StrategiesActions : ComponentActivity() {
     @Composable
     fun MainViewPreview() {
         MainView(selectedDate = "2025-06-23")
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun StarRatingPreview() {
+        StarRating(1, {})
     }
 }

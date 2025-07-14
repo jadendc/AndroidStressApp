@@ -14,6 +14,7 @@ class StrategyActionDetailAdapter(
         val dateTextView: TextView = view.findViewById(R.id.itemDateTextView)
         val strategyTextView: TextView = view.findViewById(R.id.itemStrategyTextView)
         val actionTextView: TextView = view.findViewById(R.id.itemActionTextView)
+        val ratingTextView: TextView = view.findViewById(R.id.itemRatingTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,6 +42,14 @@ class StrategyActionDetailAdapter(
             holder.actionTextView.visibility = View.VISIBLE
         } else {
             holder.actionTextView.visibility = View.GONE
+        }
+
+        //Show Rating if available, otherwise hide the TextView
+        if (item.rating != null && item.rating > 0) {
+            holder.ratingTextView.text = "Effectiveness: ${item.rating} out of 5"
+            holder.ratingTextView.visibility = View.VISIBLE
+        } else {
+            holder.ratingTextView.visibility = View.GONE
         }
     }
 

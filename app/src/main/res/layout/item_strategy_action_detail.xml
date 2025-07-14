@@ -34,4 +34,15 @@
         android:layout_marginTop="4dp"
         tools:text="Action: 5-min Walk"/>
 
+
+
+    <TextView
+        android:id="@+id/itemRatingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="4dp"
+        tools:text="Rate of Effectiveness: 5"/>
+
 </LinearLayout>

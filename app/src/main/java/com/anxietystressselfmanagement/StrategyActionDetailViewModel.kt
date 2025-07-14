@@ -20,6 +20,7 @@ class StrategyActionDetailViewModel : ViewModel() {
         private const val TAG = "StratActDetailVM"
         private const val STRATEGY_FIELD = "7strategies" // Confirm exact Firestore field name
         private const val ACTION_FIELD = "7actions"     // Confirm exact Firestore field name
+        private const val RATING_FIELD ="effectivenessRating"
     }
 
     private val auth = FirebaseAuth.getInstance()
@@ -84,14 +85,15 @@ class StrategyActionDetailViewModel : ViewModel() {
                                 Log.d(TAG, "Document exists for $dateKey") // Log if doc found
                                 val strategy = document.getString(STRATEGY_FIELD)
                                 val action = document.getString(ACTION_FIELD)
-                                Log.d(TAG, " -> Strategy: '$strategy', Action: '$action'") // Log retrieved values
+                                val rating = document.getLong(RATING_FIELD)?.toInt()
+                                Log.d(TAG, " -> Strategy: '$strategy', Action: '$action', Rate of Effectiveness: '$rating' ") // Log retrieved values
 
                                 // Check if values are not null or blank before adding
                                 if (!strategy.isNullOrBlank() || !action.isNullOrBlank()) {
                                     val displayDate = displayDateFormat.format(tempCalendar.time)
                                     // Use original calendar time for sorting later if needed
                                     val entryTime = tempCalendar.timeInMillis
-                                    fetchedDetails.add(StrategyActionEntry(displayDate, strategy, action))
+                                    fetchedDetails.add(StrategyActionEntry(displayDate, strategy, action, rating))
                                     Log.d(TAG, " -> Added entry for $displayDate")
                                 } else {
                                     Log.d(TAG, " -> Skipping $dateKey (both strategy and action are blank/null)")

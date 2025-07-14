@@ -2,6 +2,7 @@ package com.anxietystressselfmanagement.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.model.ActionDescription
 import com.anxietystressselfmanagement.model.StrategyAction
@@ -36,17 +37,20 @@ object StrategyRepository {
             return
         }
 
-        val data = mapOf(
+        val dataMap = mapOf(
             "7strategies" to data.strategy,
-            "7actions" to data.action
+            "7actions" to data.action,
+            "effectivenessRating" to data.rating
         )
 
         db.collection("users")
             .document(currentUser.uid)
             .collection("dailyLogs")
             .document(date)
-            .set(data, SetOptions.merge())
-            .addOnSuccessListener { onSuccess() }
+            .set(dataMap, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.d("StrategySave", "Saved: Strategy=${data.strategy}, Action=${data.action}, Rating=${data.rating}")
+                onSuccess() }
             .addOnFailureListener { onFailure(it) }
     }
 }
