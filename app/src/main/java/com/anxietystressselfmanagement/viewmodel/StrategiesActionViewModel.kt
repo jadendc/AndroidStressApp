@@ -22,6 +22,7 @@ class StrategiesActionViewModel(application: Application) : AndroidViewModel(app
     var selectedStrategy by mutableStateOf<String?>(null)
     var selectedAction by mutableStateOf<String?>(null)
     var parsedMap by mutableStateOf<Map<String,List<ActionDescription>>>(emptyMap())
+    var selectedRating by mutableStateOf(0)
 
     val strategies: List<String>
         get() =  parsedMap.keys.toList()
@@ -40,10 +41,11 @@ class StrategiesActionViewModel(application: Application) : AndroidViewModel(app
     // Call StrategyRepo to save strategies and actions selected
     fun saveStrategyAndAction(
         data: StrategyAction,
+        rating: Int,
         date: String,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        repository.saveStrategyAndAction(date, data, onSuccess, onFailure)
+        repository.saveStrategyAndAction(date, rating, data, onSuccess, onFailure)
     }
 }

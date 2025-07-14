@@ -228,6 +228,7 @@ class StrategiesActions : ComponentActivity() {
                 )
                 viewModel.saveStrategyAndAction(
                     data,
+                    2,
                     selectedDate,
                     onSuccess = {
                         Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show()

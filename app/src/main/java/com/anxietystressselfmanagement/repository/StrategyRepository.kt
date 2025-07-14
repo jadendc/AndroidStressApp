@@ -25,6 +25,7 @@ object StrategyRepository {
 
     fun saveStrategyAndAction(
         date: String,
+        rating: Int,
         data: StrategyAction,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
@@ -38,7 +39,8 @@ object StrategyRepository {
 
         val data = mapOf(
             "7strategies" to data.strategy,
-            "7actions" to data.action
+            "7actions" to data.action,
+            "strategyRating" to rating
         )
 
         db.collection("users")
