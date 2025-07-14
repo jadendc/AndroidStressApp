@@ -1,14 +1,26 @@
 {
-  "Body": [
-    "Difficulty Breathing", "Fatigue", "Headaches", "High Blood Pressure", "Palpitations", "Skin irritation"
-  ],
-  "Mind": [
-    "Difficulty concentrating", "Impaired judgement", "Indecision", "Muddle thinking", "Negativity", "Worrying"
-  ],
-  "Feelings": [
-    "Alienation", "Apathy", "Depression", "Fear", "Irritability", "Loss of confidence"
-  ],
-  "Behavior": [
-    "Accident prone", "Insomnia", "Loss of appetite", "Loss of sex drive", "More addiction", "Restlessness"
-  ]
+  "Body": {
+    "icon": "\uD83E\uDDCD",
+    "symptoms": [
+      "Difficulty Breathing", "Fatigue", "Headaches", "High Blood Pressure", "Palpitations", "Skin irritation"
+    ]
+  },
+  "Mind": {
+    "icon": "\uD83E\uDDE0",
+    "symptoms": [
+      "Difficulty concentrating", "Impaired judgement", "Indecision", "Muddle thinking", "Negativity", "Worrying"
+    ]
+  },
+  "Feelings": {
+    "icon": "\uD83E\uDEC2",
+    "symptoms": [
+      "Alienation", "Apathy", "Depression", "Fear", "Irritability", "Loss of confidence"
+    ]
+  },
+  "Behavior": {
+    "icon": "\uD83E\uDDD8",
+    "symptoms": [
+      "Accident prone", "Insomnia", "Loss of appetite", "Loss of sex drive", "More addiction", "Restlessness"
+    ]
+  }
 }
