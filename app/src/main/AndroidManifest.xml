@@ -63,10 +63,6 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".StrategiesAndActionsActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
             android:name=".ui.activities.AwarenessTempActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
