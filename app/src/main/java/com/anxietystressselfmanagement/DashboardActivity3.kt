@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.anxietystressselfmanagement.ui.activities.StrategiesDetailsActivity
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
@@ -205,7 +206,7 @@ class DashboardActivity3 : AppCompatActivity() {
                     val endMillis = endCal.timeInMillis
 
                     // Use the helper function from StrategyActionDetailActivity to create intent
-                    val intent = StrategyActionDetailActivity.newIntent(this, startMillis, endMillis)
+                    val intent = StrategiesDetailsActivity.newIntent(this, startMillis, endMillis)
                     startActivity(intent)
                 } else {
                     Log.e(TAG, "Cannot create details intent: Start or End Calendar is null.")
