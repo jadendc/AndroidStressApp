@@ -4,12 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.anxietystressselfmanagement.ui.screens.AwarenessMainScreen
-import com.anxietystressselfmanagement.ui.screens.StrategiesActionsScreen
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AwarenessTempActivity : ComponentActivity() {
+class AwarenessActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

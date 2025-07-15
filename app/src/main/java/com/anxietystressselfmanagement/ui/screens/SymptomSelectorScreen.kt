@@ -27,17 +27,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.anxietystressselfmanagement.DashboardActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.model.AwarenessSigns
-import com.anxietystressselfmanagement.ui.activities.AwarenessTempActivity
+import com.anxietystressselfmanagement.ui.activities.AwarenessActivity
 import com.anxietystressselfmanagement.ui.components.BackButton
 import com.anxietystressselfmanagement.ui.components.DefaultButton
 import com.anxietystressselfmanagement.ui.components.DropdownSelector
 import com.anxietystressselfmanagement.viewmodel.AwarenessViewModel
-import com.anxietystressselfmanagement.viewmodel.SessionViewModel
-import com.anxietystressselfmanagement.viewmodel.StrategiesActionViewModel
 
 @SuppressLint("ContextCastToActivity")
 @Composable
@@ -103,7 +99,7 @@ fun SymptomSelectorScreen(
                         date = selectedDate.toString(),
                         onSuccess = {
                             Toast.makeText(activity, "Saved successfully!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(activity, AwarenessTempActivity::class.java)
+                            val intent = Intent(activity, AwarenessActivity::class.java)
                             intent.putExtra("selectedDate", selectedDate)
                             activity?.startActivity(intent)
                             if (activity is Activity) activity.finish()
