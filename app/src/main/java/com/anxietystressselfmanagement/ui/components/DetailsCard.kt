@@ -1,5 +1,7 @@
 package com.anxietystressselfmanagement.ui.components
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,13 +31,15 @@ fun DetailsCard(
     date: String,
     strategy: String,
     action: String,
-    rating: Int,
-    modifier: Modifier = Modifier
+    rating: Int? = null,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF1E1E1E)) // Dark background
@@ -48,25 +52,33 @@ fun DetailsCard(
             Text("Action: $action", style = MaterialTheme.typography.bodyMedium, color = Color.White)
 
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Rating:", color = Color.White)
-                Spacer(modifier = Modifier.width(4.dp))
-                repeat(rating) {
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "Star",
-                        tint = Color.Yellow,
-                        modifier = Modifier.size(20.dp)
-                    )
+            if(rating != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Rating:", color = Color.White)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    repeat(rating) {
+                        Icon(
+                            imageVector = Icons.Filled.Star,
+                            contentDescription = "Star",
+                            tint = Color.Yellow,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    repeat(5 - rating) {
+                        Icon(
+                            imageVector = Icons.Outlined.Star,
+                            contentDescription = "Empty Star",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
                 }
-                repeat(5 - rating) {
-                    Icon(
-                        imageVector = Icons.Outlined.Star,
-                        contentDescription = "Empty Star",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+            } else {
+                Text(
+                    text = "Not rated",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.LightGray
+                )
             }
         }
     }
@@ -79,6 +91,7 @@ fun DetailsCardPreview() {
         date = "2025-01-01",
         strategy = "Physical",
         action = "Cold Shower",
-        rating = 3
+        rating = 3,
+        onClick = {}
     )
 }

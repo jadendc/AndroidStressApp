@@ -2,6 +2,7 @@ package com.anxietystressselfmanagement.repository
 
 import android.annotation.SuppressLint
 import com.anxietystressselfmanagement.model.StrategyCardEntry
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
 
@@ -69,4 +70,26 @@ object StrategiesDetailsRepository {
                 }
         }
     }
+    fun updateRating(
+        date: String,
+        rating: Int,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseFirestore.getInstance()
+
+        if (currentUser != null) {
+            db.collection("users")
+                .document(currentUser.uid)
+                .collection("dailyLogs")
+                .document(date)
+                .update(mapOf("strategyRating" to rating))  // Adjust this if rating is nested
+                .addOnSuccessListener { onSuccess() }
+                .addOnFailureListener { e -> onFailure(e) }
+        } else {
+            onFailure(Exception("User not logged in"))
+        }
+    }
+
 }

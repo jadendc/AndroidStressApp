@@ -6,18 +6,12 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +47,9 @@ fun StrategiesActionsScreen(
     val strategies = viewModel.strategies
     val actions = viewModel.actions
     val activity = LocalContext.current as? Activity
+    val context = LocalContext.current
 
+    val isContinuedEnabled = !selectedStrategy.isNullOrBlank() && !selectedAction.isNullOrBlank()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,21 +109,29 @@ fun StrategiesActionsScreen(
                 label = "CONTINUE",
                 modifier = Modifier.padding(14.dp),
                 onClick = {
-                    viewModel.saveStrategyAndAction(
-                        data = StrategyAction(selectedStrategy.orEmpty(), selectedAction.orEmpty()),
-                        rating = viewModel.selectedRating,
-                        date = selectedDate,
-                        onSuccess = {
-                            Toast.makeText(activity, "Saved successfully!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(activity, DashboardActivity::class.java)
-                            intent.putExtra("selectedDate", selectedDate)
-                            activity?.startActivity(intent)
-                            if (activity is Activity) activity.finish()
-                        },
-                        onFailure = {
-                            Toast.makeText(activity, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    )
+                    if (isContinuedEnabled) {
+                        viewModel.saveStrategyAndAction(
+                            data = StrategyAction(selectedStrategy, selectedAction),
+                            rating = viewModel.selectedRating,
+                            date = selectedDate,
+                            onSuccess = {
+                                Toast.makeText(activity, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(activity, DashboardActivity::class.java)
+                                intent.putExtra("selectedDate", selectedDate)
+                                activity?.startActivity(intent)
+                                if (activity is Activity) activity.finish()
+                            },
+                            onFailure = {
+                                Toast.makeText(activity, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        )
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Please select a strategy and an action before continuing.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             )
         }

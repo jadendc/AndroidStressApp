@@ -13,7 +13,13 @@ class StrategiesDetailsViewModel(application: Application) : AndroidViewModel(ap
     val entries: List<StrategyCardEntry>
         get() = _entries
 
+    private var lastStartMillis: Long = 0
+    private var lastEndMillis: Long = 0
+
     fun fetchStrategiesBetween(startMillis: Long, endMillis: Long) {
+        lastStartMillis = startMillis
+        lastEndMillis = endMillis
+
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         StrategiesDetailsRepository.getStrategiesBetween(userId, startMillis, endMillis) { result ->
@@ -22,4 +28,23 @@ class StrategiesDetailsViewModel(application: Application) : AndroidViewModel(ap
         }
     }
 
+    fun reloadEntries() {
+        if (lastStartMillis != 0L && lastEndMillis != 0L) {
+            fetchStrategiesBetween(lastStartMillis, lastEndMillis)
+        }
+    }
+
+    fun updateRatingForEntry(
+        date: String,
+        newRating: Int,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        StrategiesDetailsRepository.updateRating(
+            date = date,
+            rating = newRating,
+            onSuccess = onSuccess,
+            onFailure = onFailure
+        )
+    }
 }
