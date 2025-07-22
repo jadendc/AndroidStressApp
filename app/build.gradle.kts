@@ -15,7 +15,7 @@ android {
     defaultConfig {
         applicationId = "com.anxietystressselfmanagement"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 20
         versionName = "2.0"
 
