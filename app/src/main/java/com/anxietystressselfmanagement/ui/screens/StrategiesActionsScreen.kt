@@ -27,6 +27,7 @@ import com.anxietystressselfmanagement.DashboardActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.model.StrategyAction
 import com.anxietystressselfmanagement.ui.components.BackButton
+import com.anxietystressselfmanagement.ui.components.CustomStrategyDialog
 import com.anxietystressselfmanagement.ui.components.DefaultButton
 import com.anxietystressselfmanagement.ui.components.DropdownSelector
 import com.anxietystressselfmanagement.ui.components.StarRating
@@ -58,6 +59,17 @@ fun StrategiesActionsScreen(
         // Back navigation button
         BackButton { activity?.finish() }
 
+        if (viewModel.showCustomDialog) {
+            CustomStrategyDialog(
+                strategyInput = viewModel.customStrategyInput,
+                actionInput = viewModel.customActionInput,
+                onStrategyChange = { viewModel.customStrategyInput = it },
+                onActionChange = { viewModel.customActionInput = it },
+                onConfirm = { viewModel.onCustomConfirm() },
+                onDismiss = { viewModel.showCustomDialog = false }
+            )
+        }
+
         // Main layout
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -82,8 +94,12 @@ fun StrategiesActionsScreen(
                 options = strategies,
                 selectedOption = selectedStrategy,
                 onOptionSelected = {
-                    viewModel.selectedStrategy = it
-                    viewModel.selectedAction = null
+                    if (it == "Custom") {
+                        viewModel.showCustomDialog = true
+                    } else {
+                        viewModel.selectedStrategy = it
+                        viewModel.selectedAction = null
+                    }
                 }
             )
 

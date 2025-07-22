@@ -21,11 +21,16 @@ class StrategiesActionViewModel(application: Application) : AndroidViewModel(app
 
     var selectedStrategy by mutableStateOf<String?>(null)
     var selectedAction by mutableStateOf<String?>(null)
+    var showCustomDialog by mutableStateOf(false)
+    var customStrategyInput by mutableStateOf("")
+    var customActionInput by mutableStateOf("")
     var parsedMap by mutableStateOf<Map<String,List<ActionDescription>>>(emptyMap())
     var selectedRating by mutableStateOf(0)
 
     val strategies: List<String>
-        get() =  parsedMap.keys.toList()
+        get() = parsedMap.keys.toMutableList().apply {
+            add("Custom")
+        }
 
     val actions: List<String>
         get() = parsedMap[selectedStrategy]?.map { it.action } ?: emptyList()
@@ -48,4 +53,18 @@ class StrategiesActionViewModel(application: Application) : AndroidViewModel(app
     ) {
         repository.saveStrategyAndAction(date, rating, data, onSuccess, onFailure)
     }
+
+    fun onCustomConfirm() {
+        selectedStrategy = customStrategyInput
+        selectedAction = customActionInput
+
+        showCustomDialog = false
+    }
+
+    fun resetCustomInputs() {
+        customStrategyInput = ""
+        customActionInput = ""
+        customStrategyInput = ""
+    }
+
 }
