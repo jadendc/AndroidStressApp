@@ -2,35 +2,38 @@ package com.anxietystressselfmanagement.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.compose.ui.text.toLowerCase
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.model.ActionDescription
+import com.anxietystressselfmanagement.model.AwarenessSigns
 import com.anxietystressselfmanagement.model.StrategyAction
+import com.anxietystressselfmanagement.model.SymptomAndIcon
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.serialization.json.Json
 
-object StrategyRepository {
+object AwarenessRepository {
 
     @SuppressLint("StaticFieldLeak")
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    // Loads data from strategies_actions.json
-    fun loadStrategies(context: Context): Map<String, List<ActionDescription>> {
-        val inputStream = context.resources.openRawResource(R.raw.strategies_actions)
+    // Loads data from awareness_act.json
+    fun loadAwareness(context: Context): Map<String, SymptomAndIcon> {
+        val inputStream = context.resources.openRawResource(R.raw.awareness_act)
         val json = inputStream.bufferedReader().use { it.readText() }
         return Json.decodeFromString(json)
     }
 
-    fun saveStrategyAndAction(
+    // Saves awareness choices to FirebaseDB
+    fun saveAwarenessChoice(
         date: String,
-        rating: Int,
-        data: StrategyAction,
+        data: AwarenessSigns,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val currentUser = auth.currentUser
+        val currentUser = AwarenessRepository.auth.currentUser
 
         if (currentUser == null) {
             onFailure(Exception("User not logged in"))
@@ -38,12 +41,10 @@ object StrategyRepository {
         }
 
         val data = mapOf(
-            "7strategies" to data.strategy,
-            "7actions" to data.action,
-            "strategyRating" to rating
+            data.sign.toString().lowercase() + "Symptom" to data.symptom
         )
 
-        db.collection("users")
+        AwarenessRepository.db.collection("users")
             .document(currentUser.uid)
             .collection("dailyLogs")
             .document(date)

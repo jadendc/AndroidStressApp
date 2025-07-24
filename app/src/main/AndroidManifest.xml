@@ -39,22 +39,6 @@
             android:name=".SOTD"
             android:exported="false" />
         <activity
-            android:name=".BehaviorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".FeelingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BodyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MindActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AwarenessActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
             android:name=".CalendarActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -63,16 +47,29 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".StrategiesAndActionsActivity"
+            android:name=".ui.activities.AwarenessActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.activities.StrategiesDetailsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.activities.StrategiesActionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.activities.StrategiesEntryEditActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".ui.activities.SymptomSelectionActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".NotificationsActivity"
             android:exported="true"
             android:theme="@style/Theme.App.NoActionBar" />
-        <activity
-            android:name=".StrategiesActions"
-            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

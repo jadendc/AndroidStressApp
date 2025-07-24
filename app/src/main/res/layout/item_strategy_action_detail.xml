@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:layout_marginBottom="6dp"
-    android:background="#404040">
+    android:background="@drawable/rounded_background" >
+
 
     <TextView
         android:id="@+id/itemDateTextView"
@@ -33,5 +34,6 @@
         android:textColor="@android:color/white"
         android:layout_marginTop="4dp"
         tools:text="Action: 5-min Walk"/>
+
 
 </LinearLayout>

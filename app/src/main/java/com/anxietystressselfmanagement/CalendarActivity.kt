@@ -7,12 +7,19 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.CalendarView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import com.anxietystressselfmanagement.viewmodel.SessionViewModel
 import java.util.Calendar
 
 class CalendarActivity : AppCompatActivity() {
+
+    private lateinit var sessionViewModel: SessionViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
+
+        sessionViewModel = ViewModelProvider(this)[SessionViewModel::class.java]
 
         // Setup toolbar with back button
         setupToolbar()
@@ -29,9 +36,12 @@ class CalendarActivity : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
 
+        sessionViewModel.setDate(selectedDate)
+
         // Update selectedDate when a date is picked from CalendarView
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             selectedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+            sessionViewModel.setDate(selectedDate)
         }
 
         // Set click listener for the continue button
