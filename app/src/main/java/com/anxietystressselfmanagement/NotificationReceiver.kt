@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.anxietystressselfmanagement.ui.activities.HomeActivity
 
 class NotificationReceiver : BroadcastReceiver() {
     companion object {

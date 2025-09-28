@@ -129,7 +129,7 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.activities.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.App.NoActionBar" />

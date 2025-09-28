@@ -8,9 +8,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -39,9 +36,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.view.ContextThemeWrapper
+import com.anxietystressselfmanagement.ui.activities.HomeActivity
 
 /**
  * Modern implementation of DashboardActivity using MVVM architecture pattern

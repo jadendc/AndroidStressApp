@@ -1,4 +1,4 @@
-package com.anxietystressselfmanagement
+package com.anxietystressselfmanagement.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -25,6 +26,16 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.ui.unit.dp
+import com.anxietystressselfmanagement.AboutActivity
+import com.anxietystressselfmanagement.CalendarActivity
+import com.anxietystressselfmanagement.DashboardActivity
+import com.anxietystressselfmanagement.ExercisesActivity
+import com.anxietystressselfmanagement.HomeViewModel
+import com.anxietystressselfmanagement.MainActivity
+import com.anxietystressselfmanagement.MembershipActivity
+import com.anxietystressselfmanagement.R
+import com.anxietystressselfmanagement.SelfReflectActivity
+import com.anxietystressselfmanagement.SettingActivity
 
 
 /**
@@ -36,7 +47,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // UI Components
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var welcomeMessage: MaterialTextView
     private lateinit var dashboardButton: MaterialButton
     private lateinit var exercisesButton: MaterialButton
@@ -225,26 +236,26 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
         finish()
     }
-}
 
-/**
- * Simple motivational card in Compose
- */
-@Composable
-fun MotivationalCard(userName: String?) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Text(
-            text = if (!userName.isNullOrEmpty()) {
-                "Keep going, $userName! You're doing great 🎉"
-            } else {
-                "Stay motivated! 🌟"
-            },
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.bodyLarge
-        )
+    /**
+     * Simple motivational card in Compose
+     */
+    @Composable
+    fun MotivationalCard(userName: String?) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(
+                text = if (!userName.isNullOrEmpty()) {
+                    "Keep going, $userName! You're doing great 🎉"
+                } else {
+                    "Stay motivated! 🌟"
+                },
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.anxietystressselfmanagement.ui.activities.HomeActivity
 import com.bumptech.glide.Glide
 
 class MeditationActivity : AppCompatActivity() {
