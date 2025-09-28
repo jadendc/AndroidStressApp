@@ -91,6 +91,18 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- ComposeView for Jetpack Compose UI -->
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/home_compose_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/welcomeCard"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <!-- Actions Card with Buttons -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/actionsCard"
@@ -106,7 +118,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/welcomeCard"
+                    app:layout_constraintTop_toBottomOf="@+id/home_compose_view"
                     app:layout_constraintVertical_bias="0.0"
                     app:strokeColor="#78909C"
                     app:strokeWidth="1dp">

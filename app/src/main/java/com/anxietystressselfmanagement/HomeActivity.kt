@@ -7,6 +7,16 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
@@ -14,6 +24,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.ui.unit.dp
+
 
 /**
  * Modern Home Activity implementation using MVVM architecture and Material Design components.
@@ -31,6 +43,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var monthlyCalendarButton: MaterialButton
     private lateinit var awarenessButton: MaterialButton
     private lateinit var navigationView: NavigationView
+    private lateinit var composeView: ComposeView
 
     // ViewModel using the by viewModels() delegate
     private val homeViewModel: HomeViewModel by viewModels()
@@ -54,6 +67,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Observe LiveData from ViewModel
         observeViewModel()
 
+        // Setup Compose integration
+        setupComposeUI()
+
         // Load user data
         homeViewModel.loadUserData()
     }
@@ -75,6 +91,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         exercisesButton = findViewById(R.id.home_ExBut)
         monthlyCalendarButton = findViewById(R.id.home_MonthlyCalBut)
         awarenessButton = findViewById(R.id.home_awarenessbut)
+
+        // Find ComposeView
+        composeView = findViewById(R.id.home_compose_view)
 
         // Setup toolbar
         setSupportActionBar(toolbar)
@@ -109,12 +128,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                    // Since this is the home screen, consider if you want to:
-                    // 1. Exit the app
-                    // 2. Show a confirmation dialog before exiting
-                    // 3. Do something else
-
-                    // For now, we'll just finish the activity
                     finish()
                 }
             }
@@ -146,7 +159,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * Observe LiveData from ViewModel
      */
     private fun observeViewModel() {
-        // Observe user name
         homeViewModel.userName.observe(this, Observer { name ->
             if (!name.isNullOrEmpty()) {
                 welcomeMessage.text = "Welcome, $name! What would you like to do?"
@@ -154,6 +166,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 welcomeMessage.text = "Welcome! What would you like to do?"
             }
         })
+    }
+
+    /**
+     * Setup Compose inside the existing XML layout
+     */
+    private fun setupComposeUI() {
+        composeView.setContent {
+            MaterialTheme {
+                val userName by homeViewModel.userName.observeAsState()
+
+                MotivationalCard(userName = userName)
+            }
+        }
     }
 
     /**
@@ -185,7 +210,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * Refresh the current screen (used when selecting Home while already on Home)
      */
     private fun refreshCurrentScreen() {
-        // No need to navigate, but you could refresh data if needed
         homeViewModel.loadUserData()
     }
 
@@ -195,11 +219,32 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun logoutUser() {
         FirebaseAuth.getInstance().signOut()
 
-        // Navigate to login with flags to clear the back stack
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
         finish()
+    }
+}
+
+/**
+ * Simple motivational card in Compose
+ */
+@Composable
+fun MotivationalCard(userName: String?) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Text(
+            text = if (!userName.isNullOrEmpty()) {
+                "Keep going, $userName! You're doing great 🎉"
+            } else {
+                "Stay motivated! 🌟"
+            },
+            modifier = Modifier.padding(16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
