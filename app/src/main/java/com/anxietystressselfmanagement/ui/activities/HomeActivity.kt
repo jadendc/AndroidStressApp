@@ -36,6 +36,7 @@ import com.anxietystressselfmanagement.MembershipActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.SelfReflectActivity
 import com.anxietystressselfmanagement.SettingActivity
+import com.example.app.ui.components.MotivationalCard
 
 
 /**
@@ -237,25 +238,4 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         finish()
     }
 
-    /**
-     * Simple motivational card in Compose
-     */
-    @Composable
-    fun MotivationalCard(userName: String?) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text(
-                text = if (!userName.isNullOrEmpty()) {
-                    "Keep going, $userName! You're doing great 🎉"
-                } else {
-                    "Stay motivated! 🌟"
-                },
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-    }
 }
