@@ -105,7 +105,7 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".ui.activities.AboutActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity

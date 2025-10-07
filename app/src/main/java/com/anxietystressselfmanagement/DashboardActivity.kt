@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
+import com.anxietystressselfmanagement.ui.activities.AboutActivity
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend

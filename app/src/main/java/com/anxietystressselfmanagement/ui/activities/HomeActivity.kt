@@ -26,7 +26,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.ui.unit.dp
-import com.anxietystressselfmanagement.AboutActivity
+import com.anxietystressselfmanagement.ui.activities.AboutActivity
 import com.anxietystressselfmanagement.CalendarActivity
 import com.anxietystressselfmanagement.DashboardActivity
 import com.anxietystressselfmanagement.ExercisesActivity

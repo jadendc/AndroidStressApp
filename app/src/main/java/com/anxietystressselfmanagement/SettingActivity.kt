@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import android.util.Log
 import android.widget.Toast
+import com.anxietystressselfmanagement.ui.activities.AboutActivity
 import com.anxietystressselfmanagement.ui.activities.HomeActivity
 
 class SettingActivity : AppCompatActivity() {
