@@ -12,7 +12,7 @@ import com.anxietystressselfmanagement.MainActivity
 import com.anxietystressselfmanagement.MembershipActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.ui.activities.SettingActivity
-//import com.anxietystressselfmanagement.ui.components.FaqText
+import com.anxietystressselfmanagement.ui.components.FaqText
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -71,7 +71,7 @@ class FaqActivity : AppCompatActivity() {
         // Compose integration for FAQ content
         val composeView: ComposeView = findViewById(R.id.faqComposeView)
         composeView.setContent {
-            // FaqText() // Your Compose UI for FAQ
+            FaqText() // Your Compose UI for FAQ
         }
     }
 
