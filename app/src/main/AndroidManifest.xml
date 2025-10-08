@@ -113,6 +113,10 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
+            android:name=".ui.activities.FaqActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
