@@ -109,7 +109,7 @@
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".ui.activities.SettingActivity"
             android:exported="false"
             android:theme="@style/Theme.App.NoActionBar" />
         <activity

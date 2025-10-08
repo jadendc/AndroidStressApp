@@ -13,6 +13,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.anxietystressselfmanagement.ui.activities.AboutActivity
 import com.anxietystressselfmanagement.ui.activities.HomeActivity
+import com.anxietystressselfmanagement.ui.activities.SettingActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText

@@ -35,7 +35,7 @@ import com.anxietystressselfmanagement.MainActivity
 import com.anxietystressselfmanagement.MembershipActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.SelfReflectActivity
-import com.anxietystressselfmanagement.SettingActivity
+import com.anxietystressselfmanagement.ui.activities.SettingActivity
 import com.example.app.ui.components.MotivationalCard
 
 

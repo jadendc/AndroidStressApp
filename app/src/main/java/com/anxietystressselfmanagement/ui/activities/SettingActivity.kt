@@ -1,4 +1,4 @@
-package com.anxietystressselfmanagement
+package com.anxietystressselfmanagement.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,20 +7,14 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import com.anxietystressselfmanagement.ui.activities.AboutActivity
-import com.anxietystressselfmanagement.ui.activities.HomeActivity
+import com.anxietystressselfmanagement.DashboardActivity
+import com.anxietystressselfmanagement.MainActivity
+import com.anxietystressselfmanagement.MembershipActivity
+import com.anxietystressselfmanagement.NotificationsActivity
+import com.anxietystressselfmanagement.ProfileActivity
+import com.anxietystressselfmanagement.R
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -29,7 +23,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var auth: FirebaseAuth
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: Toolbar
     private lateinit var navigationView: NavigationView
 
     private lateinit var logOutButton: Button

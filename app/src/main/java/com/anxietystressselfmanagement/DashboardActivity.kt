@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import com.anxietystressselfmanagement.ui.activities.HomeActivity
+import com.anxietystressselfmanagement.ui.activities.SettingActivity
 
 /**
  * Modern implementation of DashboardActivity using MVVM architecture pattern

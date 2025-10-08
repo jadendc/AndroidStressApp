@@ -11,7 +11,7 @@ import com.anxietystressselfmanagement.DashboardActivity
 import com.anxietystressselfmanagement.MainActivity
 import com.anxietystressselfmanagement.MembershipActivity
 import com.anxietystressselfmanagement.R
-import com.anxietystressselfmanagement.SettingActivity
+import com.anxietystressselfmanagement.ui.activities.SettingActivity
 import com.anxietystressselfmanagement.ui.components.AboutText
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
