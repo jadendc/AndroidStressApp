@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.platform.ComposeView
 import androidx.drawerlayout.widget.DrawerLayout
 import com.anxietystressselfmanagement.DashboardActivity
@@ -13,6 +14,7 @@ import com.anxietystressselfmanagement.MembershipActivity
 import com.anxietystressselfmanagement.R
 import com.anxietystressselfmanagement.ui.activities.SettingActivity
 import com.anxietystressselfmanagement.ui.components.FaqText
+import com.anxietystressselfmanagement.ui.components.BackButton
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -68,10 +70,23 @@ class FaqActivity : AppCompatActivity() {
             true
         }
 
-        // Compose integration for FAQ content
+        // Compose integration for FAQ content with Back button
         val composeView: ComposeView = findViewById(R.id.faqComposeView)
         composeView.setContent {
-            FaqText() // Your Compose UI for FAQ
+            Column {
+                FaqText(
+                    faqList = listOf(
+                        com.anxietystressselfmanagement.ui.components.FaqItem("What is HowRU?", "HowRU is a mental wellness app..."),
+                        com.anxietystressselfmanagement.ui.components.FaqItem("How do I track my mood?", "You can use the daily mood diary..."),
+                        com.anxietystressselfmanagement.ui.components.FaqItem("Is my data secure?", "Yes, all user data is encrypted...")
+                    )
+                )
+
+                // Back button at the end
+                BackButton {
+                    finish() // Returns to previous screen
+                }
+            }
         }
     }
 
