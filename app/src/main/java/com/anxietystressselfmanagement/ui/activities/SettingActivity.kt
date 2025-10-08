@@ -111,6 +111,7 @@ class SettingActivity : AppCompatActivity() {
             navigateTo(NotificationsActivity::class.java)
         }
 
+        // #TODO: ADD FAQ SCREEN
         faqButton.setOnClickListener {
             Toast.makeText(this, "FAQ feature coming soon!", Toast.LENGTH_SHORT).show()
         }
