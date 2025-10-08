@@ -2,17 +2,28 @@ package com.anxietystressselfmanagement
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.drawerlayout.widget.DrawerLayout
+import com.anxietystressselfmanagement.ui.activities.AboutActivity
+import com.anxietystressselfmanagement.ui.activities.HomeActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import android.util.Log
-import android.widget.Toast
-import com.anxietystressselfmanagement.ui.activities.AboutActivity
-import com.anxietystressselfmanagement.ui.activities.HomeActivity
 
 class SettingActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -39,10 +50,9 @@ class SettingActivity : AppCompatActivity() {
         val currentUser: FirebaseUser? = auth.currentUser
 
         initializeViews()
-
         setupNavigationDrawer()
-
         setupButtonListeners()
+
     }
 
     /**
@@ -59,7 +69,6 @@ class SettingActivity : AppCompatActivity() {
             logOutButton = findViewById(R.id.logOutButton)
             profileButton = findViewById(R.id.profileButton)
             notificationButton = findViewById(R.id.profileButton4)
-
             faqButton = findViewById(R.id.profileButton3)
         } catch (e: Exception) {
             Log.e(TAG, "Error initializing views: ${e.message}")
@@ -72,7 +81,6 @@ class SettingActivity : AppCompatActivity() {
      */
     private fun setupNavigationDrawer() {
         try {
-            // Set up ActionBarDrawerToggle
             toggle = ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -80,15 +88,12 @@ class SettingActivity : AppCompatActivity() {
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
             )
-
             drawerLayout.addDrawerListener(toggle)
             toggle.syncState()
             toggle.drawerArrowDrawable.color = getColor(R.color.white)
 
-            // Handle navigation item clicks
             navigationView.setNavigationItemSelectedListener { menuItem ->
                 handleNavigationItemSelected(menuItem.itemId)
-                // Close the drawer
                 drawerLayout.closeDrawers()
                 true
             }
@@ -102,9 +107,7 @@ class SettingActivity : AppCompatActivity() {
      * Set up click listeners for all buttons
      */
     private fun setupButtonListeners() {
-        logOutButton.setOnClickListener {
-            logOutUser()
-        }
+        logOutButton.setOnClickListener { logOutUser() }
 
         profileButton.setOnClickListener {
             navigateTo(ProfileActivity::class.java)
@@ -115,17 +118,12 @@ class SettingActivity : AppCompatActivity() {
         }
 
         faqButton.setOnClickListener {
-            // If we implement FAQ then add this line, otherwise keep the Toast message
-            // navigateTo(FaqActivity::class.java)
-
-            // Or show a dialog/toast if not implemented yet
-             Toast.makeText(this, "FAQ feature coming soon!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "FAQ feature coming soon!", Toast.LENGTH_SHORT).show()
         }
     }
 
     /**
      * Handle navigation item selection
-     * @param itemId The ID of the selected menu item
      */
     private fun handleNavigationItemSelected(itemId: Int) {
         when (itemId) {
@@ -138,19 +136,10 @@ class SettingActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Helper method to navigate to another activity
-     * @param activityClass The class of the activity to navigate to
-     */
     private fun navigateTo(activityClass: Class<*>) {
-        val intent = Intent(this, activityClass)
-        startActivity(intent)
+        startActivity(Intent(this, activityClass))
     }
 
-    /**
-     * Helper method to navigate with clearing the back stack
-     * @param activityClass The class of the activity to navigate to
-     */
     private fun navigateWithClearStack(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -158,11 +147,9 @@ class SettingActivity : AppCompatActivity() {
         finish()
     }
 
-    /**
-     * Log out the current user and navigate to the main screen
-     */
     private fun logOutUser() {
         auth.signOut()
         navigateWithClearStack(MainActivity::class.java)
     }
+
 }
