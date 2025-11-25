@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="#8E9AAF"
     android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
     tools:context=".MoodActivity">
 
@@ -29,7 +29,8 @@
         android:contentDescription="Back button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint = "#F2E9E4"/>
 
     <TextView
         android:id="@+id/titleText"
@@ -57,7 +58,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        app:cardBackgroundColor="#99000000"
+        app:cardBackgroundColor="#4A4E69"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -159,7 +160,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#232D31"
+        android:backgroundTint="#E5989B"
         android:enabled="false"
         android:text="@string/continue_button"
         android:textColor="#FFFFFF"

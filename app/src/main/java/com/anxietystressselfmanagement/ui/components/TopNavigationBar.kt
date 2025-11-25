@@ -33,7 +33,7 @@ fun TopNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
-            .background(Color.DarkGray)
+            .background(Color(0xFFDD2D4A))
     ) {
         // Back button aligned to the start
         IconButton(

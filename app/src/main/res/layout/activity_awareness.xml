@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#687F8C"
+    android:background="#8E9AAF"
     tools:context=".AwarenessActivity">
 
     <ImageView
@@ -21,7 +21,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView7"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint="#F2E9E4"/>
 
     <ImageView
         android:id="@+id/imageView7"
@@ -74,7 +75,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#546773"
+        android:backgroundTint="#E5989B"
         android:text="🧍Body"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +87,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#546773"
+        android:backgroundTint="#E5989B"
         android:text="🧠Mind"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +99,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#546773"
+        android:backgroundTint="#E5989B"
         android:text="🫂Feelings"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +111,7 @@
         android:layout_width="305dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#546773"
+        android:backgroundTint="#E5989B"
         android:text="🧘Behavior"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,8 +125,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:text="Continue"
-        android:backgroundTint="#A0AEC0"
-        android:textColor="@color/black"
+        android:backgroundTint="#DD2D4A"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/behaviorButton"

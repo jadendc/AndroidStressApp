@@ -20,7 +20,7 @@ fun AboutText(
 ) {
     Box(
         modifier = Modifier
-            .background(Color(0xFF5D727C), RoundedCornerShape(10.dp))
+            .background(Color(0xFF4a4e69), RoundedCornerShape(10.dp))
             .padding(horizontal = 10.dp, vertical = 10.dp),
         contentAlignment = Alignment.Center
     ) {

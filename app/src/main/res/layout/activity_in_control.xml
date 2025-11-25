@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="#8E9AAF"
     android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
     tools:context=".InControlActivity">
 
@@ -27,11 +27,11 @@
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Back button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint="#F2E9E4"/>
 
     <!-- Title Text -->
     <TextView
@@ -92,7 +92,7 @@
         android:textSize="18sp"
         android:enabled="false"
         app:cornerRadius="20dp"
-        android:backgroundTint="#232D31"
+        android:backgroundTint="#E5989B"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

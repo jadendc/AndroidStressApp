@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#69808D"
+    android:background="#8E9AAF"
     >
 
     <!-- Logo -->
@@ -16,12 +16,12 @@
         android:layout_height="120dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:background="#69808D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
 
     <ImageView
         android:id="@+id/backButton"
@@ -34,7 +34,8 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint = "#F2E9E4"/>
 
     <!-- Title -->
 
@@ -67,7 +68,7 @@
         android:layout_marginStart="124dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="124dp"
-        android:backgroundTint="#44575F"
+        android:backgroundTint="#E5989B"
         android:text="Monthly - $3.99"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +79,7 @@
         android:id="@+id/threeMonthSubscription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#44575F"
+        android:backgroundTint="#E5989B"
         android:layout_marginStart="120dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="121dp"
@@ -96,7 +97,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="125dp"
         android:text="Annual - $29.99"
-        android:backgroundTint="#44575F"
+        android:backgroundTint="#E5989B"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +110,7 @@
         android:layout_marginStart="143dp"
         android:layout_marginTop="62dp"
         android:layout_marginEnd="158dp"
-        android:backgroundTint="@color/button_grey"
+        android:backgroundTint="#E5989B"
         android:text="Continue"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="#8E9AAF">
 
    <ImageView
        android:id="@+id/imageView3"
@@ -33,7 +33,8 @@
        app:layout_constraintEnd_toStartOf="@+id/imageView3"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent"
-       app:srcCompat="@drawable/backbutton" />
+       app:srcCompat="@drawable/backbutton"
+       app:tint = "#F2E9E4"/>
 
 
    <ToggleButton
@@ -43,7 +44,7 @@
        android:layout_marginStart="10dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="10dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#2A6F97"
        android:checked="false"
        android:textColor="@color/white"
        android:textOff="@string/rain"
@@ -59,7 +60,7 @@
        android:layout_marginStart="60dp"
        android:layout_marginTop="17dp"
        android:layout_marginEnd="10dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#61a5c2"
        android:checked="false"
        android:text="@string/waves"
        android:textColor="@android:color/white"
@@ -77,7 +78,7 @@
        android:layout_marginStart="10dp"
        android:layout_marginTop="17dp"
        android:layout_marginEnd="60dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#660708"
        android:checked="false"
        android:text="@string/fire"
        android:textColor="@android:color/white"
@@ -94,7 +95,7 @@
        android:layout_marginStart="60dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="10dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#84A98C"
        android:checked="false"
        android:text="@string/forest"
        android:textColor="@android:color/white"
@@ -111,7 +112,7 @@
        android:layout_marginStart="10dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="60dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#22223b"
        android:checked="false"
        android:text="@string/meditation"
        android:textColor="@android:color/white"
@@ -128,7 +129,7 @@
        android:layout_marginStart="10dp"
        android:layout_marginTop="17dp"
        android:layout_marginEnd="10dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#B5838D"
        android:checked="false"
        android:text="@string/birds"
        android:textColor="@android:color/white"
@@ -179,7 +180,7 @@
        android:layout_marginStart="60dp"
        android:layout_marginTop="22dp"
        android:layout_marginEnd="20dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#E5989B"
        android:checked="false"
        android:text="@string/_1"
        android:textColor="@android:color/white"
@@ -196,7 +197,7 @@
        android:layout_marginStart="10dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="10dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#E5989B"
        android:checked="false"
        android:text="@string/_2"
        android:textColor="@android:color/white"
@@ -213,7 +214,7 @@
        android:layout_marginStart="20dp"
        android:layout_marginTop="22dp"
        android:layout_marginEnd="60dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#E5989B"
        android:checked="false"
        android:text="@string/_3"
        android:textColor="@android:color/white"
@@ -230,7 +231,7 @@
        android:layout_marginStart="20dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="90dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#E5989B"
        android:checked="false"
        android:text="@string/_10"
        android:textColor="@android:color/white"
@@ -247,7 +248,7 @@
        android:layout_marginStart="90dp"
        android:layout_marginTop="20dp"
        android:layout_marginEnd="20dp"
-       android:background="@drawable/rounded_button_toggle"
+       android:background="#E5989B"
        android:checked="false"
        android:text="@string/_5"
        android:textColor="@android:color/white"
@@ -264,16 +265,16 @@
       android:layout_marginStart="161dp"
       android:layout_marginEnd="162dp"
       android:layout_marginBottom="72dp"
-      android:backgroundTint="#566975"
+      android:backgroundTint="#E5989B"
       android:text="@string/next"
       android:textColor="@android:color/white"
       android:textSize="16sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.501"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/cycle10"
-      app:layout_constraintVertical_bias="0.047" />
+      app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

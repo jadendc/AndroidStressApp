@@ -53,7 +53,7 @@ fun FaqCard(faqItem: FaqItem) {
                 indication = null
             ) { expanded = !expanded }, // No dark ripple
         shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF5D727C))
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF4A4E69))
     ) {
         Column(
             modifier = Modifier

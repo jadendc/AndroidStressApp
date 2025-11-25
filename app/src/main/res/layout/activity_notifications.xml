@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="#8E9AAF">
 
     <!-- Toolbar with custom title -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#DD2D4A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,7 +43,8 @@
         android:src="@drawable/backbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:tint = "#F2E9E4"/>
 
     <ImageView
         android:id="@+id/imageView7"
@@ -173,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#67788B"
+            android:backgroundTint="#E5989B"
             android:text="@string/test_notification"
             android:textColor="@android:color/white" />
 
@@ -182,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#4A5962"
+            android:backgroundTint="#84A98C"
             android:text="@string/save_settings"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>

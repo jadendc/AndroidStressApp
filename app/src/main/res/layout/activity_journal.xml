@@ -5,13 +5,13 @@
     android:id="@+id/saveButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#677C88">
+    android:background="#8E9AAF">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey">
+        android:background="#8E9AAF">
 
 
         <androidx.appcompat.widget.Toolbar
@@ -28,11 +28,12 @@
             app:title="Journal"
             app:titleTextColor="@android:color/white" />
 
+
         <EditText
             android:id="@+id/editTextTextMultiLine"
             android:layout_width="353dp"
             android:layout_height="519dp"
-            android:background="#81FFFFFF"
+            android:background="#4A4E69"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Type how you are feeling here!"
@@ -44,8 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3"
-            app:layout_constraintVertical_bias="0.333" />
-
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/backButton"
@@ -61,12 +61,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/backbutton" />
+            app:srcCompat="@drawable/backbutton"
+            app:tint="#F2E9E4"/>
         <Button
             android:id="@+id/saveContinueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:backgroundTint="#556874"
+           android:backgroundTint="#E5989B"
             android:text="Save and Continue"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
