@@ -174,7 +174,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#E5989B"
+            android:backgroundTint="#5B1166"
             android:text="@string/test_notification"
             android:textColor="@android:color/white" />
 
@@ -183,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#84A98C"
+            android:backgroundTint="#5B1166"
             android:text="@string/save_settings"
             android:textColor="@android:color/white"
             android:textStyle="bold"/>

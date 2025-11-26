@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="#8E9AAF"
     tools:context=".StrategiesAndActionsActivity">
 
     <!-- Toolbar with consistent styling -->
@@ -13,7 +13,7 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#DD2D4A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,8 @@
         android:src="@drawable/backbutton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar" />
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:tint = "#FFF8DC"/>
 
     <!-- App Logo with consistent positioning and constraints -->
     <ImageView
@@ -103,7 +104,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/spinner_background"
+        android:background="#4A4E69"
         android:drawableEnd="@drawable/ic_arrow_down"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +131,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/spinner_background"
+        android:background="#4A4E69"
         android:drawableEnd="@drawable/ic_arrow_down"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,7 +143,7 @@
         android:id="@+id/continueButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#556874"
+        android:backgroundTint="#E5989B"
         android:padding="12dp"
         android:text="Continue"
         android:textColor="@android:color/white"
