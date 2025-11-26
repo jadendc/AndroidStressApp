@@ -11,14 +11,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey">
+        android:background="#8E9AAF">
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#DD2D4A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +52,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            app:cardBackgroundColor="#3D4952"
+            app:cardBackgroundColor="#4A4E69"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,8 +111,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="First Name"
-                    android:textColorHint="#9FFFFFFF"
-                    app:boxBackgroundColor="#2D3A43"
+                    android:textColorHint="#1B1212"
+                    app:boxBackgroundColor="#CBC0D3"
                     app:boxStrokeColor="#78909C"
                     app:boxStrokeWidth="1dp"
                     app:hintTextColor="#9FFFFFFF"
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="#3E4D54"
+                android:backgroundTint="#E5989B"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:text="Back"
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:backgroundTint="#2B2D30"
+                android:backgroundTint="#84A98C"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:text="Save Changes"

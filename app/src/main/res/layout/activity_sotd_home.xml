@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#69808D">
+    android:background="#8E9AAF">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -12,7 +12,6 @@
         android:layout_height="120dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
-        android:background="#69808D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.463"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,14 +23,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
-        android:background="#69808D"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint = "#F2E9E4"/>
 
     <TextView
         android:id="@+id/textView2"
@@ -52,7 +51,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="52dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         android:text="Button"
         android:textOn="ON"
         android:textOff="OFF"
@@ -67,7 +66,7 @@
         android:layout_marginStart="26dp"
         android:layout_marginTop="53dp"
         android:layout_marginEnd="30dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         android:text="Button"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toStartOf="@+id/button7"
@@ -80,7 +79,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="53dp"
         android:layout_marginEnd="23dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         app:cornerRadius="10dp"
         android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +91,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="20dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         app:cornerRadius="10dp"
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +104,7 @@
         android:layout_marginStart="26dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="28dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         app:cornerRadius="10dp"
         android:text="Button"
         app:layout_constraintEnd_toStartOf="@+id/button10"
@@ -118,7 +117,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="25dp"
-        android:background="#556874"
+        android:background="#CBC0D3"
         android:text="Button"
         app:cornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -208,13 +207,13 @@
         android:layout_width="94dp"
         android:layout_height="35dp"
         android:layout_marginStart="158dp"
-        android:layout_marginBottom="136dp"
-        android:background="#556874"
+        android:layout_marginBottom="80dp"
+        android:background="#E5989B"
         android:text="Continue"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.018"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -222,7 +221,7 @@
         android:layout_width="135dp"
         android:layout_height="48dp"
         android:text="Save Custom"
-        android:background="#556874"
+        android:background="#84A98C"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/continueButtonSotdHome"
         app:layout_constraintEnd_toEndOf="parent"

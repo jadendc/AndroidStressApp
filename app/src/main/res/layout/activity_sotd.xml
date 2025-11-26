@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#69808D">
+    android:background="#8E9AAF">
 
     <TextView
         android:id="@+id/textView"
@@ -29,8 +29,8 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="84dp"
         android:layout_marginBottom="60dp"
-        android:background="#556874"
-        android:text="Home"
+        android:background="#301934"
+        android:text="Home 🏠"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toStartOf="@+id/button3"
@@ -44,8 +44,8 @@
         android:layout_marginStart="76dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
-        android:background="#556874"
-        android:text="School"
+        android:background="#2A6F97"
+        android:text="School 🏫"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintStart_toEndOf="@+id/button2"
@@ -59,8 +59,8 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="84dp"
         android:layout_marginBottom="172dp"
-        android:background="#556874"
-        android:text="Social"
+        android:background="#B5838D"
+        android:text="Social 🤳"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button5"
@@ -74,8 +74,8 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="172dp"
-        android:background="#556874"
-        android:text="Work"
+        android:background="#84A98C"
+        android:text="Work 💼"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button4"
@@ -89,7 +89,6 @@
         android:layout_marginTop="43dp"
         android:layout_marginEnd="156dp"
         android:layout_marginBottom="40dp"
-        android:background="#69808D"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
@@ -103,8 +102,8 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="25dp"
-        android:background="#69808D"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/backbutton" />
+        app:srcCompat="@drawable/backbutton"
+        app:tint = "#F2E9E4"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

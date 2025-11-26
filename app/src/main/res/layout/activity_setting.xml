@@ -10,21 +10,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="@color/grey">
+android:background="#8E9AAF">
 
-<androidx.appcompat.widget.Toolbar
-    android:id="@+id/toolbar"
-    android:layout_width="0dp"
-    android:layout_height="?attr/actionBarSize"
-    android:layout_marginTop="4dp"
-    app:drawerArrowStyle="@color/white"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:navigationIconTint="@color/white"
-    app:title="Settings"
-    app:titleTextColor="@android:color/white" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#DD2D4A"
+        app:drawerArrowStyle="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIconTint="@color/white"
+        app:title="Settings"
+        app:titleTextColor="@android:color/white" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -60,7 +60,7 @@ android:background="@color/grey">
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#4A5962"
+        android:backgroundTint="#E5989B"
         android:text="@string/faq_and_help"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -76,7 +76,7 @@ android:background="@color/grey">
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#4A5962"
+        android:backgroundTint="#E5989B"
         android:text="@string/notifications"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -92,7 +92,7 @@ android:background="@color/grey">
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#4A5962"
+        android:backgroundTint="#E5989B"
         android:text="@string/profile"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -105,7 +105,7 @@ android:background="@color/grey">
     android:id="@+id/logOutButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:backgroundTint="#3D4952"
+    android:backgroundTint="#DD2D4A"
     android:text="@string/log_out"
     android:textColor="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"

@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey">
+        android:background="#8E9AAF">
 
         <!-- Toolbar -->
 
@@ -20,8 +20,7 @@
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginTop="4dp"
-            android:background="@color/grey"
+            android:background="#DD2D4A"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +58,7 @@
             android:layout_marginTop="56dp"
             android:background="#6F6464"
             app:cornerRadius="10dp"
-            android:backgroundTint="#404E56"
+            android:backgroundTint="#E5989B"
             android:text="Start Exercise"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +104,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/backbutton" />
+            app:srcCompat="@drawable/backbutton"
+            app:tint = "#F2E9E4"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
