@@ -101,7 +101,7 @@
 
                 <Spinner
                     android:id="@+id/triggerSpinner"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -122,7 +122,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
                 <!-- What strategies can you use? -->
@@ -140,7 +140,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
                 <TextView
@@ -158,7 +158,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
 <!--                <EditText-->
@@ -187,7 +187,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
 <!--                <EditText-->
@@ -216,7 +216,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
 <!--                <EditText-->
@@ -245,7 +245,7 @@
                     style="@style/SpinnerStyle"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:background="#5B6E7A"
+                    android:background="#4A4E69"
                     android:layout_marginTop="8dp" />
 
 <!--                <EditText-->
@@ -275,7 +275,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="#556874"
+                    android:backgroundTint="#E5989B"
                     android:text="Submit"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
