@@ -24,7 +24,7 @@ class SOTDHome : AppCompatActivity() {
     private var selectedOption: String? = null
     private lateinit var allToggleButtons: List<ToggleButton>
     private var customStressorActive = false
-    private val defaultButtonColor = Color.parseColor("#556874")
+    private val defaultButtonColor = Color.parseColor("#2A6F97")
     private var selectedDate: String = "" // Store selected date
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,7 +124,7 @@ class SOTDHome : AppCompatActivity() {
                     customStressorActive = false
 
                     // Update selected button appearance
-                    toggleButton.setBackgroundColor(Color.GREEN)
+                    toggleButton.setBackgroundColor(Color.parseColor("#9BB79F"))
                 } else {
                     // If being unchecked, reset to default color
                     toggleButton.setBackgroundColor(defaultButtonColor)

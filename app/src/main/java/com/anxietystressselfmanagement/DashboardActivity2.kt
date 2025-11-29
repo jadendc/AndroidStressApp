@@ -419,11 +419,11 @@ class DashboardActivity2 : AppCompatActivity() {
 
         // Using colors from DashboardActivity3 as per previous request
         val pastelColors = listOf(
-            Color.parseColor("#F4B6C2"),
-            Color.parseColor("#A6E1D9"),
-            Color.parseColor("#F6D1C1"),
-            Color.parseColor("#E3A7D4"),
-            Color.parseColor("#C8D8A9")
+            Color.parseColor("#9BB79F"), // Pastel Green
+            Color.parseColor("#2A6F97"), // Pastel Blue
+            Color.parseColor("#CBC0D3"), // Thistle
+            Color.parseColor("#F2E9E4"), // Parchment
+            Color.parseColor("#DD2D4A")  // Pastel Red
         )
 
         val dataSet = PieDataSet(entries, "")

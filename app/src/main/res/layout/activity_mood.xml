@@ -160,7 +160,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#E5989B"
+        android:backgroundTint="#4A4E69"
         android:enabled="false"
         android:text="@string/continue_button"
         android:textColor="#FFFFFF"

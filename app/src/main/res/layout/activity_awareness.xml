@@ -125,7 +125,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:text="Continue"
-        android:backgroundTint="#DD2D4A"
+        android:backgroundTint="#4A4E69"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

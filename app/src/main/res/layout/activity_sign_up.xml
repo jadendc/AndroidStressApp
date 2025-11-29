@@ -191,7 +191,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="Back"
-            android:backgroundTint="#DD2D4A"
+            android:backgroundTint="#4A4E69"
             android:textColor="#FFFFFF"
             app:cornerRadius="20dp" />
 
@@ -201,7 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#9BB79F"
+            android:backgroundTint="#4A4E69"
             android:text="Done"
             android:textColor="#FFFFFF"
             app:cornerRadius="20dp" />

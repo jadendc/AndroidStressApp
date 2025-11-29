@@ -67,7 +67,7 @@
             android:id="@+id/saveContinueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:backgroundTint="#E5989B"
+           android:backgroundTint="#4A4E69"
             android:text="Save and Continue"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"

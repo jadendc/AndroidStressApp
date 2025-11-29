@@ -70,7 +70,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="200dp"
         android:text="Continue"
-        android:background="#E5989B"
+        android:background="#4A4E69"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feelingsSpinner" />

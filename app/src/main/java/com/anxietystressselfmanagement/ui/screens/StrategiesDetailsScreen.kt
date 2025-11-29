@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,7 +43,7 @@ fun StrategiesDetailsScreen(
                 onBackClick = onBackClick
             )
         },
-        containerColor = colorResource(id = R.color.grey)
+        containerColor = Color(0xFF8E9AAF)
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier

@@ -69,7 +69,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="200dp"
         android:text="Continue"
-        android:backgroundTint="#E5989B"
+        android:backgroundTint="#4A4E69"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/behaviorSpinner" />

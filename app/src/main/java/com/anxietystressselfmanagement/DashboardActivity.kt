@@ -353,7 +353,7 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
 
         val barDataSet = BarDataSet(entries, "In Control")
-        barDataSet.color = Color.parseColor("#77dd77")
+        barDataSet.color = Color.parseColor("#2A6F97")
         val barData = BarData(barDataSet)
 
         barData.setValueFormatter(object : ValueFormatter() {
@@ -427,11 +427,11 @@ class DashboardActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         }
 
         val pastelColors = listOf(
-            Color.parseColor("#77dd77"), // Pastel Green
-            Color.parseColor("#a2c2e0"), // Pastel Blue
-            Color.parseColor("#fdfd96"), // Pastel Yellow
-            Color.parseColor("#d3d3d3"), // Pastel Gray
-            Color.parseColor("#f7a9a9")  // Pastel Red
+            Color.parseColor("#9BB79F"), // Pastel Green
+            Color.parseColor("#2A6F97"), // Pastel Blue
+            Color.parseColor("#CBC0D3"), // Thistle
+            Color.parseColor("#F2E9E4"), // Parchment
+            Color.parseColor("#DD2D4A")  // Pastel Red
         )
 
         val dataSet = PieDataSet(entries, "")

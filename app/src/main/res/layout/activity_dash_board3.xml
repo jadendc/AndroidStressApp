@@ -74,7 +74,7 @@
                         android:layout_marginTop="8dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:backgroundTint="#2A6F97"
+                        android:backgroundTint="#8E9AAF"
                         android:text="Last 7 Days"
                         android:textColor="@android:color/white"
                         app:cornerRadius="8dp"

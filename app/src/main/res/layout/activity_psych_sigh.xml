@@ -58,7 +58,7 @@
             android:layout_marginTop="56dp"
             android:background="#6F6464"
             app:cornerRadius="10dp"
-            android:backgroundTint="#E5989B"
+            android:backgroundTint="#4A4E69"
             android:text="Start Exercise"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"

@@ -22,7 +22,7 @@ class SOTDWork : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var allToggleButtons: List<ToggleButton>
     private var customStressorActive = false
-    private val defaultButtonColor = Color.parseColor("#556874")
+    private val defaultButtonColor = Color.parseColor("#2A6F97")
     private var selectedOption: String? = null
     private var selectedDate: String = "" // Store selected date
 
@@ -112,7 +112,7 @@ class SOTDWork : AppCompatActivity() {
                         }
                     }
                     customStressorActive = false
-                    toggleButton.setBackgroundColor(Color.GREEN)
+                    toggleButton.setBackgroundColor(Color.parseColor("#9BB79F"))
                 } else {
                     toggleButton.setBackgroundColor(defaultButtonColor)
                 }

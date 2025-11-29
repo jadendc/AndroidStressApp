@@ -2,6 +2,7 @@ package com.anxietystressselfmanagement
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,9 +13,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import com.bumptech.glide.Glide
 import androidx.lifecycle.ViewModelProvider
 import com.anxietystressselfmanagement.ui.activities.HomeActivity
-import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth

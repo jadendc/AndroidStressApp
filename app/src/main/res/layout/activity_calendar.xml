@@ -45,7 +45,7 @@
         android:id="@+id/continueButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#E5989B"
+        android:backgroundTint="#4A4E69"
         android:text="Continue"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

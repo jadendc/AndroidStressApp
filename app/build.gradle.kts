@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
 
     // Optional tools:

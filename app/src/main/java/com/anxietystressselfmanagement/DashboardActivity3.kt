@@ -55,8 +55,7 @@ class DashboardActivity3 : AppCompatActivity() {
     // --- Color Definitions ---
     private val pastelColors: List<Int> by lazy {
         listOf(
-            "#F4B6C2", "#A6E1D9", "#F6D1C1", "#E3A7D4", "#C8D8A9",
-            "#A7C7E7", "#FFFACD", "#C3B1E1", "#FFDAC1", "#B2F0B2"
+            "2A6F97", "B5838D", "CBC0D3", "F2E9E4", "DD2D4A"
         ).mapNotNull { hexString ->
             try { Color.parseColor(hexString) } catch (e: Exception) {
                 Log.e(TAG, "Invalid pastel color string: '$hexString'", e); null }
