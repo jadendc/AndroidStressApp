@@ -57,7 +57,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        app:cardBackgroundColor="#99000000"
+        app:cardBackgroundColor="#4A4E69"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,9 +141,8 @@
                     android:layout_weight="1"
                     android:text="Sign Up"
                     android:textColor="#FFFFFF"
-                    app:cornerRadius="20dp"
-                    app:strokeColor="#FFFFFF"
-                    app:strokeWidth="2dp" />
+                    android:backgroundTint="#8E9AAF"
+                    app:cornerRadius="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginButton"
@@ -151,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="#EF851C"
+                    android:backgroundTint="#8E9AAF"
                     android:text="Login"
                     android:textColor="#FFFFFF"
                     app:cornerRadius="20dp" />
